@@ -3,12 +3,14 @@
 // license that can be found in the LICENSE file.
 
 import * as vscode from 'vscode';
+import * as path from 'path';
+import * as fs from 'fs';
 import * as locale from './locale';
 
 // 初始化本地化信息
 locale.init();
 
-export function activate(context: vscode.ExtensionContext) {
+export function activate(ctx: vscode.ExtensionContext) {
 	const cmdName = 'extension.statistic.show';
 	const show = vscode.commands.registerCommand(cmdName, (uri: any) => {
 		const folder = vscode.workspace.getWorkspaceFolder(<vscode.Uri>uri);
@@ -17,15 +19,15 @@ export function activate(context: vscode.ExtensionContext) {
 			return;
 		}
 
-		return createView(folder);
+		return createView(ctx, folder);
 	});
 
-	context.subscriptions.push(show);
+	ctx.subscriptions.push(show);
 }
 
 export function deactivate() {}
 
-function createView(folder: vscode.WorkspaceFolder) {
+function createView(ctx: vscode.ExtensionContext,folder: vscode.WorkspaceFolder) {
 	const panel = vscode.window.createWebviewPanel(
 		'statistic',
 		locale.l('statistic'),
@@ -36,5 +38,16 @@ function createView(folder: vscode.WorkspaceFolder) {
 		}
 	);
 
-	panel.webview.html = '<html><h1>test</h1></html>';
+	panel.webview.html = loadWebview(ctx, folder);
+}
+
+function loadWebview(ctx:vscode.ExtensionContext, folder: vscode.WorkspaceFolder): string {
+	const p = path.join(ctx.extensionPath, 'assets', 'webview.html');
+	const dir = path.dirname(p);
+
+	let html = fs.readFileSync(p, 'utf-8');
+	html = html.replace(/(<link.+?href="|<script.+?src="|<img.+?src=")(.+?)"/g, (m, $1, $2) => {
+        return $1 + vscode.Uri.file(path.resolve(dir, $2)).with({ scheme: 'vscode-resource' }).toString() + '"';
+    });
+    return html;
 }
