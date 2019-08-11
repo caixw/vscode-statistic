@@ -19,15 +19,15 @@ export function activate(ctx: vscode.ExtensionContext) {
 			return;
 		}
 
-		return createView(ctx, folder);
+		return createView(ctx);
 	});
 
 	ctx.subscriptions.push(show);
 }
 
-export function deactivate() {}
+export function deactivate() { }
 
-function createView(ctx: vscode.ExtensionContext,folder: vscode.WorkspaceFolder) {
+function createView(ctx: vscode.ExtensionContext) {
 	const panel = vscode.window.createWebviewPanel(
 		'statistic',
 		locale.l('statistic'),
@@ -38,16 +38,16 @@ function createView(ctx: vscode.ExtensionContext,folder: vscode.WorkspaceFolder)
 		}
 	);
 
-	panel.webview.html = loadWebview(ctx, folder);
+	panel.webview.html = loadWebview(ctx);
 }
 
-function loadWebview(ctx:vscode.ExtensionContext, folder: vscode.WorkspaceFolder): string {
+function loadWebview(ctx: vscode.ExtensionContext): string {
 	const p = path.join(ctx.extensionPath, 'assets', 'webview.html');
 	const dir = path.dirname(p);
 
 	let html = fs.readFileSync(p, 'utf-8');
 	html = html.replace(/(<link.+?href="|<script.+?src="|<img.+?src=")(.+?)"/g, (m, $1, $2) => {
-        return $1 + vscode.Uri.file(path.resolve(dir, $2)).with({ scheme: 'vscode-resource' }).toString() + '"';
-    });
-    return html;
+		return $1 + vscode.Uri.file(path.resolve(dir, $2)).with({ scheme: 'vscode-resource' }).toString() + '"';
+	});
+	return html;
 }
