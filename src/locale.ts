@@ -49,7 +49,13 @@ const locales: Locales = {
         'statistic': '项目统计',
         'none-project': '未选择任何项目',
         'path': '路径',
-        'sum': '总计'
+        'sum': '总计',
+        'type': '类型',
+        'files': '文件',
+        'lines': '行数',
+        'avg': '平均行数',
+        'max': '最大行数',
+        'min': '最小行数',
     },
 
     "en": {
@@ -57,7 +63,13 @@ const locales: Locales = {
         'statistic': 'statistic',
         'none-project': 'no project selected',
         'path': 'path',
-        'sum': 'sum'
+        'sum': 'sum',
+        'type': 'type',
+        'files': 'files',
+        'lines': 'lines',
+        'avg': 'avg',
+        'max': 'max',
+        'min': 'min',
     }
 };
 

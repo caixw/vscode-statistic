@@ -37,6 +37,7 @@
 		"test": "node ./out/test/runTest.js"
 	},
 	"devDependencies": {
+		"@types/cheerio": "^0.22.13",
 		"@types/glob": "^7.1.1",
 		"@types/mocha": "^5.2.6",
 		"@types/node": "^10.12.21",
@@ -48,6 +49,7 @@
 		"vscode-test": "^1.0.2"
 	},
 	"dependencies": {
+		"cheerio": "^1.0.0-rc.3",
 		"ignore": "^5.1.2"
 	}
 }
