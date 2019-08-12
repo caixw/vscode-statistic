@@ -36,14 +36,13 @@ export default class Project {
         this.Files.forEach((val, index) => {
             let name = path.extname(val.Path);
             if (name === '') {
-                name = path.basename(val.Path)
+                name = path.basename(val.Path);
             }
 
             let t = types[name];
             if (t === undefined) {
                 t = new Type();
                 t.Name = name;
-                t.Min = Number.POSITIVE_INFINITY; // 先设置为无穷大
                 types[name] = t;
             }
 
@@ -72,7 +71,6 @@ export default class Project {
     private buildSumType(): Type {
         const sumType = new Type();
         sumType.Name = locale.l('sum');
-        sumType.Min = Number.POSITIVE_INFINITY;
         for(const key in this.Types) {
             const t = this.Types[key];
 
@@ -105,6 +103,6 @@ export class Type {
     Files: number = 0; // 文件数量
     Lines: number = 0; // 总行数
     Max: number = 0;
-    Min: number = 0;
+    Min: number = Number.POSITIVE_INFINITY;
     Avg: number = 0;
 }
