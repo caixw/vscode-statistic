@@ -10,22 +10,22 @@ import * as webview from './webview';
 locale.init();
 
 export function activate(ctx: vscode.ExtensionContext) {
-	const cmdName = 'extension.statistic.show';
-	const show = vscode.commands.registerCommand(cmdName, (uri: any) => {
-		const folder = vscode.workspace.getWorkspaceFolder(<vscode.Uri>uri);
-		if (folder === undefined) {
-			vscode.window.showErrorMessage(locale.l('none-project'));
-			return;
-		}
+    const cmdName = 'extension.statistic.show';
+    const show = vscode.commands.registerCommand(cmdName, (uri: any) => {
+        const folder = vscode.workspace.getWorkspaceFolder(<vscode.Uri>uri);
+        if (folder === undefined) {
+            vscode.window.showErrorMessage(locale.l('none-project'));
+            return;
+        }
 
-		try {
-			webview.create(ctx, folder);
-		} catch (e) {
-			vscode.window.showErrorMessage(e);
-		}
-	});
+        try {
+            webview.create(ctx, folder);
+        } catch (e) {
+            vscode.window.showErrorMessage(e);
+        }
+    });
 
-	ctx.subscriptions.push(show);
+    ctx.subscriptions.push(show);
 }
 
 export function deactivate() { }

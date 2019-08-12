@@ -68,11 +68,11 @@ function readFiles(dir: string): string[] {
 
     try {
         ret = ig.filter(ret.map((v, k) => {
-            const pp= path.relative(dir, v);
+            const pp = path.relative(dir, v);
             console.warn(v, pp);
             return pp;
         }));
-    }catch(e){
+    } catch (e) {
         console.error(e);
     }
 

@@ -11,34 +11,37 @@ import Project from './project';
  * 创建 webview 页面
  */
 export function create(ctx: vscode.ExtensionContext, folder: vscode.WorkspaceFolder) {
-	const panel = vscode.window.createWebviewPanel(
-		'statistic',
-		locale.l('statistic'),
-		vscode.ViewColumn.One,
-		{
-			enableScripts: true,
-			retainContextWhenHidden: true,
-		}
-	);
+    const panel = vscode.window.createWebviewPanel(
+        'statistic',
+        locale.l('statistic'),
+        vscode.ViewColumn.One,
+        {
+            enableScripts: true,
+            retainContextWhenHidden: true,
+        }
+    );
 
-	panel.webview.html = build(ctx, folder);
+    panel.webview.html = build(ctx, folder);
 }
 
 /**
  * 生成完整的 HTML 内容
  */
 function build(ctx: vscode.ExtensionContext, folder: vscode.WorkspaceFolder): string {
-	const project = new Project(folder.uri.path);
+    // TODO 为文件类型加上图标？
+    // https://github.com/Microsoft/vscode/issues/31466
 
-	const $ = cheerio.load(webviewHTML);
-	$('html').attr('lang', locale.id());
+    const project = new Project(folder.uri.path);
 
-	const body = $('body');
-	body.before('<h1>'+project.Name+'</h1>');
-	body.before('<h2>'+locale.l('path')+':'+project.Path+'</h2>');
+    const $ = cheerio.load(webviewHTML);
+    $('html').attr('lang', locale.id());
 
-	// thead
-	let tpl = `<tr>
+    const body = $('body');
+    body.before('<h1>' + project.Name + '</h1>');
+    body.before('<h2>' + locale.l('path') + ':' + project.Path + '</h2>');
+
+    // thead
+    let tpl = `<tr>
 	<th>${locale.l('type')}</th>
 	<th>${locale.l('files')}</th>
 	<th>${locale.l('lines')}</th>
@@ -46,12 +49,12 @@ function build(ctx: vscode.ExtensionContext, folder: vscode.WorkspaceFolder): st
 	<th>${locale.l('max')}</th>
 	<th>${locale.l('min')}</th>
 	</tr>`;
-	$('table>thead').append(tpl);
+    $('table>thead').append(tpl);
 
-	// tbody
-	const tbody = $('table>tbody');
-	project.Types.forEach((v, k) => {
-		const tpl = `<tr>
+    // tbody
+    const tbody = $('table>tbody');
+    project.Types.forEach((v, k) => {
+        const tpl = `<tr>
 		<th>${v.Name}</th>
 		<td>${v.Files}</td>
 		<td>${v.Lines}</td>
@@ -59,11 +62,11 @@ function build(ctx: vscode.ExtensionContext, folder: vscode.WorkspaceFolder): st
 		<td>${v.Max}</td>
 		<td>${v.Min}</td>
 		</tr>`;
-		tbody.append(tpl);
-	});
+        tbody.append(tpl);
+    });
 
-	// tfoot
-	 tpl = `<tr>
+    // tfoot
+    tpl = `<tr>
 	 <th>${project.SumType.Name}</th>
 	 <td>${project.SumType.Files}</td>
 	 <td>${project.SumType.Lines}</td>
@@ -71,12 +74,12 @@ function build(ctx: vscode.ExtensionContext, folder: vscode.WorkspaceFolder): st
 	 <td>${project.SumType.Max}</td>
 	 <td>${project.SumType.Min}</td>
 	 </tr>`;
-	$('table>tfoot').append(tpl);
+    $('table>tfoot').append(tpl);
 
-	const html = $.html();
+    const html = $.html();
 
-	console.log(html);
-	return html;
+    console.log(html);
+    return html;
 }
 
 const webviewHTML = `<!DOCTYPE html>

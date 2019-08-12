@@ -1,55 +1,72 @@
 {
-	"name": "vscode-statistic",
-	"displayName": "vscode-statistic",
-	"description": "代码统计工具",
-	"version": "0.0.1",
-	"engines": {
-		"vscode": "^1.37.0"
-	},
-	"categories": [
-		"Other"
-	],
-	"activationEvents": [
-		"onCommand:extension.statistic.show"
-	],
-	"main": "./out/extension.js",
-	"contributes": {
-		"commands": [
-			{
-				"command": "extension.statistic.show",
-				"title": "%extension.statistic.show.title%"
-			}
-		],
-		"menus": {
-			"explorer/context": [
-				{
-					"command": "extension.statistic.show",
-					"when": "explorerResourceIsRoot"
-				}
-			]
-		}
-	},
-	"scripts": {
-		"vscode:prepublish": "npm run compile",
-		"compile": "tsc -p ./",
-		"watch": "tsc -watch -p ./",
-		"pretest": "npm run compile",
-		"test": "node ./out/test/runTest.js"
-	},
-	"devDependencies": {
-		"@types/cheerio": "^0.22.13",
-		"@types/glob": "^7.1.1",
-		"@types/mocha": "^5.2.6",
-		"@types/node": "^10.12.21",
-		"@types/vscode": "^1.37.0",
-		"glob": "^7.1.4",
-		"mocha": "^6.1.4",
-		"tslint": "^5.12.1",
-		"typescript": "^3.3.1",
-		"vscode-test": "^1.0.2"
-	},
-	"dependencies": {
-		"cheerio": "^1.0.0-rc.3",
-		"ignore": "^5.1.2"
-	}
+    "name": "vscode-statistic",
+    "displayName": "statistic",
+    "description": "代码统计工具，按文件类型分类统计各类文件的行数。",
+    "preview": true,
+    "version": "0.1.0",
+    "keywords": [
+        "statistic",
+        "total",
+        "sum",
+        "project"
+    ],
+    "license": "MIT",
+    "homepage": "https://github.com/caixw/vscode-statistic/README.md",
+    "bugs": {
+        "url": "https://github.com/caixw/vscode-statistic/issues",
+        "email": "xnotepad@gmail.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/caixw/vscode-statistic.git"
+    },
+    "engines": {
+        "vscode": "^1.37.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onCommand:extension.statistic.show"
+    ],
+    "main": "./out/extension.js",
+    "contributes": {
+        "commands": [
+            {
+                "command": "extension.statistic.show",
+                "title": "%extension.statistic.show.title%"
+            }
+        ],
+        "menus": {
+            "explorer/context": [
+                {
+                    "command": "extension.statistic.show",
+                    "when": "explorerResourceIsRoot"
+                }
+            ]
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "pretest": "npm run compile",
+        "test": "node ./out/test/runTest.js"
+    },
+    "devDependencies": {
+        "@types/cheerio": "^0.22.13",
+        "@types/glob": "^7.1.1",
+        "@types/mocha": "^5.2.6",
+        "@types/node": "^10.12.21",
+        "@types/vscode": "^1.37.0",
+        "glob": "^7.1.4",
+        "mocha": "^6.1.4",
+        "tslint": "^5.12.1",
+        "typescript": "^3.3.1",
+        "vscode-test": "^1.0.2"
+    },
+    "dependencies": {
+        "cheerio": "^1.0.0-rc.3",
+        "ignore": "^5.1.2"
+    }
 }

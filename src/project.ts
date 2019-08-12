@@ -21,7 +21,7 @@ export default class Project {
      * @param p 项目地址
      */
     constructor(p: string) {
-        this.Path = p; 
+        this.Path = p;
         this.Name = path.basename(p);
         this.Files = files.loadFiles(p);
         this.Types = this.buildTypes();
@@ -57,25 +57,25 @@ export default class Project {
         });
 
         const ts: Type[] = [];
-        for(const key in types) {
+        for (const key in types) {
             const t = types[key];
             t.Avg = Math.floor(t.Lines / t.Files);
             ts.push(t);
         }
 
         return ts.sort((v1: Type, v2: Type) => {
-            return v2.Lines-v1.Lines;
+            return v2.Lines - v1.Lines;
         });
     }
 
     private buildSumType(): Type {
         const sumType = new Type();
         sumType.Name = locale.l('sum');
-        for(const key in this.Types) {
+        for (const key in this.Types) {
             const t = this.Types[key];
 
-            sumType.Files+=t.Files;
-            sumType.Lines+=t.Lines;
+            sumType.Files += t.Files;
+            sumType.Lines += t.Lines;
 
             if (sumType.Max < t.Max) {
                 sumType.Max = t.Max;
@@ -85,7 +85,7 @@ export default class Project {
                 sumType.Min = t.Min;
             }
         }
-        sumType.Avg = Math.floor(sumType.Lines/sumType.Files);
+        sumType.Avg = Math.floor(sumType.Lines / sumType.Files);
 
         return sumType;
     }
