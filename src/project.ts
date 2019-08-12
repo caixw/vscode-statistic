@@ -11,24 +11,24 @@ import * as vcs from './vcs/vcs';
  * 项目的统计信息
  */
 export default class Project {
-    VCS: vcs.VCS;
-    Name: string;
-    Path: string;
-    Files: File[];
-    Types: Type[];
-    SumType: Type;
+    vcs: vcs.VCS;
+    name: string;
+    path: string;
+    files: File[];
+    types: Type[];
+    sumType: Type;
 
     /**
      * 构造函数
      * @param p 项目地址
      */
     constructor(p: string) {
-        this.VCS = vcs.New(p);
-        this.Path = p;
-        this.Name = path.basename(p);
-        this.Files = this.loadFiles();
-        this.Types = this.buildTypes();
-        this.SumType = this.buildSumType();
+        this.vcs = vcs.New(p);
+        this.path = p;
+        this.name = path.basename(p);
+        this.files = this.loadFiles();
+        this.types = this.buildTypes();
+        this.sumType = this.buildSumType();
     }
 
     /**
@@ -37,20 +37,20 @@ export default class Project {
      * @returns 返回内容按文件行数进行了排序
      */
     private loadFiles(): File[] {
-        let files = this.VCS.files();
+        let files = this.vcs.files();
 
         const ret: File[] = [];
         files.forEach((val, index) => {
             const content = fs.readFileSync(val).toString();
             const lines = content.split('\n').length;
             const file = new (File);
-            file.Path = val;
-            file.Lines = lines;
+            file.path = val;
+            file.lines = lines;
             ret.push(file);
         });
 
         return ret.sort((v1: File, v2: File) => {
-            return v2.Lines - v1.Lines;
+            return v2.lines - v1.lines;
         });
     }
 
@@ -59,59 +59,59 @@ export default class Project {
      */
     private buildTypes(): Type[] {
         const types: Types = {};
-        this.Files.forEach((val, index) => {
-            let name = path.extname(val.Path);
+        this.files.forEach((val, index) => {
+            let name = path.extname(val.path);
             if (name === '') {
-                name = path.basename(val.Path);
+                name = path.basename(val.path);
             }
 
             let t = types[name];
             if (t === undefined) {
                 t = new Type();
-                t.Name = name;
+                t.name = name;
                 types[name] = t;
             }
 
-            t.Files++;
-            t.Lines += val.Lines;
-            if (t.Max < val.Lines) {
-                t.Max = val.Lines;
+            t.files++;
+            t.lines += val.lines;
+            if (t.max < val.lines) {
+                t.max = val.lines;
             }
-            if (t.Min > val.Lines) {
-                t.Min = val.Lines;
+            if (t.min > val.lines) {
+                t.min = val.lines;
             }
         });
 
         const ts: Type[] = [];
         for (const key in types) {
             const t = types[key];
-            t.Avg = Math.floor(t.Lines / t.Files);
+            t.avg = Math.floor(t.lines / t.files);
             ts.push(t);
         }
 
         return ts.sort((v1: Type, v2: Type) => {
-            return v2.Lines - v1.Lines;
+            return v2.lines - v1.lines;
         });
     }
 
     private buildSumType(): Type {
         const sumType = new Type();
-        sumType.Name = locale.l('sum');
-        for (const key in this.Types) {
-            const t = this.Types[key];
+        sumType.name = locale.l('sum');
+        for (const key in this.types) {
+            const t = this.types[key];
 
-            sumType.Files += t.Files;
-            sumType.Lines += t.Lines;
+            sumType.files += t.files;
+            sumType.lines += t.lines;
 
-            if (sumType.Max < t.Max) {
-                sumType.Max = t.Max;
+            if (sumType.max < t.max) {
+                sumType.max = t.max;
             }
 
-            if (sumType.Min > t.Min) {
-                sumType.Min = t.Min;
+            if (sumType.min > t.min) {
+                sumType.min = t.min;
             }
         }
-        sumType.Avg = Math.floor(sumType.Lines / sumType.Files);
+        sumType.avg = Math.floor(sumType.lines / sumType.files);
 
         return sumType;
     }
@@ -125,18 +125,18 @@ interface Types {
  * 表示各个语言类型的统计信息
  */
 export class Type {
-    Name: string = ''; // 类型，一般为扩展名
-    Files: number = 0; // 文件数量
-    Lines: number = 0; // 总行数
-    Max: number = 0;
-    Min: number = Number.POSITIVE_INFINITY;
-    Avg: number = 0;
+    name: string = ''; // 类型，一般为扩展名
+    files: number = 0; // 文件数量
+    lines: number = 0; // 总行数
+    max: number = 0;
+    min: number = Number.POSITIVE_INFINITY;
+    avg: number = 0;
 }
 
 /**
  * 每一种类型的文件统计信息
  */
 export class File {
-    Path: string = ''; // 文件名
-    Lines: number = 0; // 总行数
+    path: string = ''; // 文件名
+    lines: number = 0; // 总行数
 }

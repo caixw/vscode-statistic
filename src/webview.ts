@@ -38,9 +38,9 @@ function build(ctx: vscode.ExtensionContext, folder: vscode.WorkspaceFolder): st
 
     const body = $('body');
     let tpl = `<div class="meta">
-    <h1>${project.Name}</h1>
-    <h2><label>${locale.l('vcs')}</label>${project.VCS.name}</h2>
-    <h2><label>${locale.l('path')}</label>${project.Path}</h2>
+    <h1>${project.name}</h1>
+    <h2><label>${locale.l('vcs')}</label>${project.vcs.name}</h2>
+    <h2><label>${locale.l('path')}</label>${project.path}</h2>
     </div>`;
     body.before(tpl);
 
@@ -57,26 +57,26 @@ function build(ctx: vscode.ExtensionContext, folder: vscode.WorkspaceFolder): st
 
     // tbody
     const tbody = $('table>tbody');
-    project.Types.forEach((v, k) => {
+    project.types.forEach((v, k) => {
         const tpl = `<tr>
-		<th>${v.Name}</th>
-		<td>${v.Files}</td>
-		<td>${v.Lines}</td>
-		<td>${v.Avg}</td>
-		<td>${v.Max}</td>
-		<td>${v.Min}</td>
+		<th>${v.name}</th>
+		<td>${v.files}</td>
+		<td>${v.lines}</td>
+		<td>${v.avg}</td>
+		<td>${v.max}</td>
+		<td>${v.min}</td>
 		</tr>`;
         tbody.append(tpl);
     });
 
     // tfoot
     tpl = `<tr>
-	 <th>${project.SumType.Name}</th>
-	 <td>${project.SumType.Files}</td>
-	 <td>${project.SumType.Lines}</td>
-	 <td>${project.SumType.Avg}</td>
-	 <td>${project.SumType.Max}</td>
-	 <td>${project.SumType.Min}</td>
+	 <th>${project.sumType.name}</th>
+	 <td>${project.sumType.files}</td>
+	 <td>${project.sumType.lines}</td>
+	 <td>${project.sumType.avg}</td>
+	 <td>${project.sumType.max}</td>
+	 <td>${project.sumType.min}</td>
 	 </tr>`;
     $('table>tfoot').append(tpl);
 
