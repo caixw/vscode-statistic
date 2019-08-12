@@ -18,6 +18,7 @@ const locales: Locales = {
         'avg': '平均行数',
         'max': '最大行数',
         'min': '最小行数',
+        'vcs': 'VCS',
     },
 
     "en": {
@@ -32,6 +33,7 @@ const locales: Locales = {
         'avg': 'avg',
         'max': 'max',
         'min': 'min',
+        'vcs': 'VCS',
     }
 };
 

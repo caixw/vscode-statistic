@@ -37,11 +37,15 @@ function build(ctx: vscode.ExtensionContext, folder: vscode.WorkspaceFolder): st
     $('html').attr('lang', locale.id());
 
     const body = $('body');
-    body.before('<h1>' + project.Name + '</h1>');
-    body.before('<h2>' + locale.l('path') + ':' + project.Path + '</h2>');
+    let tpl = `<div class="meta">
+    <h1>${project.Name}</h1>
+    <h2><label>${locale.l('vcs')}</label>${project.VCS.name}</h2>
+    <h2><label>${locale.l('path')}</label>${project.Path}</h2>
+    </div>`;
+    body.before(tpl);
 
     // thead
-    let tpl = `<tr>
+    tpl = `<tr>
 	<th>${locale.l('type')}</th>
 	<th>${locale.l('files')}</th>
 	<th>${locale.l('lines')}</th>
@@ -76,10 +80,7 @@ function build(ctx: vscode.ExtensionContext, folder: vscode.WorkspaceFolder): st
 	 </tr>`;
     $('table>tfoot').append(tpl);
 
-    const html = $.html();
-
-    console.log(html);
-    return html;
+    return $.html();
 }
 
 const webviewHTML = `<!DOCTYPE html>
@@ -89,6 +90,15 @@ const webviewHTML = `<!DOCTYPE html>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <style>
+        .meta label {
+            display: inline-block;
+            min-width: 4rem;
+        }
+
+        .meta label::after {
+            content: ":";
+        }
+
         table {
             width: 100%;
         }
