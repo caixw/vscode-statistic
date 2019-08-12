@@ -35,8 +35,7 @@ function build(ctx: vscode.ExtensionContext, folder: vscode.WorkspaceFolder): st
 	// 尝试获取模板内容，如果不存在当前语言版的，会调用默认默板，
 	// 如果默认的也不存在，则由库自行处理，一般为抛出异常？
 	let p = path.join(dir, filename);
-	const stat = fs.statSync(p);
-	if (!stat.isFile()) {
+	if (!fs.existsSync(p)) {
 		p = path.join(dir, 'webview.html');
 	}
 	let html = fs.readFileSync(p, 'utf-8');
