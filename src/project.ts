@@ -34,13 +34,17 @@ export default class Project {
     private buildTypes(): Type[] {
         const types: Types = {};
         this.Files.forEach((val, index) => {
-            const ext = path.extname(val.Path);
-            let t = types[ext];
+            let name = path.extname(val.Path);
+            if (name === '') {
+                name = path.basename(val.Path)
+            }
+
+            let t = types[name];
             if (t === undefined) {
                 t = new Type();
-                t.Name = ext;
+                t.Name = name;
                 t.Min = Number.POSITIVE_INFINITY; // 先设置为无穷大
-                types[ext] = t;
+                types[name] = t;
             }
 
             t.Files++;
