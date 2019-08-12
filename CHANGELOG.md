@@ -7,7 +7,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [0.2.0-preview]
 
 ### Added
-- 添加对 VCS 的支持；
+- 添加对 VCS 的支持，目前支持 Git、Hg 和普通目录下的内容；
 
 ## [0.1.0-preview]
 

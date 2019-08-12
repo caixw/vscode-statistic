@@ -2,15 +2,15 @@
 // Use of this source code is governed by a MIT
 // license that can be found in the LICENSE file.
 
-import * as path from 'path';
 import * as fs from 'fs';
+import * as path from 'path';
 import ignore from 'ignore';
 import { VCS } from './vcs';
 
-export class Git implements VCS {
-    public readonly name = 'Git';
+export class Hg implements VCS {
+    public readonly name = 'Hg';
 
-    private dir: string;
+    public dir: string;
 
     constructor(dir: string) {
         this.dir = dir;
@@ -21,11 +21,11 @@ export class Git implements VCS {
     }
 
     /**
-     * 是否为 Git 项目
+     * 是否为 Hg 项目
      * @param dir 项目根目录
      */
     public static is(dir: string): boolean {
-        return fs.existsSync(path.join(dir, '.git'));
+        return fs.existsSync(path.join(dir, '.hg'));
     }
 
     /**
@@ -42,7 +42,7 @@ export class Git implements VCS {
         const ig = ignore();
         const files = fs.readdirSync(dir);
         files.forEach((val, index) => {
-            if (val === '' || val === '.git') {
+            if (val === '' || val === '.hg') {
                 return;
             }
 
@@ -54,7 +54,7 @@ export class Git implements VCS {
                     ret.push(val);
                 });
             } else if (stat.isFile()) {
-                if (val === '.gitignore') {
+                if (val === '.hgignore') {
                     ig.add(fs.readFileSync(p).toString());
                 } else {
                     ret.push(p);

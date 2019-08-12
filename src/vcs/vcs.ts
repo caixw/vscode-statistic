@@ -3,6 +3,7 @@
 // license that can be found in the LICENSE file.
 
 import { Git } from './git';
+import { Hg } from './hg';
 import { None } from './none';
 
 /**
@@ -13,9 +14,11 @@ import { None } from './none';
 export function New(dir: string): VCS {
     if (Git.is(dir)) {
         return new Git(dir);
+    } else if (Hg.is(dir)) {
+        return new Hg(dir);
+    } else {
+        return new None(dir);
     }
-
-    return new None(dir);
 }
 
 /**
