@@ -39,12 +39,12 @@ export function loadFiles(p: string): File[] {
  * @returns 文件列表
  */
 function readFiles(dir: string): string[] {
-    const ret: string[] = [];
+    let ret: string[] = [];
 
     const ig = ignore();
     const files = fs.readdirSync(dir);
     files.forEach((val, index) => {
-        if (val === '' || val.charAt(0) === '.') {
+        if (val === '' || val === '.git') {
             return;
         }
 
@@ -65,8 +65,20 @@ function readFiles(dir: string): string[] {
         }
     });
 
-    return ret;
-    return ig.filter(ret);
+
+    try {
+        ret = ig.filter(ret.map((v, k) => {
+            const pp= path.relative(dir, v);
+            console.warn(v, pp);
+            return pp;
+        }));
+    }catch(e){
+        console.error(e);
+    }
+
+    return ret.map((v, k) => {
+        return path.join(dir, v);
+    });
 }
 
 /**

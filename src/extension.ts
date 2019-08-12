@@ -19,7 +19,7 @@ export function activate(ctx: vscode.ExtensionContext) {
 		}
 
 		try {
-			return webview.create(ctx, folder);
+			webview.create(ctx, folder);
 		} catch (e) {
 			vscode.window.showErrorMessage(e);
 		}
