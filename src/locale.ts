@@ -10,24 +10,37 @@ import * as vscode from 'vscode';
  * @param key 该条语言的标记，如果不存在，则原样返回
  */
 export function l(key: string): string {
-    return locale[key];
+    return locales[localeID][key];
+}
+
+/**
+ * 返回当前语言的 ID，比如 zh-cn 等
+ */
+export function id(): string {
+    return localeID;
 }
 
 /**
  * 初始化，仅需要在入口入调用。
  */
 export function init() {
+    localeID = 'zh-cn'; // 默认值
+
     const cfg = process.env.VSCODE_NLS_CONFIG;
     if (cfg === undefined) {
-        vscode.window.showErrorMessage('config error');
+        const msg = '无法获取 process.env.VSCODE_NLS_CONFIG，将区域信息设置为默认值！';
+        vscode.window.showErrorMessage(msg);
         return;
     }
 
     const config = JSON.parse(cfg);
-    const l = locales[config.locale];
-    if (locale !== undefined) {
-        locale = l;
+    if (locales[config.locale] === undefined) {
+        const msg = '无法获取 ' + config.locale + ' 的本地化内容，采用默认值！';
+        vscode.window.showErrorMessage(msg);
+        return;
     }
+
+    localeID = config.locale;
 }
 
 const locales: Locales = {
@@ -35,16 +48,20 @@ const locales: Locales = {
         'name': '中文简体',
         'statistic': '项目统计',
         'none-project': '未选择任何项目',
+        'path': '路径',
+        'sum': '总计'
     },
 
     "en": {
         'name': 'English',
         'statistic': 'statistic',
         'none-project': 'no project selected',
+        'path': 'path',
+        'sum': 'sum'
     }
 };
 
-let locale: Locale = locales['zh-cn'];
+let localeID = 'zh-cn';
 
 interface Locale {
     [index: string]: string;

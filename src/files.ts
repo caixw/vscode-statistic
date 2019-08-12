@@ -26,7 +26,7 @@ export function loadFiles(p: string): File[] {
     });
 
     return ret.sort((v1: File, v2: File) => {
-        return v1.Lines - v2.Lines;
+        return v2.Lines - v1.Lines;
     });
 }
 
@@ -44,6 +44,10 @@ function readFiles(dir: string): string[] {
     const ig = ignore();
     const files = fs.readdirSync(dir);
     files.forEach((val, index) => {
+        if (val === '' || val.charAt(0) === '.') {
+            return;
+        }
+
         const p = path.join(dir, val);
 
         const stat = fs.statSync(p);
@@ -61,6 +65,7 @@ function readFiles(dir: string): string[] {
         }
     });
 
+    return ret;
     return ig.filter(ret);
 }
 

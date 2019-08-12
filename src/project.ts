@@ -4,6 +4,7 @@
 
 import * as files from './files';
 import * as path from 'path';
+import * as locale from './locale';
 
 /**
  * 项目的统计信息
@@ -13,6 +14,7 @@ export default class Project {
     Path: string;
     Files: files.File[];
     Types: Type[];
+    SumType: Type;
 
     /**
      * 构造函数
@@ -23,6 +25,7 @@ export default class Project {
         this.Name = path.basename(p);
         this.Files = files.loadFiles(p);
         this.Types = this.buildTypes();
+        this.SumType = this.buildSumType();
     }
 
     /**
@@ -33,6 +36,13 @@ export default class Project {
         this.Files.forEach((val, index) => {
             const ext = path.extname(val.Path);
             let t = types[ext];
+            if (t === undefined) {
+                t = new Type();
+                t.Name = ext;
+                t.Min = Number.POSITIVE_INFINITY; // 先设置为无穷大
+                types[ext] = t;
+            }
+
             t.Files++;
             t.Lines += val.Lines;
             if (t.Max < val.Lines) {
@@ -45,12 +55,37 @@ export default class Project {
 
         const ts: Type[] = [];
         for(const key in types) {
-            ts.push(types[key]);
+            const t = types[key];
+            t.Avg = Math.floor(t.Lines / t.Files);
+            ts.push(t);
         }
 
         return ts.sort((v1: Type, v2: Type) => {
-            return v1.Lines-v2.Lines;
+            return v2.Lines-v1.Lines;
         });
+    }
+
+    private buildSumType(): Type {
+        const sumType = new Type();
+        sumType.Name = locale.l('sum');
+        sumType.Min = Number.POSITIVE_INFINITY;
+        for(const key in this.Types) {
+            const t = this.Types[key];
+
+            sumType.Files+=t.Files;
+            sumType.Lines+=t.Lines;
+
+            if (sumType.Max < t.Max) {
+                sumType.Max = t.Max;
+            }
+
+            if (sumType.Min > t.Min) {
+                sumType.Min = t.Min;
+            }
+        }
+        sumType.Avg = Math.floor(sumType.Lines/sumType.Files);
+
+        return sumType;
     }
 }
 
@@ -65,6 +100,7 @@ export class Type {
     Name: string = ''; // 类型，一般为扩展名
     Files: number = 0; // 文件数量
     Lines: number = 0; // 总行数
-    Max: number = 0;   // 最大的行数
-    Min: number = 0;   // 最小行数
+    Max: number = 0;
+    Min: number = 0;
+    Avg: number = 0;
 }
