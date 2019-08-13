@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 import * as vscode from 'vscode';
+import * as path from 'path';
 import * as locale from './locale';
 import * as cheerio from 'cheerio';
 import Project from './project';
@@ -19,6 +20,12 @@ export function create(ctx: vscode.ExtensionContext, folder: vscode.WorkspaceFol
         }
     );
 
+    const lightIcon = path.join(ctx.extensionPath, "images", "icon.svg");
+    const darkIcon = path.join(ctx.extensionPath, "images", "icon.svg");
+    panel.iconPath = {
+        light: vscode.Uri.file(lightIcon),
+        dark: vscode.Uri.file(darkIcon),
+    };
     panel.webview.html = build(ctx, folder);
 }
 

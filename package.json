@@ -1,9 +1,14 @@
 {
-    "name": "vscode-statistic",
+    "name": "statistic",
     "displayName": "statistic",
     "description": "代码统计工具，按文件类型分类统计各类文件的行数。",
     "preview": true,
-    "version": "0.1.0",
+    "version": "0.2.0+20190813",
+    "publisher": "caixw",
+    "author": {
+        "name": "caixw",
+        "url": "https://github.com/caixw"
+    },
     "keywords": [
         "statistic",
         "total",
@@ -23,6 +28,11 @@
     "engines": {
         "vscode": "^1.37.0"
     },
+    "galleryBanner": {
+        "color": "#5c2d91",
+        "theme": "dark"
+    },
+    "icon": "./images/icon.png",
     "categories": [
         "Other"
     ],
