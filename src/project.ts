@@ -4,6 +4,8 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as locale from './locale';
 import * as vcs from './vcs/vcs';
+import { filter } from './filter';
+import { timingSafeEqual } from 'crypto';
 
 /**
  * 项目的统计信息
@@ -35,17 +37,17 @@ export default class Project {
      * @returns 返回内容按文件行数进行了排序
      */
     private loadFiles(): File[] {
-        let files = this.vcs.files();
-
         const ret: File[] = [];
-        files.forEach((val, index) => {
-            const content = fs.readFileSync(val).toString();
-            const lines = content.split('\n').length;
-            const file = new (File);
-            file.path = val;
-            file.lines = lines;
-            ret.push(file);
-        });
+
+        filter(this.vcs.files())
+            .forEach((val, index) => {
+                const content = fs.readFileSync(val).toString();
+                const lines = content.split('\n').length;
+                const file = new (File);
+                file.path = val;
+                file.lines = lines;
+                ret.push(file);
+            });
 
         return ret.sort((v1: File, v2: File) => {
             return v2.lines - v1.lines;
@@ -57,7 +59,7 @@ export default class Project {
      */
     private buildTypes(): Type[] {
         const types: Types = {};
-        this.files.forEach((val, index) => {
+        this.files.map((val, index) => {
             let name = path.extname(val.path);
             if (name === '') {
                 name = path.basename(val.path);

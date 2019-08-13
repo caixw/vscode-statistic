@@ -14,16 +14,16 @@ export class Hg implements VCS {
         this.dir = dir;
     }
 
-    public files(): string[] {
-        return this.readFiles(this.dir);
-    }
-
     /**
      * 是否为 Hg 项目
      * @param dir 项目根目录
      */
     public static is(dir: string): boolean {
         return fs.existsSync(path.join(dir, '.hg'));
+    }
+
+    public files(): string[] {
+        return this.readFiles(this.dir);
     }
 
     /**

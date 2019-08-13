@@ -15,7 +15,6 @@ export function create(ctx: vscode.ExtensionContext, folder: vscode.WorkspaceFol
         locale.l('statistic'),
         vscode.ViewColumn.One,
         {
-            enableScripts: true,
             retainContextWhenHidden: true,
         }
     );
