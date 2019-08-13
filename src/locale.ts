@@ -7,7 +7,8 @@ const locales: Locales = {
     "zh-cn": {
         'name': '中文简体',
         'statistic': '项目统计',
-        'none-project': '未选择任何项目',
+        'none-project-selected': '未选择任何项目',
+        'none-project-open': '未打开任何项目',
         'path': '路径',
         'sum': '总计',
         'type': '类型',
@@ -22,7 +23,8 @@ const locales: Locales = {
     "en": {
         'name': 'English',
         'statistic': 'statistic',
-        'none-project': 'no project selected',
+        'none-project-selected': 'no project selected',
+        'none-project-open': 'none of project is open',
         'path': 'path',
         'sum': 'sum',
         'type': 'type',
