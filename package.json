@@ -39,20 +39,25 @@
         "Other"
     ],
     "activationEvents": [
-        "onCommand:extension.statistic.show"
+        "onCommand:caixw.statistic.show"
     ],
     "main": "./out/extension.js",
     "contributes": {
         "commands": [
             {
-                "command": "extension.statistic.show",
-                "title": "%extension.statistic.show.title%"
+                "command": "caixw.statistic.show",
+                "title": "%caixw.statistic.show.title%",
+                "category": "statistic",
+                "icon": {
+                    "dark":"images/icon.svg",
+                    "light": "images/icon.svg"
+                }
             }
         ],
         "menus": {
             "explorer/context": [
                 {
-                    "command": "extension.statistic.show",
+                    "command": "caixw.statistic.show",
                     "when": "explorerResourceIsRoot"
                 }
             ]

@@ -35,7 +35,7 @@ const locales: Locales = {
     }
 };
 
-let localeID = 'zh-cn';
+let localeID = 'en';
 
 /**
  * 显示指定标记的语言
@@ -57,7 +57,7 @@ export function id(): string {
  * 初始化，仅需要在入口入调用。
  */
 export function init() {
-    localeID = 'zh-cn'; // 默认值
+    localeID = 'en'; // 默认值
 
     const cfg = process.env.VSCODE_NLS_CONFIG;
     if (cfg === undefined) {

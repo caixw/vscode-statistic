@@ -8,7 +8,7 @@ import * as webview from './webview';
 locale.init();
 
 export function activate(ctx: vscode.ExtensionContext) {
-    const cmdName = 'extension.statistic.show';
+    const cmdName = 'caixw.statistic.show';
     const show = vscode.commands.registerCommand(cmdName, (uri: any) => {
         const folder = vscode.workspace.getWorkspaceFolder(<vscode.Uri>uri);
         if (folder === undefined) {
