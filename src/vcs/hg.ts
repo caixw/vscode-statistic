@@ -1,6 +1,4 @@
-// Copyright 2019 by caixw, All rights reserved.
-// Use of this source code is governed by a MIT
-// license that can be found in the LICENSE file.
+// SPDX-License-Identifier: MIT
 
 import * as fs from 'fs';
 import * as path from 'path';
@@ -31,7 +29,7 @@ export class Hg implements VCS {
     /**
      * 读取指定目录下所有的文件列表
      *
-     * 会根据该目录下的 .gitignore 过滤相关的内容。
+     * 会根据该目录下的 .hgignore 过滤相关的内容。
      *
      * @param dir 目录地址
      * @returns 文件列表

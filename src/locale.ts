@@ -1,6 +1,4 @@
-// Copyright 2019 by caixw, All rights reserved.
-// Use of this source code is governed by a MIT
-// license that can be found in the LICENSE file.
+// SPDX-License-Identifier: MIT
 
 import * as vscode from 'vscode';
 
@@ -39,7 +37,6 @@ const locales: Locales = {
 
 let localeID = 'zh-cn';
 
-
 /**
  * 显示指定标记的语言
  *
@@ -70,7 +67,8 @@ export function init() {
     }
 
     const config = JSON.parse(cfg);
-    if (locales[config.locale] === undefined) {
+    const locale = (<string>config.locale).toLowerCase();
+    if (locales[locale] === undefined) {
         const msg = '无法获取 ' + config.locale + ' 的本地化内容，采用默认值！';
         vscode.window.showErrorMessage(msg);
         return;
