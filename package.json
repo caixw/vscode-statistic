@@ -3,7 +3,7 @@
     "displayName": "statistic",
     "description": "代码统计工具，按文件类型分类统计各类文件的行数。",
     "preview": true,
-    "version": "0.2.0+20190813",
+    "version": "0.2.0",
     "publisher": "caixw",
     "author": {
         "name": "caixw",
@@ -12,6 +12,8 @@
     "keywords": [
         "statistic",
         "total",
+        "line",
+        "counter",
         "sum",
         "project"
     ],
@@ -32,7 +34,7 @@
         "color": "#5c2d91",
         "theme": "dark"
     },
-    "icon": "./images/icon.png",
+    "icon": "images/icon.png",
     "categories": [
         "Other"
     ],
