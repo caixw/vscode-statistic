@@ -58,7 +58,7 @@
             "explorer/context": [
                 {
                     "command": "caixw.statistic.show",
-                    "when": "explorerResourceIsRoot"
+                    "when": "workbenchState=='workspace' && explorerResourceIsRoot || workbenchState=='folder'"
                 }
             ]
         }
