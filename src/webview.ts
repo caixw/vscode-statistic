@@ -6,11 +6,20 @@ import * as locale from './locale';
 import * as cheerio from 'cheerio';
 import Project from './project';
 
+// 保存已打开的视图面板实例，防止得复打开。
+const views = new Map<string, vscode.WebviewPanel>();
+
 /**
  * 创建 webview 页面
  */
 export function create(ctx: vscode.ExtensionContext, folder: vscode.WorkspaceFolder) {
-    const panel = vscode.window.createWebviewPanel(
+    let view = views.get(folder.name);
+    if (view !== undefined) {
+        view.reveal(vscode.ViewColumn.One);
+        return;
+    }
+
+    view = vscode.window.createWebviewPanel(
         'statistic',
         folder.name + ' : ' + locale.l('statistic'),
         vscode.ViewColumn.One,
@@ -21,11 +30,18 @@ export function create(ctx: vscode.ExtensionContext, folder: vscode.WorkspaceFol
 
     const lightIcon = path.join(ctx.extensionPath, "images", "icon.svg");
     const darkIcon = path.join(ctx.extensionPath, "images", "icon.svg");
-    panel.iconPath = {
+    view.iconPath = {
         light: vscode.Uri.file(lightIcon),
         dark: vscode.Uri.file(darkIcon),
     };
-    panel.webview.html = build(ctx, folder);
+    view.webview.html = build(ctx, folder);
+
+    view.onDidDispose(() => {
+        view = undefined;
+        views.delete(folder.name);
+    }, null, ctx.subscriptions);
+
+    views.set(folder.name, view);
 }
 
 /**

@@ -13,6 +13,9 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ### Fixed
 - 命令面板在多项目环境下会正确弹出选择框；
 
+### Changed
+- 多次打开同一项目的 webview，不再会多开页面；
+
 ## [0.2.0-preview]
 
 ### Added
