@@ -78,11 +78,11 @@ export function filter(files: string[]): string[] {
 
     const ret: string[] = [];
     files.forEach((v, k) => {
-        const ext = path.extname(v);
-
+        // path.extname 在处理诸如 .DS_Store 等文件时，会返回空值，
+        // 此处需要将其它当作扩展名来处理。
+        let ext = path.extname(v);
         if (ext === '') {
-            ret.push(v);
-            return;
+            ext = path.basename(v);
         }
 
         if (inArray(ignoreExt, ext)) { // 指定忽略
@@ -94,7 +94,8 @@ export function filter(files: string[]): string[] {
             return;
         }
 
-        if (isMimetypeText(ext)) {
+        // 不传递被特殊处理的 ext 作为参数
+        if (isMimetypeText(v)) {
             ret.push(v);
             return;
         }
