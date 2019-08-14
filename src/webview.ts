@@ -32,9 +32,6 @@ export function create(ctx: vscode.ExtensionContext, folder: vscode.WorkspaceFol
  * 生成完整的 HTML 内容
  */
 function build(ctx: vscode.ExtensionContext, folder: vscode.WorkspaceFolder): string {
-    // TODO 为文件类型加上图标？
-    // https://github.com/Microsoft/vscode/issues/31466
-
     const project = new Project(folder.uri.path);
 
     const $ = cheerio.load(webviewHTML);

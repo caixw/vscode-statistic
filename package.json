@@ -1,7 +1,7 @@
 {
     "name": "statistic",
     "displayName": "statistic",
-    "description": "代码统计工具，按文件类型分类统计各类文件的行数。",
+    "description": "%description%",
     "preview": true,
     "version": "0.3.0",
     "publisher": "caixw",

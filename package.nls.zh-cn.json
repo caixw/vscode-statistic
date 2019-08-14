@@ -1,3 +1,4 @@
 {
-    "caixw.statistic.show.title": "显示项目统计"
+    "caixw.statistic.show.title": "显示项目统计",
+    "description": "代码统计工具，按文件类型分类统计各类文件的行数。"
 }

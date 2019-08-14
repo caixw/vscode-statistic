@@ -1,3 +1,4 @@
 {
-    "caixw.statistic.show.title": "show project statistic"
+    "caixw.statistic.show.title": "show project statistic",
+    "description": "Count lines for project."
 }
