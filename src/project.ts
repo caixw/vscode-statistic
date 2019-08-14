@@ -5,7 +5,6 @@ import * as fs from 'fs';
 import * as locale from './locale';
 import * as vcs from './vcs/vcs';
 import { filter } from './filter';
-import { timingSafeEqual } from 'crypto';
 
 /**
  * 项目的统计信息

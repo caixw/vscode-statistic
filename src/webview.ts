@@ -12,7 +12,7 @@ import Project from './project';
 export function create(ctx: vscode.ExtensionContext, folder: vscode.WorkspaceFolder) {
     const panel = vscode.window.createWebviewPanel(
         'statistic',
-        locale.l('statistic'),
+        folder.name + ' : ' + locale.l('statistic'),
         vscode.ViewColumn.One,
         {
             retainContextWhenHidden: true,

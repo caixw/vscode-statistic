@@ -3,6 +3,10 @@
 import * as vscode from 'vscode';
 
 // 以下为本地化的内容。
+//
+// 语种名称遵守：
+// https://code.visualstudio.com/docs/getstarted/locales#_available-locales
+// 不区分大小写
 const locales: Locales = {
     "zh-cn": {
         'name': '中文简体',
