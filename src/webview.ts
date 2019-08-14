@@ -61,6 +61,12 @@ function build(ctx: vscode.ExtensionContext, folder: vscode.WorkspaceFolder): st
     </div>`;
     body.before(tpl);
 
+    // 没有任何内容
+    if (project.types.length === 0) {
+        $('#none').append(locale.l('no-data'));
+        return $.html();
+    }
+
     // thead
     tpl = `<tr>
     <th>${locale.l('type')}</th>
@@ -151,4 +157,5 @@ const webviewHTML = `<!DOCTYPE html>
         <tfoot></tfoot>
     </table>
 </body>
+<p id="none"></p>
 </html>`;
