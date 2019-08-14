@@ -23,8 +23,6 @@ export class None implements VCS {
     /**
      * 读取指定目录下所有的文件列表
      *
-     * 会根据该目录下的 .gitignore 过滤相关的内容。
-     *
      * @param dir 目录地址
      * @returns 文件列表
      */
