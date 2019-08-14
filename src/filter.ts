@@ -110,10 +110,8 @@ export function filter(files: string[]): string[] {
 
         if (noExt) {
             ret.push(v);
-            continue;
         } else if (isMimetypeText(v)) {
             ret.push(v);
-            continue;
         }
     }
 

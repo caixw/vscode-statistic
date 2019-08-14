@@ -58,7 +58,7 @@ function build(ctx: vscode.ExtensionContext, folder: vscode.WorkspaceFolder): st
 
     // tbody
     const tbody = $('table>tbody');
-    project.types.forEach((v, k) => {
+    project.types.forEach((v) => {
         const tpl = `<tr>
 		<th>${v.name}</th>
 		<td>${v.files}</td>
@@ -90,6 +90,7 @@ const webviewHTML = `<!DOCTYPE html>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>statistic</title>
     <style>
         .meta label {
             display: inline-block;
@@ -111,7 +112,7 @@ const webviewHTML = `<!DOCTYPE html>
         }
 
         table td, table th {
-            padding: 0rem .5rem
+            padding: 0 .5rem
         }
 
         table thead tr, table tfoot tr {

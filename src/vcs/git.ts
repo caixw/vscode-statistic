@@ -8,7 +8,7 @@ import { readFiles } from './utils';
 export class Git implements VCS {
     public readonly name = 'Git';
 
-    private dir: string;
+    private readonly dir: string;
 
     /**
      * 是否为 Git 项目

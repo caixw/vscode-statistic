@@ -39,7 +39,7 @@ export default class Project {
         const ret: File[] = [];
 
         filter(this.vcs.files())
-            .forEach((val, index) => {
+            .forEach((val) => {
                 const content = fs.readFileSync(val).toString();
                 const lines = content.split('\n').length;
                 const file = new (File);
@@ -58,7 +58,7 @@ export default class Project {
      */
     private buildTypes(): Type[] {
         const types: Types = {};
-        this.files.map((val, index) => {
+        this.files.map((val) => {
             let name = path.extname(val.path);
             if (name === '') {
                 name = path.basename(val.path);

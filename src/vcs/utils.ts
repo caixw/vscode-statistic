@@ -10,6 +10,8 @@ import * as path from 'path';
  * 会根据该目录下的 .hgignore/ 过滤相关的内容。
  *
  * @param dir 目录地址
+ * @param meta 表示 VCS 中保存着无数据的文件夹名称
+ * @param igFile 表示 VCS 中指定忽略内容的文件名
  * @returns 文件列表
  */
 export function readFiles(dir: string, meta: string, igFile: string): string[] {
@@ -17,7 +19,7 @@ export function readFiles(dir: string, meta: string, igFile: string): string[] {
 
     const ig = ignore();
     const files = fs.readdirSync(dir);
-    files.forEach((val, index) => {
+    files.forEach((val) => {
         if (val === '' || val === meta) {
             return;
         }
@@ -26,7 +28,7 @@ export function readFiles(dir: string, meta: string, igFile: string): string[] {
 
         const stat = fs.statSync(p);
         if (stat.isDirectory()) {
-            readFiles(p, meta, igFile).forEach((val, index) => {
+            readFiles(p, meta, igFile).forEach((val) => {
                 ret.push(val);
             });
         } else if (stat.isFile()) {
@@ -40,15 +42,14 @@ export function readFiles(dir: string, meta: string, igFile: string): string[] {
 
 
     try {
-        ret = ig.filter(ret.map((v, k) => {
-            const pp = path.relative(dir, v);
-            return pp;
+        ret = ig.filter(ret.map((v) => {
+            return path.relative(dir, v);
         }));
     } catch (e) {
         throw e;
     }
 
-    return ret.map((v, k) => {
+    return ret.map((v) => {
         return path.join(dir, v);
     });
 }

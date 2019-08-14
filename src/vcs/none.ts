@@ -8,7 +8,7 @@ import { VCS } from './vcs';
  * 表示不存在任何的 VCS
  */
 export class None implements VCS {
-    private dir: string;
+    private readonly dir: string;
 
     public readonly name = 'None';
 
@@ -30,12 +30,12 @@ export class None implements VCS {
         let ret: string[] = [];
 
         const files = fs.readdirSync(dir);
-        files.forEach((val, index) => {
+        files.forEach((val) => {
             const p = path.join(dir, val);
 
             const stat = fs.statSync(p);
             if (stat.isDirectory()) {
-                this.readFiles(p).forEach((val, index) => {
+                this.readFiles(p).forEach((val) => {
                     ret.push(val);
                 });
             } else if (stat.isFile()) {
