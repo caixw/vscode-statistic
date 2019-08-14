@@ -36,7 +36,7 @@ const textExt: string[] = [
     // 编程语言
     '.cpp', '.cc', '.c', '.h', '.hpp',
     '.go',
-    '.java', '.scala', '.kt',
+    '.java', '.scala', '.kt', '.groovy',
     '.js', '.ts', '.dart',
     '.perl',
     '.swift',
@@ -54,12 +54,16 @@ const textExt: string[] = [
     // 文本
     '.md',
     '.txt',
+    'LICENSE', // 文件名
+    'Makefile',
+    'README',
 
     // 配置
     '.yaml', '.yml',
     '.toml',
     '.json',
     '.conf',
+    '.ini',
 ];
 
 /**
@@ -77,29 +81,32 @@ export function filter(files: string[]): string[] {
     // application/json 之类的可以直接写在 textExt 中。
 
     const ret: string[] = [];
-    files.forEach((v, k) => {
+    for (const v of files) {
         // path.extname 在处理诸如 .DS_Store 等文件时，会返回空值，
         // 此处需要将其它当作扩展名来处理。
         let ext = path.extname(v);
-        if (ext === '') {
+        const noExt = (ext === '');
+        if (noExt) {
             ext = path.basename(v);
         }
 
         if (inArray(ignoreExt, ext)) { // 指定忽略
-            return;
+            continue;
         }
 
         if (inArray(textExt, ext)) { // 指定不忽略
             ret.push(v);
-            return;
+            continue;
         }
 
-        // 不传递被特殊处理的 ext 作为参数
-        if (isMimetypeText(v)) {
+        if (noExt) {
             ret.push(v);
-            return;
+            continue;
+        } else if (isMimetypeText(v)) {
+            ret.push(v);
+            continue;
         }
-    });
+    }
 
     return ret;
 }
