@@ -7,7 +7,6 @@ import { readFiles } from './utils';
 
 export class Git implements VCS {
     public readonly name = 'Git';
-
     private readonly dir: string;
 
     /**
