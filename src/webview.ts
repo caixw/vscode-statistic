@@ -47,38 +47,38 @@ function build(ctx: vscode.ExtensionContext, folder: vscode.WorkspaceFolder): st
 
     // thead
     tpl = `<tr>
-	<th>${locale.l('type')}</th>
-	<th>${locale.l('files')}</th>
-	<th>${locale.l('lines')}</th>
-	<th>${locale.l('avg')}</th>
-	<th>${locale.l('max')}</th>
-	<th>${locale.l('min')}</th>
-	</tr>`;
+    <th>${locale.l('type')}</th>
+    <th>${locale.l('files')}</th>
+    <th>${locale.l('lines')}</th>
+    <th>${locale.l('avg')}</th>
+    <th>${locale.l('max')}</th>
+    <th>${locale.l('min')}</th>
+    </tr>`;
     $('table>thead').append(tpl);
 
     // tbody
     const tbody = $('table>tbody');
     project.types.forEach((v) => {
         const tpl = `<tr>
-		<th>${v.name}</th>
-		<td>${v.files}</td>
-		<td>${v.lines}</td>
-		<td>${v.avg}</td>
-		<td>${v.max}</td>
-		<td>${v.min}</td>
-		</tr>`;
+        <th>${v.name}</th>
+        <td>${v.files}</td>
+        <td>${v.lines}</td>
+        <td>${v.avg}</td>
+        <td>${v.max}</td>
+        <td>${v.min}</td>
+        </tr>`;
         tbody.append(tpl);
     });
 
     // tfoot
     tpl = `<tr>
-	 <th>${project.sumType.name}</th>
-	 <td>${project.sumType.files}</td>
-	 <td>${project.sumType.lines}</td>
-	 <td>${project.sumType.avg}</td>
-	 <td>${project.sumType.max}</td>
-	 <td>${project.sumType.min}</td>
-	 </tr>`;
+    <th>${project.sumType.name}</th>
+    <td>${project.sumType.files}</td>
+    <td>${project.sumType.lines}</td>
+    <td>${project.sumType.avg}</td>
+    <td>${project.sumType.max}</td>
+    <td>${project.sumType.min}</td>
+    </tr>`;
     $('table>tfoot').append(tpl);
 
     return $.html();
@@ -129,10 +129,10 @@ const webviewHTML = `<!DOCTYPE html>
     </style>
 </head>
 <body>
-	<table>
-		<thead></thead>
-		<tbody></tbody>
-		<tfoot></tfoot>
-	</table>
+    <table>
+        <thead></thead>
+        <tbody></tbody>
+        <tfoot></tfoot>
+    </table>
 </body>
 </html>`;
