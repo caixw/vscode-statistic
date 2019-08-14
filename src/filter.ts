@@ -35,13 +35,22 @@ const ignoreExt: string[] = [
 const textExt: string[] = [
     // 编程语言
     '.cpp', '.cc', '.c', '.h', '.hpp',
+    '.cs',
+    '.cmd',
+    '.d',
     '.go',
     '.java', '.scala', '.kt', '.groovy',
     '.js', '.ts', '.dart',
+    '.pas',
     '.perl',
-    '.swift',
-    '.rb',
     '.php', '.php3', '.php4',
+    '.py',
+    '.ps1',
+    '.rb',
+    '.rust',
+    '.swift',
+    '.sql',
+    '.sh',
 
     // mark language
     '.xml',
