@@ -30,6 +30,7 @@ const ignoreExt: string[] = [
 
     '.DS_Store',
     '.swp',
+    '.lock',
 ];
 
 const textExt: string[] = [
@@ -58,7 +59,7 @@ const textExt: string[] = [
     '.html', '.htm', '.shtml', '.xhtml',
 
     // 样式表
-    '.css', '.less', '.sass',
+    '.css', '.less', '.sass', 'scss',
 
     // 文本
     '.md',
