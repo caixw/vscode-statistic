@@ -35,6 +35,7 @@ const ignoreExt: string[] = [
 
 const textExt: string[] = [
     // 编程语言
+    '.coffee',
     '.cpp', '.cc', '.c', '.h', '.hpp',
     '.cs',
     '.cmd',
@@ -42,6 +43,7 @@ const textExt: string[] = [
     '.go',
     '.java', '.scala', '.kt', '.groovy',
     '.js', '.ts', '.dart',
+    '.lua',
     '.pas',
     '.perl',
     '.php', '.php3', '.php4',
@@ -83,6 +85,17 @@ const textExt: string[] = [
  * @returns 过滤后的文件列表
  */
 export function filter(files: string[]): string[] {
+    const ret: string[] = [];
+    for (const v of files) {
+        if (!isIgnore(v)) {
+            ret.push(v);
+        }
+    }
+
+    return ret;
+}
+
+function isIgnore(v: string): boolean {
     // 过滤分成三部分
     // - 由 ignoreExt 指定的需要忽略的文件后缀名；
     // - 由 textExt 指定的不需要忽略的文件后缀名；
@@ -90,33 +103,26 @@ export function filter(files: string[]): string[] {
     // 非 text/ 下的全都当二进制处理。
     // application/json 之类的可以直接写在 textExt 中。
 
-    const ret: string[] = [];
-    for (const v of files) {
-        // path.extname 在处理诸如 .DS_Store 等文件时，会返回空值，
-        // 此处需要将其它当作扩展名来处理。
-        let ext = path.extname(v);
-        const noExt = (ext === '');
-        if (noExt) {
-            ext = path.basename(v);
-        }
-
-        if (inArray(ignoreExt, ext)) { // 指定忽略
-            continue;
-        }
-
-        if (inArray(textExt, ext)) { // 指定不忽略
-            ret.push(v);
-            continue;
-        }
-
-        if (noExt) {
-            ret.push(v);
-        } else if (isMimetypeText(v)) {
-            ret.push(v);
-        }
+    // path.extname 在处理诸如 .DS_Store 等文件时，会返回空值，
+    // 此处需要将其它当作扩展名来处理。
+    let ext = path.extname(v);
+    const noExt = (ext === '');
+    if (noExt) {
+        ext = path.basename(v);
     }
 
-    return ret;
+    if (inArray(ignoreExt, ext)) { // 指定忽略
+        return true;
+    }
+
+    if (inArray(textExt, ext)) { // 指定不忽略
+        return false;
+    }
+
+    if (noExt) {
+        return false;
+    }
+    return isMimetypeText(v);
 }
 
 function isMimetypeText(path: string): boolean {
