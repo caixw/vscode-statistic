@@ -1,5 +1,6 @@
 # vscode-statistic
 
+[![Build Status](https://dev.azure.com/caixw/vscode-statistic/_apis/build/status/caixw.vscode-statistic?branchName=master)](https://dev.azure.com/caixw/vscode-statistic/_build/latest?definitionId=1&branchName=master)
 [![Version](https://vsmarketplacebadge.apphb.com/version-short/caixw.statistic.svg)](https://marketplace.visualstudio.com/items?itemName=caixw.statistic)
 [![Installs](https://vsmarketplacebadge.apphb.com/installs-short/caixw.statistic.svg)](https://marketplace.visualstudio.com/items?itemName=caixw.statistic)
 [![Downloads](https://vsmarketplacebadge.apphb.com/downloads-short/caixw.statistic.svg)](https://marketplace.visualstudio.com/items?itemName=caixw.statistic)
@@ -19,3 +20,8 @@
 
 
 [![screenshot](./images/screenshot.png)](./images/screenshot.png)
+
+
+### 版权
+
+本项目采用 [MIT](https://opensource.org/licenses/MIT) 开源授权许可证，完整的授权说明可在 [LICENSE](LICENSE) 文件中找到。
