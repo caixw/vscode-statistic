@@ -13,7 +13,6 @@ export default class Project {
     vcs: vcs.VCS;
     name: string;
     path: string;
-    files: File[];
     types: Type[];
     sumType: Type;
 
@@ -25,8 +24,7 @@ export default class Project {
         this.vcs = vcs.New(p);
         this.path = p;
         this.name = path.basename(p);
-        this.files = this.loadFiles();
-        this.types = this.buildTypes();
+        this.types = this.buildTypes(this.loadFiles());
         this.sumType = this.buildSumType();
     }
 
@@ -56,9 +54,9 @@ export default class Project {
     /**
      * 计算 types
      */
-    private buildTypes(): Type[] {
+    private buildTypes(files: File[]): Type[] {
         const types: Types = {};
-        this.files.map((val) => {
+        files.map((val) => {
             let name = path.extname(val.path);
             if (name === '') {
                 name = path.basename(val.path);
@@ -121,7 +119,7 @@ interface Types {
 }
 
 /**
- * 表示各个语言类型的统计信息
+ * 表示各个文件类型的统计信息
  */
 export class Type {
     name: string = ''; // 类型，一般为扩展名
@@ -133,9 +131,9 @@ export class Type {
 }
 
 /**
- * 每一种类型的文件统计信息
+ * 每一个文件统计信息
  */
-export class File {
+class File {
     path: string = ''; // 文件名
     lines: number = 0; // 总行数
 }
