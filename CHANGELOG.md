@@ -6,6 +6,9 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+### Fixed
+- 修正无法读取项目包含 .asar 文件时，无法读取的错误；
+
 ## [0.3.0-preview]
 
 ### Added

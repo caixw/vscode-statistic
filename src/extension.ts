@@ -5,6 +5,11 @@ import { workspace as ws } from 'vscode';
 import * as locale from './locale';
 import * as webview from './webview';
 
+// 不需要 asar 的支持，需要在项目入口处处理 asar 的问题。
+//
+// https://electronjs.org/docs/tutorial/application-packaging#treating-an-asar-archive-as-a-normal-file
+(process as any).noAsar = true;
+
 // 初始化本地化信息
 locale.init();
 

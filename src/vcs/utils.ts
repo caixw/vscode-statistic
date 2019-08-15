@@ -7,8 +7,6 @@ import * as path from 'path';
 /**
  * 读取指定目录下所有的文件列表
  *
- * 会根据该目录下的 .hgignore/ 过滤相关的内容。
- *
  * @param dir 目录地址
  * @param meta 表示 VCS 中保存着无数据的文件夹名称
  * @param igFile 表示 VCS 中指定忽略内容的文件名
