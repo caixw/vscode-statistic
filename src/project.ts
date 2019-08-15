@@ -4,7 +4,6 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as locale from './locale';
 import * as vcs from './vcs/vcs';
-import { filter } from './filter';
 
 /**
  * 项目的统计信息
@@ -36,15 +35,14 @@ export default class Project {
     private loadFiles(): File[] {
         const ret: File[] = [];
 
-        filter(this.vcs.files())
-            .forEach((val) => {
-                const content = fs.readFileSync(val).toString();
-                const lines = content.split('\n').length;
-                const file = new (File);
-                file.path = val;
-                file.lines = lines;
-                ret.push(file);
-            });
+        this.vcs.files().forEach((val) => {
+            const content = fs.readFileSync(val).toString();
+            const lines = content.split('\n').length;
+            const file = new (File);
+            file.path = val;
+            file.lines = lines;
+            ret.push(file);
+        });
 
         return ret.sort((v1: File, v2: File) => {
             return v2.lines - v1.lines;

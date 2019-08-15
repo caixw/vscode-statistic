@@ -79,23 +79,11 @@ const textExt: string[] = [
 ];
 
 /**
- * 过滤文件列表中的二进制内容
+ * 判断当前文件是否需要被过滤，该功能的调用应该要在 VCS 的 ignore 文件判断之前。
  *
- * @param files 需要过滤的文件列表
- * @returns 过滤后的文件列表
+ * @param v 文件名，仅用到文件名和扩展名部分，是否包含路径信息，都不影响判断。
  */
-export function filter(files: string[]): string[] {
-    const ret: string[] = [];
-    for (const v of files) {
-        if (!isIgnore(v)) {
-            ret.push(v);
-        }
-    }
-
-    return ret;
-}
-
-function isIgnore(v: string): boolean {
+export function isIgnore(v: string): boolean {
     // 过滤分成三部分
     // - 由 ignoreExt 指定的需要忽略的文件后缀名；
     // - 由 textExt 指定的不需要忽略的文件后缀名；
@@ -122,7 +110,8 @@ function isIgnore(v: string): boolean {
     if (noExt) {
         return false;
     }
-    return isMimetypeText(v);
+    
+    return !isMimetypeText(v);
 }
 
 function isMimetypeText(path: string): boolean {
@@ -131,7 +120,7 @@ function isMimetypeText(path: string): boolean {
     if (mime === false) {
         return false;
     }
-
+    
     return mime.startsWith('text/');
 }
 

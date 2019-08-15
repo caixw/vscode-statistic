@@ -3,6 +3,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { VCS } from './vcs';
+import { isIgnore } from './filter';
 
 /**
  * 表示不存在任何的 VCS
@@ -29,19 +30,21 @@ export class None implements VCS {
     private readFiles(dir: string): string[] {
         let ret: string[] = [];
 
-        const files = fs.readdirSync(dir);
-        files.forEach((val) => {
-            const p = path.join(dir, val);
+        fs.readdirSync(dir)
+            .forEach((val) => {
+                if (isIgnore(val)) { return; }
 
-            const stat = fs.statSync(p);
-            if (stat.isDirectory()) {
-                this.readFiles(p).forEach((val) => {
-                    ret.push(val);
-                });
-            } else if (stat.isFile()) {
-                ret.push(p);
-            }
-        });
+                const p = path.join(dir, val);
+
+                const stat = fs.statSync(p);
+                if (stat.isDirectory()) {
+                    this.readFiles(p).forEach((val) => {
+                        ret.push(val);
+                    });
+                } else if (stat.isFile()) {
+                    ret.push(p);
+                }
+            });
 
         return ret;
     }
