@@ -6,6 +6,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.3.0-preview]
+
 ### Added
 - 忽略二进制文件，即使该文件会被提交到 VCS 中；
 - 单项目模式(workbenchState==folder)中，可以点击项目中的任意文件都显示操作菜单；
