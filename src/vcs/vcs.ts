@@ -30,6 +30,8 @@ export interface VCS {
 
     /**
      * 获取项目目录下的文件列表，会过滤掉被 VCS 忽略的文件。
+     *
+     * @returns 返回的是一个 Promise，包含了各个文件的绝对路径列表。
      */
-    files(): string[];
+    files(): Promise<string[]>;
 }

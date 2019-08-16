@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: MIT
 
-import * as fs from 'fs';
+import * as filesystem from 'fs';
 import * as path from 'path';
 import { VCS } from './vcs';
 import { isIgnore } from './filter';
+
+const fs = filesystem.promises;
 
 /**
  * 表示不存在任何的 VCS
@@ -17,7 +19,7 @@ export class None implements VCS {
         this.dir = dir;
     }
 
-    public files(): string[] {
+    public files(): Promise<string[]> {
         return this.readFiles(this.dir);
     }
 
@@ -27,24 +29,24 @@ export class None implements VCS {
      * @param dir 目录地址
      * @returns 文件列表
      */
-    private readFiles(dir: string): string[] {
+    private async readFiles(dir: string): Promise<string[]> {
         let ret: string[] = [];
 
-        fs.readdirSync(dir)
-            .forEach((val) => {
-                if (isIgnore(val)) { return; }
+        const files = await fs.readdir(dir);
+        for (const val of files) {
+            if (isIgnore(val)) { continue; }
 
-                const p = path.join(dir, val);
+            const p = path.join(dir, val);
 
-                const stat = fs.statSync(p);
-                if (stat.isDirectory()) {
-                    this.readFiles(p).forEach((val) => {
-                        ret.push(val);
-                    });
-                } else if (stat.isFile()) {
-                    ret.push(p);
-                }
-            });
+            const stat = await fs.stat(p);
+            if (stat.isDirectory()) {
+                (await this.readFiles(p)).forEach((val) => {
+                    ret.push(val);
+                });
+            } else if (stat.isFile()) {
+                ret.push(p);
+            }
+        }
 
         return ret;
     }

@@ -34,7 +34,10 @@ export function create(ctx: vscode.ExtensionContext, folder: vscode.WorkspaceFol
         light: vscode.Uri.file(lightIcon),
         dark: vscode.Uri.file(darkIcon),
     };
-    view.webview.html = build(ctx, folder);
+
+    build(view, folder).catch((reason) => {
+        vscode.window.showErrorMessage(reason);
+    });
 
     view.onDidDispose(() => {
         view = undefined;
@@ -47,7 +50,7 @@ export function create(ctx: vscode.ExtensionContext, folder: vscode.WorkspaceFol
 /**
  * 生成完整的 HTML 内容
  */
-function build(ctx: vscode.ExtensionContext, folder: vscode.WorkspaceFolder): string {
+async function build(view: vscode.WebviewPanel, folder: vscode.WorkspaceFolder) {
     const project = new Project(folder.uri.path);
 
     const $ = cheerio.load(webviewHTML);
@@ -61,10 +64,16 @@ function build(ctx: vscode.ExtensionContext, folder: vscode.WorkspaceFolder): st
     </div>`;
     body.before(tpl);
 
+    // tbody
+    const tbody = $('table>tbody');
+
+    const [types, sumType] = await project.types();
+
     // 没有任何内容
-    if (project.types.length === 0) {
+    if (types.length === 0) {
         $('#none').append(locale.l('no-data'));
-        return $.html();
+        view.webview.html = $.html();
+        return;
     }
 
     // thead
@@ -78,9 +87,8 @@ function build(ctx: vscode.ExtensionContext, folder: vscode.WorkspaceFolder): st
     </tr>`;
     $('table>thead').append(tpl);
 
-    // tbody
-    const tbody = $('table>tbody');
-    project.types.forEach((v) => {
+
+    for (const v of types) {
         const tpl = `<tr>
         <th>${v.name}</th>
         <td>${v.files}</td>
@@ -90,20 +98,20 @@ function build(ctx: vscode.ExtensionContext, folder: vscode.WorkspaceFolder): st
         <td>${v.min}</td>
         </tr>`;
         tbody.append(tpl);
-    });
+    }
 
     // tfoot
     tpl = `<tr>
-    <th>${project.sumType.name}</th>
-    <td>${project.sumType.files}</td>
-    <td>${project.sumType.lines}</td>
-    <td>${project.sumType.avg}</td>
-    <td>${project.sumType.max}</td>
-    <td>${project.sumType.min}</td>
+    <th>${sumType.name}</th>
+    <td>${sumType.files}</td>
+    <td>${sumType.lines}</td>
+    <td>${sumType.avg}</td>
+    <td>${sumType.max}</td>
+    <td>${sumType.min}</td>
     </tr>`;
     $('table>tfoot').append(tpl);
 
-    return $.html();
+    view.webview.html = $.html();
 }
 
 const webviewHTML = `<!DOCTYPE html>

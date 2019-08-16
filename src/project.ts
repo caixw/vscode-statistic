@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: MIT
 
 import * as path from 'path';
-import * as fs from 'fs';
+import * as filesystem from 'fs';
 import * as locale from './locale';
 import * as vcs from './vcs/vcs';
+
+const fs = filesystem.promises;
 
 /**
  * 项目的统计信息
@@ -12,8 +14,6 @@ export default class Project {
     vcs: vcs.VCS;
     name: string;
     path: string;
-    types: Type[];
-    sumType: Type;
 
     /**
      * 构造函数
@@ -23,30 +23,48 @@ export default class Project {
         this.vcs = vcs.New(p);
         this.path = p;
         this.name = path.basename(p);
-        this.types = this.buildTypes(this.loadFiles());
-        this.sumType = this.buildSumType();
     }
 
     /**
      * 加载项目下的每一个文件的统计信息
-     *
-     * @returns 返回内容按文件行数进行了排序
      */
-    private loadFiles(): File[] {
-        const ret: File[] = [];
+    private async countLines(): Promise<File[]> {
+        const files = await this.vcs.files();
 
-        this.vcs.files().forEach((val) => {
-            const content = fs.readFileSync(val).toString();
-            const lines = content.split('\n').length;
-            const file = new (File);
-            file.path = val;
-            file.lines = lines;
-            ret.push(file);
-        });
+        const fs = await Promise.all(files.map((path)=>{
+            return this.countFileLines(path);
+        }));
 
-        return ret.sort((v1: File, v2: File) => {
+        return fs.sort((v1: File, v2: File) => {
             return v2.lines - v1.lines;
         });
+    }
+
+    /**
+     * 计算指定文件的行数
+     *
+     * @param path 文件路径
+     */
+    private async countFileLines(path: string): Promise<File> {
+        const file = new (File);
+        file.path = path;
+
+        const content = (await fs.readFile(path)).toString();
+        file.lines = content.split('\n').length;
+
+        return file;
+    }
+
+    /**
+     * 获取各类文件的行数信息
+     * 
+     * @returns 返回为一个 Promise，附加一个 tuple，
+     * 第一个参数为各个类型的行数信息列表，第二个参数合计的单行数据。
+     */
+    public async types(): Promise<[Type[], Type]> {
+        const types = this.buildTypes(await this.countLines());
+        const sumType = this.buildSumType(types);
+        return [types, sumType];
     }
 
     /**
@@ -54,10 +72,10 @@ export default class Project {
      */
     private buildTypes(files: File[]): Type[] {
         const types: Types = {};
-        files.map((val) => {
-            let name = path.extname(val.path);
+        for (const file of files) {
+            let name = path.extname(file.path);
             if (name === '') {
-                name = path.basename(val.path);
+                name = path.basename(file.path);
             }
 
             let t = types[name];
@@ -68,14 +86,14 @@ export default class Project {
             }
 
             t.files++;
-            t.lines += val.lines;
-            if (t.max < val.lines) {
-                t.max = val.lines;
+            t.lines += file.lines;
+            if (t.max < file.lines) {
+                t.max = file.lines;
             }
-            if (t.min > val.lines) {
-                t.min = val.lines;
+            if (t.min > file.lines) {
+                t.min = file.lines;
             }
-        });
+        }
 
         const ts: Type[] = [];
         for (const key in types) {
@@ -89,12 +107,10 @@ export default class Project {
         });
     }
 
-    private buildSumType(): Type {
+    private buildSumType(types: Type[]): Type {
         const sumType = new Type();
         sumType.name = locale.l('sum');
-        for (const key in this.types) {
-            const t = this.types[key];
-
+        for (const t of types) {
             sumType.files += t.files;
             sumType.lines += t.lines;
 

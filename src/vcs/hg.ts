@@ -21,7 +21,7 @@ export class Hg implements VCS {
         this.dir = dir;
     }
 
-    public files(): string[] {
+    public files(): Promise<string[]> {
         return readFiles(this.dir, ".hg", ".hgignore");
     }
 }
