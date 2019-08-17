@@ -6,7 +6,7 @@ import { zhCN } from './zh-cn';
 
 // 以下为本地化的内容。
 //
-// 语种名称不区分大小写，格式遵守官方约定：
+// 语种名称必须小写，格式遵守官方约定：
 // https://code.visualstudio.com/docs/getstarted/locales#_available-locales
 const locales = new Map<string, Locale>([
     ["en", en],
@@ -48,7 +48,7 @@ export function init() {
 
     const l = locales.get(id);
     if (l === undefined) {
-        const msg = '无法获取 ' + config.locale + ' 的本地化内容，采用默认值！';
+        const msg = '无法获取 ' + id + ' 的本地化内容，采用默认值！';
         vscode.window.showErrorMessage(msg);
         return;
     }
