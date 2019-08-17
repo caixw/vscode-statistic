@@ -2,7 +2,7 @@
 
 import * as vscode from 'vscode';
 import { workspace as ws } from 'vscode';
-import * as locale from './locale';
+import * as locale from './locale/locale';
 import * as webview from './webview';
 
 // 不需要 asar 的支持，需要在项目入口处处理 asar 的问题。

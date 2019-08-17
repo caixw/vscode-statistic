@@ -2,7 +2,7 @@
 
 import * as vscode from 'vscode';
 import * as path from 'path';
-import * as locale from './locale';
+import * as locale from './locale/locale';
 import * as cheerio from 'cheerio';
 import Project from './project';
 

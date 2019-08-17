@@ -8,4 +8,4 @@
 
 本地化涉及到两处：
 - package.nls.<locale>.json 为每一个语种单独一个文件；
-- src/locale.ts 所有语种的翻译都在这个文件中。
+- src/locale/locale.ts 所有语种的翻译都在这个文件中。

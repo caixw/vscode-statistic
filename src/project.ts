@@ -2,7 +2,7 @@
 
 import * as path from 'path';
 import * as filesystem from 'fs';
-import * as locale from './locale';
+import * as locale from './locale/locale';
 import * as vcs from './vcs/vcs';
 
 const fs = filesystem.promises;
