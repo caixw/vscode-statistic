@@ -164,6 +164,6 @@ const webviewHTML = `<!DOCTYPE html>
         <tbody></tbody>
         <tfoot></tfoot>
     </table>
+    <p id="none"></p>
 </body>
-<p id="none"></p>
 </html>`;
