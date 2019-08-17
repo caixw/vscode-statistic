@@ -64,11 +64,14 @@
         }
     },
     "scripts": {
-        "vscode:prepublish": "npm run compile",
-        "compile": "tsc -p ./",
-        "watch": "tsc -watch -p ./",
-        "pretest": "npm run compile",
-        "test": "node ./out/test/runTest.js"
+        "vscode:prepublish": "gulp compile",
+        "compile": "gulp compile",
+        "watch": "gulp watch",
+        "pretest": "gulp compile",
+        "test": "node ./out/test/runTest.js",
+        "clean": "gulp clean",
+        "package": "gulp package",
+        "publish": "gulp publish"
     },
     "devDependencies": {
         "@types/cheerio": "^0.22.13",
@@ -77,10 +80,15 @@
         "@types/mocha": "^5.2.6",
         "@types/node": "^10.12.21",
         "@types/vscode": "^1.37.0",
+        "del": "^5.0.0",
         "glob": "^7.1.4",
+        "gulp": "^4.0.2",
+        "gulp-sourcemaps": "^2.6.5",
+        "gulp-typescript": "^5.0.1",
         "mocha": "^6.1.4",
         "tslint": "^5.12.1",
         "typescript": "^3.3.1",
+        "vsce": "^1.66.0",
         "vscode-test": "^1.0.2"
     },
     "dependencies": {
