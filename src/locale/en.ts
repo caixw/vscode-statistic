@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
 
-
 export const en = {
     'name': 'English',
     'statistic': 'statistic',
