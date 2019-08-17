@@ -5,7 +5,6 @@
 const gulp = require('gulp');
 const ts = require('gulp-typescript');
 const del = require('del');
-const path = require('path');
 const sourcemaps = require('gulp-sourcemaps');
 const vsce = require('vsce');
 
