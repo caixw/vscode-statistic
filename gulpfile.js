@@ -28,7 +28,7 @@ function clean() {
 }
 
 function watch() {
-    gulp.watch(extension.options.rootDir);
+    gulp.watch(extension.options.rootDir, compileExtension);
 }
 
 function createVSIX() {

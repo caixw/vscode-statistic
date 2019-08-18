@@ -12,7 +12,13 @@ const views = new Map<string, vscode.WebviewPanel>();
 /**
  * 创建 webview 页面
  */
-export function create(ctx: vscode.ExtensionContext, folder: vscode.WorkspaceFolder) {
+export async function create(ctx: vscode.ExtensionContext, uri: vscode.Uri) {
+    const folder = vscode.workspace.getWorkspaceFolder(uri);
+    if (folder === undefined) {
+        vscode.window.showErrorMessage(locale.l('none-project-selected'));
+        return;
+    }
+
     let view = views.get(folder.name);
     if (view !== undefined) {
         view.reveal(vscode.ViewColumn.One);
@@ -35,9 +41,7 @@ export function create(ctx: vscode.ExtensionContext, folder: vscode.WorkspaceFol
         dark: vscode.Uri.file(darkIcon),
     };
 
-    build(view, folder).catch((reason) => {
-        vscode.window.showErrorMessage(reason);
-    });
+    await build(view, folder);
 
     view.onDidDispose(() => {
         view = undefined;

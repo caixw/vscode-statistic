@@ -16,7 +16,9 @@ locale.init();
 export function activate(ctx: vscode.ExtensionContext) {
     const cmdName = 'caixw.statistic.show';
     const show = vscode.commands.registerCommand(cmdName, (uri: any) => {
-        registerCommand(ctx, uri);
+        commandShow(ctx, uri).catch((reason)=>{
+            vscode.window.showErrorMessage(reason);
+        });
     });
 
     ctx.subscriptions.push(show);
@@ -24,43 +26,29 @@ export function activate(ctx: vscode.ExtensionContext) {
 
 export function deactivate() { }
 
-function registerCommand(ctx: vscode.ExtensionContext, uri: any) {
+/**
+ * caixw.statistic.show 命令的实际执行函数
+ *
+ * @param ctx 扩展的上下文环境
+ * @param uri 当前操作所在的 uri，如果不存在，则为 undefined
+ */
+async function commandShow(ctx: vscode.ExtensionContext, uri: any) {
     if (uri !== undefined) {
-        createView(ctx, uri as vscode.Uri);
+        await webview.create(ctx, uri as vscode.Uri);
         return;
     }
 
     // 未选择项目，可能是通过命令面板执行的，执行以下操作。
-    
+
     if (undefined === ws.workspaceFolders) {
-        showError('none-project-open');
+        vscode.window.showErrorMessage(locale.l('none-project-open'));
         return;
     }
 
-    vscode.window.showWorkspaceFolderPick().then((v) => {
-        if (undefined === v) {
-            showError('none-project-selected');
-            return;
-        }
-
-        createView(ctx, v.uri);
-    });
-}
-
-function createView(ctx: vscode.ExtensionContext, uri: vscode.Uri) {
-    const folder = ws.getWorkspaceFolder(uri);
-    if (folder === undefined) {
-        showError('none-project-selected');
+    const selected = await vscode.window.showWorkspaceFolderPick();
+    if (undefined === selected) {
+        vscode.window.showErrorMessage(locale.l('none-project-selected'));
         return;
     }
-
-    try {
-        webview.create(ctx, folder);
-    } catch (e) {
-        vscode.window.showErrorMessage(e);
-    }
-}
-
-function showError(id: string) {
-    vscode.window.showErrorMessage(locale.l(id));
+    webview.create(ctx, selected.uri);
 }
