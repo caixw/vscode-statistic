@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
 
-import * as vscode from 'vscode';
 import { en } from './en';
 import { zhCN } from './zh-cn';
 
@@ -38,8 +37,7 @@ export function id(): string {
 export function init() {
     const cfg = process.env.VSCODE_NLS_CONFIG;
     if (cfg === undefined) {
-        const msg = '无法获取 process.env.VSCODE_NLS_CONFIG，将区域信息设置为默认值！';
-        vscode.window.showErrorMessage(msg);
+        console.warn('无法获取 process.env.VSCODE_NLS_CONFIG，将区域信息设置为默认值！');
         return;
     }
 
@@ -48,8 +46,7 @@ export function init() {
 
     const l = locales.get(id);
     if (l === undefined) {
-        const msg = '无法获取 ' + id + ' 的本地化内容，采用默认值！';
-        vscode.window.showErrorMessage(msg);
+        console.warn('无法获取 ' + id + ' 的本地化内容，采用默认值！');
         return;
     }
 
