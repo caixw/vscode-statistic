@@ -5,6 +5,7 @@ import * as path from 'path';
 import * as locale from './locale/locale';
 import * as filesystem from 'fs';
 import * as project from './project';
+import * as message from './message';
 
 const fs = filesystem.promises;
 
@@ -47,11 +48,11 @@ export async function create(ctx: vscode.ExtensionContext, uri: vscode.Uri) {
     const p = new project.Project(folder.uri.path);
     panel.webview.html = await build(ctx, p.name);
 
-    panel.webview.onDidReceiveMessage(async (e)=>{
-        const msg = e as project.Message;
+    panel.webview.onDidReceiveMessage(async (e) => {
+        const msg = e as message.Message;
 
-        switch(msg.type) {
-            case project.MessageType.refresh:
+        switch (msg.type) {
+            case message.MessageType.refresh:
                 if (panel === undefined) {
                     console.error('创建 panel 失败');
                     return;
@@ -71,10 +72,10 @@ export async function create(ctx: vscode.ExtensionContext, uri: vscode.Uri) {
     views.set(folder.name, panel);
 }
 
-async function sendFileTypes(v:vscode.Webview,p:project.Project) {
+async function sendFileTypes(v: vscode.Webview, p: project.Project) {
     const types = await p.types();
     v.postMessage({
-        type: project.MessageType.file,
+        type: message.MessageType.file,
         data: types,
     });
 }

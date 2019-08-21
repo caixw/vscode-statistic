@@ -4,6 +4,7 @@ import * as path from 'path';
 import * as filesystem from 'fs';
 import * as locale from './locale/locale';
 import * as vcs from './vcs/vcs';
+import * as message from './message';
 
 const fs = filesystem.promises;
 
@@ -43,7 +44,10 @@ export class Project {
      */
     private async countFileLines(path: string): Promise<File> {
         const content = (await fs.readFile(path, { encoding: 'utf8' }));
-        return new File(path, content.split('\n').length);
+        return {
+            path,
+            lines:content.split('\n').length,
+        };
     }
 
     /**
@@ -52,7 +56,7 @@ export class Project {
      * @returns 返回为一个 Promise，附加一个 tuple，
      * 第一个参数为各个类型的行数信息列表，第二个参数合计的单行数据。
      */
-    public async types(): Promise<FileTypes> {
+    public async types(): Promise<message.FileTypes> {
         const types = this.buildTypes(await this.countLines());
         const total = this.buildTotalType(types);
         return {
@@ -64,8 +68,8 @@ export class Project {
     /**
      * 计算 types
      */
-    private buildTypes(files: File[]): FileType[] {
-        const types = new Map<string, FileType>();
+    private buildTypes(files: File[]): message.FileType[] {
+        const types = new Map<string, message.FileType>();
         for (const file of files) {
             let name = path.extname(file.path);
             if (name === '') {
@@ -74,7 +78,7 @@ export class Project {
 
             let t = types.get(name);
             if (t === undefined) {
-                t = new FileType();
+                t = new message.FileType();
                 t.name = name;
                 types.set(name, t);
             }
@@ -89,19 +93,19 @@ export class Project {
             }
         }
 
-        const ts: FileType[] = [];
+        const ts: message.FileType[] = [];
         for (const t of types.values()) {
             t.avg = Math.floor(t.lines / t.files);
             ts.push(t);
         }
 
-        return ts.sort((v1: FileType, v2: FileType) => {
+        return ts.sort((v1: message.FileType, v2: message.FileType) => {
             return v2.lines - v1.lines;
         });
     }
 
-    private buildTotalType(types: FileType[]): FileType {
-        const totalType = new FileType();
+    private buildTotalType(types: message.FileType[]): message.FileType {
+        const totalType = new message.FileType();
         totalType.name = locale.l('total');
         for (const t of types) {
             totalType.files += t.files;
@@ -121,43 +125,7 @@ export class Project {
     }
 }
 
-export enum MessageType {
-    refresh = 'refresh',
-    file = 'file',
-    end = 'end',
-}
-
-export interface Message {
-    type: MessageType;
-    data: undefined | FileTypes;
-}
-
-interface FileTypes {
-    types: Array<FileType>;
-    total: FileType;
-}
-
-/**
- * 表示各个文件类型的统计信息
- */
-class FileType {
-    name: string = ''; // 类型，一般为扩展名
-    files: number = 0; // 文件数量
-    lines: number = 0; // 总行数
-    max: number = 0;
-    min: number = Number.POSITIVE_INFINITY;
-    avg: number = 0;
-}
-
-/**
- * 每一个文件统计信息
- */
-class File {
-    path: string = ''; // 文件名
-    lines: number = 0; // 总行数
-
-    constructor(path: string, lines: number) {
-        this.path = path;
-        this.lines = lines;
-    }
+interface File {
+    path: string ; // 文件名
+    lines: number; // 总行数
 }
