@@ -6,13 +6,15 @@ const gulp = require('gulp');
 const ts = require('gulp-typescript');
 const del = require('del');
 const sourcemaps = require('gulp-sourcemaps');
+const cached = require('gulp-cached');
 const vsce = require('vsce');
 
 const extension = ts.createProject('tsconfig.json');
 
- // 编译当前的扩展
+// 编译当前的扩展
 async function compileExtension() {
     let s = extension.src()
+        .pipe(cached('watch'))
 
     if (extension.options.sourceMap) {
         s = s.pipe(sourcemaps.init())
@@ -28,7 +30,14 @@ function clean() {
 }
 
 function watch() {
-    gulp.watch(extension.options.rootDir, compileExtension);
+    gulp.watch(
+        extension.options.rootDir,
+        {
+            delay: 500,
+            queue: true,
+        },
+        compileExtension,
+    );
 }
 
 function createVSIX() {
@@ -40,12 +49,8 @@ function publish() {
     return vsce.publish();
 }
 
-gulp.task('compile', compileExtension);
-
-gulp.task('clean', clean);
-
-gulp.task('watch', watch);
-
-gulp.task('publish', gulp.series(createVSIX, publish));
-
-gulp.task('package', gulp.series(compileExtension, createVSIX));
+exports.compile = compileExtension;
+exports.clean = clean;
+exports.watch = watch;
+exports.publish = gulp.series(createVSIX, publish);
+exports.package = gulp.series(compileExtension, createVSIX);

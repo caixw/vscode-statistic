@@ -7,7 +7,7 @@ export const en = {
     'none-project-open': 'none of project is open',
     'no-data': 'No data',
     'path': 'path',
-    'sum': 'sum',
+    'total': 'total',
     'type': 'type',
     'files': 'files',
     'lines': 'lines',

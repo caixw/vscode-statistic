@@ -83,6 +83,7 @@
         "del": "^5.0.0",
         "glob": "^7.1.4",
         "gulp": "^4.0.2",
+        "gulp-cached": "^1.1.1",
         "gulp-sourcemaps": "^2.6.5",
         "gulp-typescript": "^5.0.1",
         "mocha": "^6.1.4",

@@ -57,7 +57,7 @@
                     end();
                     break;
                 default:
-                    throw new Error(`无效的消息类型${msg.type}`);
+                    console.error(`无效的消息类型${msg.type}`);
             }
         })
 
@@ -115,7 +115,7 @@
                 <tr></tr>
             </tfoot>
         </table>
-        <p class="no-data">no-data1</p>
+        <p class="no-data">l(no-data)</p>
     </div>
 </body>
 

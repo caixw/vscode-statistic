@@ -7,7 +7,7 @@ export const zhCN =  {
     'none-project-open': '未打开任何项目',
     'no-data': '没有任何数据',
     'path': '路径',
-    'sum': '总计',
+    'total': '总计',
     'type': '类型',
     'files': '文件',
     'lines': '行数',

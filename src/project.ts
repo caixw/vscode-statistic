@@ -31,7 +31,7 @@ export class Project {
     private async countLines(): Promise<File[]> {
         const files = await this.vcs.files();
 
-        const fs = await Promise.all(files.map((path)=>{
+        const fs = await Promise.all(files.map((path) => {
             return this.countFileLines(path);
         }));
 
@@ -46,13 +46,8 @@ export class Project {
      * @param path 文件路径
      */
     private async countFileLines(path: string): Promise<File> {
-        const file = new (File);
-        file.path = path;
-
-        const content = (await fs.readFile(path)).toString();
-        file.lines = content.split('\n').length;
-
-        return file;
+        const content = (await fs.readFile(path, { encoding: 'utf8' }));
+        return new File(path, content.split('\n').length);
     }
 
     /**
@@ -63,7 +58,7 @@ export class Project {
      */
     public async types(): Promise<FileTypes> {
         const types = this.buildTypes(await this.countLines());
-        const total = this.buildSumType(types);
+        const total = this.buildTotalType(types);
         return {
             types,
             total,
@@ -110,24 +105,24 @@ export class Project {
         });
     }
 
-    private buildSumType(types: FileType[]): FileType {
-        const sumType = new FileType();
-        sumType.name = locale.l('sum');
+    private buildTotalType(types: FileType[]): FileType {
+        const totalType = new FileType();
+        totalType.name = locale.l('total');
         for (const t of types) {
-            sumType.files += t.files;
-            sumType.lines += t.lines;
+            totalType.files += t.files;
+            totalType.lines += t.lines;
 
-            if (sumType.max < t.max) {
-                sumType.max = t.max;
+            if (totalType.max < t.max) {
+                totalType.max = t.max;
             }
 
-            if (sumType.min > t.min) {
-                sumType.min = t.min;
+            if (totalType.min > t.min) {
+                totalType.min = t.min;
             }
         }
-        sumType.avg = Math.floor(sumType.lines / sumType.files);
+        totalType.avg = Math.floor(totalType.lines / totalType.files);
 
-        return sumType;
+        return totalType;
     }
 }
 
@@ -147,7 +142,7 @@ interface Types {
 
 interface FileTypes {
     types: Array<FileType>;
-    total:FileType;
+    total: FileType;
 }
 
 /**
@@ -168,4 +163,9 @@ class FileType {
 class File {
     path: string = ''; // 文件名
     lines: number = 0; // 总行数
+
+    constructor(path: string, lines: number) {
+        this.path = path;
+        this.lines = lines;
+    }
 }
