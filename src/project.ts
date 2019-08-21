@@ -123,11 +123,12 @@ export class Project {
 }
 
 export enum MessageType {
+    refresh = 'refresh',
     file = 'file',
     end = 'end',
 }
 
-interface Message {
+export interface Message {
     type: MessageType;
     data: undefined | FileTypes;
 }

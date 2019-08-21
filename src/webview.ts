@@ -21,13 +21,13 @@ export async function create(ctx: vscode.ExtensionContext, uri: vscode.Uri) {
         return;
     }
 
-    let view = views.get(folder.name);
-    if (view !== undefined) {
-        view.reveal(vscode.ViewColumn.One);
+    let panel = views.get(folder.name);
+    if (panel !== undefined) {
+        panel.reveal(vscode.ViewColumn.One);
         return;
     }
 
-    view = vscode.window.createWebviewPanel(
+    panel = vscode.window.createWebviewPanel(
         'statistic',
         folder.name + ' : ' + locale.l('statistic'),
         vscode.ViewColumn.One,
@@ -39,26 +39,44 @@ export async function create(ctx: vscode.ExtensionContext, uri: vscode.Uri) {
 
     const lightIcon = path.join(ctx.extensionPath, "resources", "icon.svg");
     const darkIcon = path.join(ctx.extensionPath, "resources", "icon.svg");
-    view.iconPath = {
+    panel.iconPath = {
         light: vscode.Uri.file(lightIcon),
         dark: vscode.Uri.file(darkIcon),
     };
 
     const p = new project.Project(folder.uri.path);
-    view.webview.html = await build(ctx, p.name);
+    panel.webview.html = await build(ctx, p.name);
 
-    const types=await p.types();
-    view.webview.postMessage({
-        type: project.MessageType.file,
-        data:types,
+    panel.webview.onDidReceiveMessage(async (e)=>{
+        const msg = e as project.Message;
+
+        switch(msg.type) {
+            case project.MessageType.refresh:
+                if (panel === undefined) {
+                    console.error('创建 panel 失败');
+                    return;
+                }
+                await sendFileTypes(panel.webview, p);
+                break;
+            default:
+                console.error(`无法处理的消息类型：${msg.type}`);
+        }
     });
 
-    view.onDidDispose(() => {
-        view = undefined;
+    panel.onDidDispose(() => {
+        panel = undefined;
         views.delete(folder.name);
     }, null, ctx.subscriptions);
 
-    views.set(folder.name, view);
+    views.set(folder.name, panel);
+}
+
+async function sendFileTypes(v:vscode.Webview,p:project.Project) {
+    const types = await p.types();
+    v.postMessage({
+        type: project.MessageType.file,
+        data: types,
+    });
 }
 
 /**
@@ -79,6 +97,9 @@ async function build(ctx: vscode.ExtensionContext, name: string): Promise<string
         }
     }).replace(/l\((.+?)\)/g, (m, $1) => {
         return locale.l($1);
+    }).replace(/(<script.+?src=")(.+?)"/g, (m, $1, $2) => {
+        const uri = buildResourceUri(ctx, 'resources', $2);
+        return $1 + uri.toString() + '"';
     });
 }
 
