@@ -3,8 +3,11 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as locale from './locale/locale';
+import * as filesystem from 'fs';
 import * as cheerio from 'cheerio';
-import Project from './project';
+import * as project from './project';
+
+const fs = filesystem.promises;
 
 // 保存已打开的视图面板实例，防止得复打开。
 const views = new Map<string, vscode.WebviewPanel>();
@@ -30,6 +33,7 @@ export async function create(ctx: vscode.ExtensionContext, uri: vscode.Uri) {
         folder.name + ' : ' + locale.l('statistic'),
         vscode.ViewColumn.One,
         {
+            enableScripts: true,
             retainContextWhenHidden: true,
         }
     );
@@ -41,7 +45,14 @@ export async function create(ctx: vscode.ExtensionContext, uri: vscode.Uri) {
         dark: vscode.Uri.file(darkIcon),
     };
 
-    await build(view, folder);
+    const p = new project.Project(folder.uri.path);
+    view.webview.html = await build(ctx, p.name);
+
+    const types=await p.types();
+    view.webview.postMessage({
+        type: project.MessageType.file,
+        data:types,
+    });
 
     view.onDidDispose(() => {
         view = undefined;
@@ -54,120 +65,25 @@ export async function create(ctx: vscode.ExtensionContext, uri: vscode.Uri) {
 /**
  * 生成完整的 HTML 内容
  */
-async function build(view: vscode.WebviewPanel, folder: vscode.WorkspaceFolder) {
-    const project = new Project(folder.uri.path);
+async function build(ctx: vscode.ExtensionContext, name: string): Promise<string> {
+    const htmlPath = buildResourceUri(ctx, 'resources', 'view.html').fsPath;
+    const html = await fs.readFile(htmlPath, { encoding: 'utf8' });
 
-    const $ = cheerio.load(webviewHTML);
-    $('html').attr('lang', locale.id());
-
-    const body = $('body');
-    let tpl = `<div class="meta">
-    <h1>${project.name}</h1>
-    <h2><label>${locale.l('vcs')}</label>${project.vcs.name}</h2>
-    <h2><label>${locale.l('path')}</label>${project.path}</h2>
-    </div>`;
-    body.before(tpl);
-
-    // tbody
-    const tbody = $('table>tbody');
-
-    const [types, sumType] = await project.types();
-
-    // 没有任何内容
-    if (types.length === 0) {
-        $('#none').append(locale.l('no-data'));
-        view.webview.html = $.html();
-        return;
-    }
-
-    // thead
-    tpl = `<tr>
-    <th>${locale.l('type')}</th>
-    <th>${locale.l('files')}</th>
-    <th>${locale.l('lines')}</th>
-    <th>${locale.l('avg')}</th>
-    <th>${locale.l('max')}</th>
-    <th>${locale.l('min')}</th>
-    </tr>`;
-    $('table>thead').append(tpl);
-
-
-    for (const v of types) {
-        const tpl = `<tr>
-        <th>${v.name}</th>
-        <td>${v.files}</td>
-        <td>${v.lines}</td>
-        <td>${v.avg}</td>
-        <td>${v.max}</td>
-        <td>${v.min}</td>
-        </tr>`;
-        tbody.append(tpl);
-    }
-
-    // tfoot
-    tpl = `<tr>
-    <th>${sumType.name}</th>
-    <td>${sumType.files}</td>
-    <td>${sumType.lines}</td>
-    <td>${sumType.avg}</td>
-    <td>${sumType.max}</td>
-    <td>${sumType.min}</td>
-    </tr>`;
-    $('table>tfoot').append(tpl);
-
-    view.webview.html = $.html();
+    return html.replace(/v\((.+?)\)/g, (m, $1) => {
+        switch ($1) {
+            case 'name':
+                return name;
+            case 'locale':
+                return locale.id();
+            default:
+                return 'undefined';
+        }
+    }).replace(/l\((.+?)\)/g, (m, $1) => {
+        return locale.l($1);
+    });
 }
 
-const webviewHTML = `<!DOCTYPE html>
-<html lang="zh-cn">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>statistic</title>
-    <style>
-        .meta label {
-            display: inline-block;
-            min-width: 4rem;
-        }
-
-        .meta label::after {
-            content: ":";
-        }
-
-        table {
-            width: 100%;
-        }
-        table tr th {
-            text-align: left;
-        }
-        table tr {
-            line-height: 2;
-        }
-
-        table td, table th {
-            padding: 0 .5rem
-        }
-
-        table thead tr, table tfoot tr {
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-
-        table tbody tr:nth-child(even) {
-            background-color: rgba(0, 0, 0, 0.2);
-        }
-
-        table tbody tr:hover {
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-    </style>
-</head>
-<body>
-    <table>
-        <thead></thead>
-        <tbody></tbody>
-        <tfoot></tfoot>
-    </table>
-    <p id="none"></p>
-</body>
-</html>`;
+function buildResourceUri(ctx: vscode.ExtensionContext, ...paths: Array<string>): vscode.Uri {
+    const p = path.join(ctx.extensionPath, ...paths);
+    return vscode.Uri.file(p).with({ scheme: 'vscode-resource' });
+}

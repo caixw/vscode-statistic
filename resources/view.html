@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="v(locale)">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>statistic</title>
+    <style>
+        .meta label {
+            display: inline-block;
+            min-width: 4rem;
+        }
+
+        .meta label::after {
+            content: ":";
+        }
+
+        table {
+            width: 100%;
+        }
+
+        table tr th {
+            text-align: left;
+        }
+
+        table tr {
+            line-height: 2;
+        }
+
+        table td,
+        table th {
+            padding: 0 .5rem
+        }
+
+        table thead tr,
+        table tfoot tr {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        table tbody tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+
+        table tbody tr:hover {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+    </style>
+    <script>
+        window.addEventListener('message', (e) => {
+            const msg = e.data;
+            switch (msg.type) {
+                case 'file':
+                    appendFileTypes(msg.data);
+                    break;
+                case 'end':
+                    end();
+                    break;
+                default:
+                    throw new Error(`无效的消息类型${msg.type}`);
+            }
+        })
+
+        function appendFileTypes(types) {
+            if (types.types.length === 0) {
+                return;
+            }
+
+            const table = document.querySelector('#file-types>table');
+
+            const tbody = table.querySelector('tbody');
+            for (const line of types.types) {
+                const tr = tbody.appendChild(document.createElement('tr'));
+
+                tr.appendChild(document.createElement('th')).append(line.name);
+                tr.appendChild(document.createElement('td')).append(line.files);
+                tr.appendChild(document.createElement('td')).append(line.lines);
+                tr.appendChild(document.createElement('td')).append(line.avg);
+                tr.appendChild(document.createElement('td')).append(line.max);
+                tr.appendChild(document.createElement('td')).append(line.min);
+            }
+
+            const total = types.total;
+            const tfoot = table.querySelector('tfoot>tr');
+            tfoot.appendChild(document.createElement('th')).append(total.name);
+            tfoot.appendChild(document.createElement('td')).append(total.files);
+            tfoot.appendChild(document.createElement('td')).append(total.lines);
+            tfoot.appendChild(document.createElement('td')).append(total.avg);
+            tfoot.appendChild(document.createElement('td')).append(total.max);
+            tfoot.appendChild(document.createElement('td')).append(total.min);
+        }
+
+        function end() {
+            // TODO
+        }
+    </script>
+</head>
+
+<body>
+    <h1>v(name)</h1>
+    <div id="file-types">
+        <table>
+            <thead>
+                <tr>
+                    <th>l(type)</th>
+                    <th>l(files)</th>
+                    <th>l(lines)</th>
+                    <th>l(avg)</th>
+                    <th>l(max)</th>
+                    <th>l(min)</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+            <tfoot>
+                <tr></tr>
+            </tfoot>
+        </table>
+        <p class="no-data">no-data1</p>
+    </div>
+</body>
+
+</html>

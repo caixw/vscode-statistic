@@ -10,7 +10,7 @@ const fs = filesystem.promises;
 /**
  * 项目的统计信息
  */
-export default class Project {
+export class Project {
     vcs: vcs.VCS;
     name: string;
     path: string;
@@ -61,16 +61,19 @@ export default class Project {
      * @returns 返回为一个 Promise，附加一个 tuple，
      * 第一个参数为各个类型的行数信息列表，第二个参数合计的单行数据。
      */
-    public async types(): Promise<[Type[], Type]> {
+    public async types(): Promise<FileTypes> {
         const types = this.buildTypes(await this.countLines());
-        const sumType = this.buildSumType(types);
-        return [types, sumType];
+        const total = this.buildSumType(types);
+        return {
+            types,
+            total,
+        };
     }
 
     /**
      * 计算 types
      */
-    private buildTypes(files: File[]): Type[] {
+    private buildTypes(files: File[]): FileType[] {
         const types: Types = {};
         for (const file of files) {
             let name = path.extname(file.path);
@@ -80,7 +83,7 @@ export default class Project {
 
             let t = types[name];
             if (t === undefined) {
-                t = new Type();
+                t = new FileType();
                 t.name = name;
                 types[name] = t;
             }
@@ -95,20 +98,20 @@ export default class Project {
             }
         }
 
-        const ts: Type[] = [];
+        const ts: FileType[] = [];
         for (const key in types) {
             const t = types[key];
             t.avg = Math.floor(t.lines / t.files);
             ts.push(t);
         }
 
-        return ts.sort((v1: Type, v2: Type) => {
+        return ts.sort((v1: FileType, v2: FileType) => {
             return v2.lines - v1.lines;
         });
     }
 
-    private buildSumType(types: Type[]): Type {
-        const sumType = new Type();
+    private buildSumType(types: FileType[]): FileType {
+        const sumType = new FileType();
         sumType.name = locale.l('sum');
         for (const t of types) {
             sumType.files += t.files;
@@ -128,14 +131,29 @@ export default class Project {
     }
 }
 
+export enum MessageType {
+    file = 'file',
+    end = 'end',
+}
+
+interface Message {
+    type: MessageType;
+    data: undefined | FileTypes;
+}
+
 interface Types {
-    [index: string]: Type;
+    [index: string]: FileType;
+}
+
+interface FileTypes {
+    types: Array<FileType>;
+    total:FileType;
 }
 
 /**
  * 表示各个文件类型的统计信息
  */
-export class Type {
+class FileType {
     name: string = ''; // 类型，一般为扩展名
     files: number = 0; // 文件数量
     lines: number = 0; // 总行数
