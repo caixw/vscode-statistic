@@ -1,10 +1,10 @@
 
-.meta label {
+h2 label {
     display: inline-block;
     min-width: 4rem;
 }
 
-.meta label::after {
+h2 label::after {
     content: ":";
 }
 

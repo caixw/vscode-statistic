@@ -46,7 +46,7 @@ export async function create(ctx: vscode.ExtensionContext, uri: vscode.Uri) {
     };
 
     const p = new project.Project(folder.uri.path);
-    panel.webview.html = await build(ctx, p.name);
+    panel.webview.html = await build(ctx, p);
 
     panel.webview.onDidReceiveMessage(async (e) => {
         const msg = e as message.Message;
@@ -83,7 +83,7 @@ async function sendFileTypes(v: vscode.Webview, p: project.Project) {
 /**
  * 生成完整的 HTML 内容
  */
-async function build(ctx: vscode.ExtensionContext, name: string): Promise<string> {
+async function build(ctx: vscode.ExtensionContext, p: project.Project): Promise<string> {
     const htmlPath = buildResourceUri(ctx, 'resources', 'view.html').fsPath;
     const html = await fs.readFile(htmlPath, { encoding: 'utf8' });
     const linkRegexp = /(<img.+?src="|<link.+?href="|<script.+?src=")(.+?)"/g;
@@ -91,9 +91,13 @@ async function build(ctx: vscode.ExtensionContext, name: string): Promise<string
     return html.replace(/v\((.+?)\)/g, (m, $1) => {
         switch ($1) {
             case 'name':
-                return name;
+                return p.name;
             case 'locale':
                 return locale.id();
+            case 'vcs':
+                return p.vcs.name;
+            case 'path':
+                return p.path;
             default:
                 return 'undefined';
         }
