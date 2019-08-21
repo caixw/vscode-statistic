@@ -93,7 +93,6 @@
         "vscode-test": "^1.0.2"
     },
     "dependencies": {
-        "cheerio": "^1.0.0-rc.3",
         "ignore": "^5.1.2",
         "mime-types": "^2.1.24"
     }

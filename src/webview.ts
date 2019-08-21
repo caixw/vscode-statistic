@@ -4,7 +4,6 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import * as locale from './locale/locale';
 import * as filesystem from 'fs';
-import * as cheerio from 'cheerio';
 import * as project from './project';
 
 const fs = filesystem.promises;
