@@ -25,6 +25,8 @@ window.addEventListener('message', (e) => {
 
 function appendFileTypes(types) {
     if (types.types.length === 0) {
+        document.querySelector('#file-types>.no-data').style.display = 'block';
+        document.querySelector('#file-types>table').style.display = 'none';
         return;
     }
 

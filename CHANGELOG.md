@@ -14,6 +14,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - 无法获取当前的区域信息时，不再弹出提示，而是通过 console.log 输出一条警告；
 - 加快页面的显示速度，数据改为异步加载；
 - 取消操作时，不再提示错误；
+- 颜色随主题变化而变化；
 
 ## [0.3.0-preview]
 

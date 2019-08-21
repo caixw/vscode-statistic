@@ -27,14 +27,24 @@ table th {
 
 table thead tr,
 table tfoot tr {
-    background-color: rgba(0, 0, 0, 0.5);
     line-height: 2.5;
+    background-color: var(--vscode-editorGroupHeader-tabsBackground);
+    color: var(--vscode-tab-activeForeground);
 }
 
 table tbody tr:nth-child(even) {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: var(--vscode-editor-lineHighlightBorder);
 }
 
 table tbody tr:hover {
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: var(--vscode-editor-selectionBackground);
+    color: var(--vscode-editor-selectionForeground);
+}
+
+.no-data {
+    display: none;
+    text-align: center;
+    font-size: larger;
+    color: var(--vscode-editorWarning-foreground);
+    line-height: 5;
 }
