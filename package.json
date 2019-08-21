@@ -34,7 +34,7 @@
         "color": "#5c2d91",
         "theme": "dark"
     },
-    "icon": "images/icon.png",
+    "icon": "resources/icon.png",
     "categories": [
         "Other"
     ],
@@ -49,8 +49,8 @@
                 "title": "%caixw.statistic.show.title%",
                 "category": "statistic",
                 "icon": {
-                    "dark": "images/icon.svg",
-                    "light": "images/icon.svg"
+                    "dark": "resources/icon.svg",
+                    "light": "resources/icon.svg"
                 }
             }
         ],

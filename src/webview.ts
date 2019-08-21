@@ -38,8 +38,8 @@ export async function create(ctx: vscode.ExtensionContext, uri: vscode.Uri) {
         }
     );
 
-    const lightIcon = path.join(ctx.extensionPath, "images", "icon.svg");
-    const darkIcon = path.join(ctx.extensionPath, "images", "icon.svg");
+    const lightIcon = path.join(ctx.extensionPath, "resources", "icon.svg");
+    const darkIcon = path.join(ctx.extensionPath, "resources", "icon.svg");
     view.iconPath = {
         light: vscode.Uri.file(lightIcon),
         dark: vscode.Uri.file(darkIcon),
