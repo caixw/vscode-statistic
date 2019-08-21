@@ -31,13 +31,9 @@ export class Project {
     private async countLines(): Promise<File[]> {
         const files = await this.vcs.files();
 
-        const fs = await Promise.all(files.map((path) => {
+        return (await Promise.all(files.map((path) => {
             return this.countFileLines(path);
-        }));
-
-        return fs.sort((v1: File, v2: File) => {
-            return v2.lines - v1.lines;
-        });
+        })));
     }
 
     /**
