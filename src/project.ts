@@ -65,18 +65,18 @@ export class Project {
      * 计算 types
      */
     private buildTypes(files: File[]): FileType[] {
-        const types: Types = {};
+        const types = new Map<string, FileType>();
         for (const file of files) {
             let name = path.extname(file.path);
             if (name === '') {
                 name = path.basename(file.path);
             }
 
-            let t = types[name];
+            let t = types.get(name);
             if (t === undefined) {
                 t = new FileType();
                 t.name = name;
-                types[name] = t;
+                types.set(name, t);
             }
 
             t.files++;
@@ -90,8 +90,7 @@ export class Project {
         }
 
         const ts: FileType[] = [];
-        for (const key in types) {
-            const t = types[key];
+        for (const t of types.values()) {
             t.avg = Math.floor(t.lines / t.files);
             ts.push(t);
         }
@@ -131,10 +130,6 @@ export enum MessageType {
 export interface Message {
     type: MessageType;
     data: undefined | FileTypes;
-}
-
-interface Types {
-    [index: string]: FileType;
 }
 
 interface FileTypes {
