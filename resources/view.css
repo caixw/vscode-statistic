@@ -1,0 +1,40 @@
+
+.meta label {
+    display: inline-block;
+    min-width: 4rem;
+}
+
+.meta label::after {
+    content: ":";
+}
+
+table {
+    width: 100%;
+}
+
+table tr th {
+    text-align: left;
+}
+
+table tr {
+    line-height: 2;
+}
+
+table td,
+table th {
+    padding: 0 .5rem
+}
+
+table thead tr,
+table tfoot tr {
+    background-color: rgba(0, 0, 0, 0.5);
+    line-height: 2.5;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+table tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+}

@@ -86,6 +86,7 @@ async function sendFileTypes(v: vscode.Webview, p: project.Project) {
 async function build(ctx: vscode.ExtensionContext, name: string): Promise<string> {
     const htmlPath = buildResourceUri(ctx, 'resources', 'view.html').fsPath;
     const html = await fs.readFile(htmlPath, { encoding: 'utf8' });
+    const linkRegexp = /(<img.+?src="|<link.+?href="|<script.+?src=")(.+?)"/g;
 
     return html.replace(/v\((.+?)\)/g, (m, $1) => {
         switch ($1) {
@@ -98,7 +99,7 @@ async function build(ctx: vscode.ExtensionContext, name: string): Promise<string
         }
     }).replace(/l\((.+?)\)/g, (m, $1) => {
         return locale.l($1);
-    }).replace(/(<script.+?src=")(.+?)"/g, (m, $1, $2) => {
+    }).replace(linkRegexp, (m, $1, $2) => {
         const uri = buildResourceUri(ctx, 'resources', $2);
         return $1 + uri.toString() + '"';
     });
