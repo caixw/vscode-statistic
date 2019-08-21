@@ -71,27 +71,23 @@
             const tbody = table.querySelector('tbody');
             for (const line of types.types) {
                 const tr = tbody.appendChild(document.createElement('tr'));
-
-                tr.appendChild(document.createElement('th')).append(line.name);
-                tr.appendChild(document.createElement('td')).append(line.files);
-                tr.appendChild(document.createElement('td')).append(line.lines);
-                tr.appendChild(document.createElement('td')).append(line.avg);
-                tr.appendChild(document.createElement('td')).append(line.max);
-                tr.appendChild(document.createElement('td')).append(line.min);
+                appendFileTypeToTr(tr, line);
             }
 
-            const total = types.total;
-            const tfoot = table.querySelector('tfoot>tr');
-            tfoot.appendChild(document.createElement('th')).append(total.name);
-            tfoot.appendChild(document.createElement('td')).append(total.files);
-            tfoot.appendChild(document.createElement('td')).append(total.lines);
-            tfoot.appendChild(document.createElement('td')).append(total.avg);
-            tfoot.appendChild(document.createElement('td')).append(total.max);
-            tfoot.appendChild(document.createElement('td')).append(total.min);
+            appendFileTypeToTr(table.querySelector('tfoot>tr'), types.total);
         }
 
         function end() {
             // TODO
+        }
+
+        function appendFileTypeToTr(tr, type) {
+            tr.appendChild(document.createElement('th')).append(type.name);
+            tr.appendChild(document.createElement('td')).append(type.files);
+            tr.appendChild(document.createElement('td')).append(type.lines);
+            tr.appendChild(document.createElement('td')).append(type.avg);
+            tr.appendChild(document.createElement('td')).append(type.max);
+            tr.appendChild(document.createElement('td')).append(type.min);
         }
     </script>
 </head>
