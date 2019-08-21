@@ -12,6 +12,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ### Changed
 - 无法获取当前的区域信息时，不再弹出提示，而是通过 console.log 输出一条警告；
 - 加快页面的显示速度，数据改为异步加载；
+- 取消操作时，不再提示错误；
 
 ## [0.3.0-preview]
 

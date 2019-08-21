@@ -46,8 +46,7 @@ async function commandShow(ctx: vscode.ExtensionContext, uri: any) {
     }
 
     const selected = await vscode.window.showWorkspaceFolderPick();
-    if (undefined === selected) {
-        vscode.window.showErrorMessage(locale.l('none-project-selected'));
+    if (undefined === selected) { // 取消操作
         return;
     }
     webview.create(ctx, selected.uri);
