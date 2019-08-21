@@ -21,6 +21,10 @@ let locale: Locale;
  * @param key 该条语言的标记，如果不存在，则原样返回
  */
 export function l(key: string): string {
+    if (undefined === locale[key]) {
+        return key;
+    }
+
     return locale[key];
 }
 

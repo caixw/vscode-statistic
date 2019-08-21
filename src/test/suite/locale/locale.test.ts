@@ -17,6 +17,7 @@ suite('Locale test suite', () => {
         init();
         assert.strictEqual('zh-cn', id());
         assert.strictEqual(l('name'), zhCN.name);
+        assert.strictEqual(l('__not_exists__'), '__not_exists__');
     });
 });
 

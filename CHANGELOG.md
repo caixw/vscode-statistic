@@ -8,6 +8,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ### Fixed
 - 修正无法读取项目包含 .asar 文件时，无法读取的错误；
+- 翻译内容不存在时，将原样返回 key，而不是 undefined；
 
 ### Changed
 - 无法获取当前的区域信息时，不再弹出提示，而是通过 console.log 输出一条警告；
