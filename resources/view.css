@@ -32,6 +32,14 @@ table tfoot tr {
     color: var(--vscode-tab-activeForeground);
 }
 
+table thead tr th[data-asc=true]::after {
+    content: ' \25b2';
+}
+
+table thead tr th[data-asc=false]::after {
+    content: ' \25bc';
+}
+
 table tbody tr:nth-child(even) {
     background-color: var(--vscode-editor-lineHighlightBorder);
 }
