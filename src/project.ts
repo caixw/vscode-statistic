@@ -5,6 +5,7 @@ import * as filesystem from 'fs';
 import * as locale from './locale/locale';
 import * as vcs from './vcs/vcs';
 import * as message from './message';
+import * as line from './line/line';
 
 const fs = filesystem.promises;
 
@@ -29,25 +30,12 @@ export class Project {
     /**
      * 加载项目下的每一个文件的统计信息
      */
-    private async countLines(): Promise<File[]> {
+    private async countLines(): Promise<line.Lines[]> {
         const files = await this.vcs.files();
 
         return (await Promise.all(files.map((path) => {
-            return this.countFileLines(path);
+            return line.count(path);
         })));
-    }
-
-    /**
-     * 计算指定文件的行数
-     *
-     * @param path 文件路径
-     */
-    private async countFileLines(path: string): Promise<File> {
-        const content = (await fs.readFile(path, { encoding: 'utf8' }));
-        return {
-            path,
-            lines:content.split('\n').length,
-        };
     }
 
     /**
@@ -68,7 +56,7 @@ export class Project {
     /**
      * 计算 types
      */
-    private buildTypes(files: File[]): message.FileType[] {
+    private buildTypes(files: line.Lines[]): message.FileType[] {
         const types = new Map<string, message.FileType>();
         for (const file of files) {
             let name = path.extname(file.path);
@@ -123,9 +111,4 @@ export class Project {
 
         return totalType;
     }
-}
-
-interface File {
-    path: string ; // 文件名
-    lines: number; // 总行数
 }

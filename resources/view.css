@@ -43,6 +43,8 @@ table thead tr th {
  *
  * 排序箭头一直存在，可以解决每一次更换排序列时，
  * 会重新调整列宽度的问题。
+ *
+ * 需要保证以下 th::after 前景色和背景色与 table thead tr 的相同。
  */
 table thead tr th::after {
     content: '\20\25b2';

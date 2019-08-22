@@ -5,6 +5,8 @@
 [![Installs](https://vsmarketplacebadge.apphb.com/installs-short/caixw.statistic.svg)](https://marketplace.visualstudio.com/items?itemName=caixw.statistic)
 [![Downloads](https://vsmarketplacebadge.apphb.com/downloads-short/caixw.statistic.svg)](https://marketplace.visualstudio.com/items?itemName=caixw.statistic)
 [![Ratings](https://vsmarketplacebadge.apphb.com/rating-star/caixw.statistic.svg)](https://marketplace.visualstudio.com/items?itemName=caixw.statistic)
+[![dependencies Status](https://david-dm.org/caixw/vscode-statistic/status.svg)](https://david-dm.org/caixw/vscode-statistic)
+[![devDependencies Status](https://david-dm.org/caixw/vscode-statistic/dev-status.svg)](https://david-dm.org/caixw/vscode-statistic?type=dev)
 
 
 代码行数统计工具
@@ -13,18 +15,16 @@
 如果项目是受 VCS 控制，则只统计受 VCS 控制的代码文件。
 
 
+目前支持以下本地化的内容：
+- en
+- 简体中文
+
+
 ### 用法
 
 - 命令面板中输入 `statistic` 可找到所有的的命令；
 - 在工作区(多项目)下，可以右键点键这个项目选择`显示项目统计`。
 - 单项目中，可以右键点击项目中的任何文件均会出现`显示项目统计`。
-
-
-### 本地化
-
-目前支持以下本地化的内容：
-- en
-- 简体中文
 
 
 [![screenshot](./resources/screenshot.png)](./resources/screenshot.png)
