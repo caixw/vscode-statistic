@@ -115,8 +115,8 @@ function sortTable(table, colIndex, asc, cmp) {
 
 
     rows = rows.sort((row1, row2) => {
-        v1 = row1.cells.item(colIndex).innerHTML.toLowerCase();
-        v2 = row2.cells.item(colIndex).innerHTML.toLowerCase();
+        const v1 = row1.cells.item(colIndex).innerHTML.toLowerCase();
+        const v2 = row2.cells.item(colIndex).innerHTML.toLowerCase();
 
         if (asc) {
             return cmp(v1, v2);
