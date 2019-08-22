@@ -6,6 +6,9 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+### Added
+- 表格内容现在可按列排序；
+
 ### Fixed
 - 修正无法读取项目包含 .asar 文件时，无法读取的错误；
 - 翻译内容不存在时，将原样返回 key，而不是 undefined；
