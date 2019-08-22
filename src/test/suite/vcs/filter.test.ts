@@ -30,6 +30,10 @@ suite("Filter test suite", () => {
                 input: 'a.swp',
                 output: true,
             },
+            { // go.sum 属于要被过滤的
+                input: 'go.sum',
+                output: true,
+            },
         ];
 
         data.forEach((v, k) => {

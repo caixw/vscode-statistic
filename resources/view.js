@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: MIT
 
+'use strict';
+
 window.addEventListener('load', (e) => {
     // 页面加载完之后，开始请求数据。
     const vscode = acquireVsCodeApi();

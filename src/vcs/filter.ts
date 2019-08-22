@@ -3,7 +3,8 @@
 import * as mt from 'mime-types';
 import * as path from 'path';
 
-const ignoreExt: string[] = [
+// 需要被忽略的文件或是扩展名
+const ignoreFiles: string[] = [
     '.jpg', '.jpeg',
     '.png',
     '.bmp',
@@ -22,6 +23,7 @@ const ignoreExt: string[] = [
     '.zip',
     '.rar',
     '.gzip',
+    '.7z',
 
     '.exe',
     '.so',
@@ -31,9 +33,14 @@ const ignoreExt: string[] = [
     '.DS_Store',
     '.swp',
     '.lock',
+
+    // 特定语言下需要过滤的文件
+    'package-lock.json',
+    'go.sum',
 ];
 
-const textExt: string[] = [
+// 不能忽略的文件或是扩展名，权限低于 ignoreFiles
+const files: string[] = [
     // 编程语言
     '.coffee',
     '.cpp', '.cc', '.c', '.h', '.hpp',
@@ -85,29 +92,25 @@ const textExt: string[] = [
  */
 export function isIgnore(v: string): boolean {
     // 过滤分成三部分
-    // - 由 ignoreExt 指定的需要忽略的文件后缀名；
-    // - 由 textExt 指定的不需要忽略的文件后缀名；
+    // - 由 ignoreFiles 指定的需要忽略的文件后缀名；
+    // - 由 files 指定的不需要忽略的文件后缀名；
     // - 通过 mimetype 根据其后缀名获取相应的 mimetype 类型，
     // 非 text/ 下的全都当二进制处理。
     // application/json 之类的可以直接写在 textExt 中。
 
     // path.extname 在处理诸如 .DS_Store 等文件时，会返回空值，
     // 此处需要将其它当作扩展名来处理。
-    let ext = path.extname(v);
-    const noExt = (ext === '');
-    if (noExt) {
-        ext = path.basename(v);
-    }
 
-    if (inArray(ignoreExt, ext)) { // 指定忽略
+    const basename = path.basename(v);
+    if (fileInArray(ignoreFiles, basename)) { // 指定忽略
         return true;
     }
 
-    if (inArray(textExt, ext)) { // 指定不忽略
+    if (fileInArray(files, basename)) { // 指定不忽略
         return false;
     }
 
-    if (noExt) {
+    if ('' === path.extname(v)) {
         return false;
     }
     
@@ -124,9 +127,12 @@ function isMimetypeText(path: string): boolean {
     return mime.startsWith('text/');
 }
 
-function inArray(arr: string[], key: string): boolean {
-    for (let i = 0; i < arr.length; i++) {
-        if (arr[i] === key) {
+// 判断文件是否在 arr 中，会同时对整个文件和其扩展名进行匹配。
+function fileInArray(arr: string[], file: string): boolean {
+    const ext = path.extname(file);
+
+    for (const elem of arr) {
+        if (elem === file || elem === ext) {
             return true;
         }
     }
