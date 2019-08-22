@@ -2,6 +2,18 @@
 
 // 定义了扩展端和 webview 端传递消息的格式以及数据类型。
 
+import * as vscode from 'vscode';
+
+/**
+ * 向 webview 发送消息内容
+ *
+ * @param view webview
+ * @param msg 传递的消息内容
+ */
+export function send(view: vscode.Webview, msg: Message) {
+    view.postMessage(msg);
+}
+
 export enum MessageType {
     // 由 webview 发起的消息
     refresh = 'refresh',
@@ -13,7 +25,7 @@ export enum MessageType {
 
 export interface Message {
     type: MessageType;
-    data: undefined | FileTypes;
+    data?: FileTypes;
 }
 
 export interface FileTypes {

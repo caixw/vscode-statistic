@@ -46,23 +46,8 @@ export async function create(ctx: vscode.ExtensionContext, uri: vscode.Uri) {
     };
 
     const p = new project.Project(folder.uri.path);
-    panel.webview.html = await build(ctx, p);
-
-    panel.webview.onDidReceiveMessage(async (e) => {
-        const msg = e as message.Message;
-
-        switch (msg.type) {
-            case message.MessageType.refresh:
-                if (panel === undefined) {
-                    console.error('创建 panel 失败');
-                    return;
-                }
-                await sendFileTypes(panel.webview, p);
-                break;
-            default:
-                console.error(`无法处理的消息类型：${msg.type}`);
-        }
-    });
+    panel.webview.html = await loadHTML(ctx, p);
+    initWebviewMessage(panel, p);
 
     panel.onDidDispose(() => {
         panel = undefined;
@@ -72,18 +57,37 @@ export async function create(ctx: vscode.ExtensionContext, uri: vscode.Uri) {
     views.set(folder.name, panel);
 }
 
-async function sendFileTypes(v: vscode.Webview, p: project.Project) {
-    const types = await p.types();
-    v.postMessage({
-        type: message.MessageType.file,
-        data: types,
+// 初始化 webview 的消息通讯机制
+function initWebviewMessage(panel: vscode.WebviewPanel, p: project.Project) {
+    panel.webview.onDidReceiveMessage(async (e) => {
+        const msg = e as message.Message;
+
+        switch (msg.type) {
+            case message.MessageType.refresh:
+                message.send(panel.webview, {
+                    type: message.MessageType.file,
+                    data: await p.types(),
+                });
+
+                // 当前仅有一条消息可发送，发送完就结束内容。
+                message.send(panel.webview, { type: message.MessageType.end });
+                break;
+            default:
+                console.error(`无法处理的消息类型：${msg.type}`);
+        }
     });
 }
 
 /**
- * 生成完整的 HTML 内容
+ * 加载 HTML 内容
+ *
+ * 从 resource 加载 HTML 文件，并替换其中的脚本、CSS 等文件的链接为
+ * vscode 允许的链接格式。
+ * 同时会将 HTML 中的内容进行替换：
+ * - v(key) 替换当前的变量；
+ * - l(key) 替换当前的本地化语言内容；
  */
-async function build(ctx: vscode.ExtensionContext, p: project.Project): Promise<string> {
+async function loadHTML(ctx: vscode.ExtensionContext, p: project.Project): Promise<string> {
     const htmlPath = buildResourceUri(ctx, 'resources', 'view.html').fsPath;
     const html = await fs.readFile(htmlPath, { encoding: 'utf8' });
     const linkRegexp = /(<img.+?src="|<link.+?href="|<script.+?src=")(.+?)"/g;
