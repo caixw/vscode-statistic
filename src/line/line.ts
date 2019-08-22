@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 
+import * as path from 'path';
 import * as filesystem from 'fs';
 
 const fs = filesystem.promises;
@@ -9,15 +10,20 @@ const fs = filesystem.promises;
  *
  * @param path 文件地址
  */
-export async function count(path: string): Promise<Lines> {
-    const content = (await fs.readFile(path, { encoding: 'utf8' }));
+export async function count(file: string): Promise<Lines> {
+    let name = path.extname(file);
+    if (name === '') {
+        name = path.basename(file);
+    }
+
+    const content = (await fs.readFile(file, { encoding: 'utf8' }));
     return {
-        path,
+        name,
         lines: content.split('\n').length,
     };
 }
 
 export interface Lines {
-    path: string; // 文件名
+    name: string; // 扩展名或是文件名
     lines: number; // 总行数
 }

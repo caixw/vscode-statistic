@@ -56,28 +56,23 @@ export class Project {
     /**
      * 计算 types
      */
-    private buildTypes(files: line.Lines[]): message.FileType[] {
+    private buildTypes(lines: line.Lines[]): message.FileType[] {
         const types = new Map<string, message.FileType>();
-        for (const file of files) {
-            let name = path.extname(file.path);
-            if (name === '') {
-                name = path.basename(file.path);
-            }
-
-            let t = types.get(name);
+        for (const l of lines) {
+            let t = types.get(l.name);
             if (t === undefined) {
                 t = new message.FileType();
-                t.name = name;
-                types.set(name, t);
+                t.name = l.name;
+                types.set(l.name, t);
             }
 
             t.files++;
-            t.lines += file.lines;
-            if (t.max < file.lines) {
-                t.max = file.lines;
+            t.lines += l.lines;
+            if (t.max < l.lines) {
+                t.max = l.lines;
             }
-            if (t.min > file.lines) {
-                t.min = file.lines;
+            if (t.min > l.lines) {
+                t.min = l.lines;
             }
         }
 
