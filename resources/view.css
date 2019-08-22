@@ -33,12 +33,28 @@ table tfoot tr {
     color: var(--vscode-tab-activeForeground);
 }
 
-table thead tr th[data-asc=true]::after {
-    content: ' \25b2';
+table thead tr th {
+    cursor: pointer;
 }
 
+/* 排序的箭头默认情况下与背景色相同，
+ * 只有设置了其 data-asc 为 true 或是 false 时，
+ * 才会修改成与前景色相同。
+ *
+ * 排序箭头一直存在，可以解决每一次更换排序列时，
+ * 会重新调整列宽度的问题。
+ */
+table thead tr th::after {
+    content: '\20\25b2';
+    color: var(--vscode-editorGroupHeader-tabsBackground);
+}
+table thead tr th[data-asc=true]::after {
+    content: '\20\25b2';
+    color: var(--vscode-tab-activeForeground);
+}
 table thead tr th[data-asc=false]::after {
-    content: ' \25bc';
+    content: '\20\25bc';
+    color: var(--vscode-tab-activeForeground);
 }
 
 table tbody tr:nth-child(even) {

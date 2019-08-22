@@ -6,6 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+### Changed
+- 改变表格头的鼠标样式；
+- 更换排序列时，不再调整列宽度；
+
 ## [0.4.0-preview]
 
 ### Added
@@ -16,7 +20,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - 翻译内容不存在时，将原样返回 key，而不是 undefined；
 
 ### Changed
-- 无法获取当前的区域信息时，不再弹出提示，而是通过 console.log 输出一条警告；
+- 无法获取当前的区域信息时，不再弹出提示，而是通过 console.warn 输出一条警告；
 - 加快页面的显示速度，数据改为异步加载；
 - 取消操作时，不再提示错误；
 - 颜色随主题变化而变化；
