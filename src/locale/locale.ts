@@ -8,8 +8,8 @@ import { zhCN } from './zh-cn';
 // 语种名称必须小写，格式遵守官方约定：
 // https://code.visualstudio.com/docs/getstarted/locales#_available-locales
 const locales = new Map<string, Locale>([
-    ["en", en],
-    ["zh-cn", zhCN],
+    ['en', en],
+    ['zh-cn', zhCN],
 ]);
 
 let localeID = 'en';
