@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 
 import * as block from './block';
-import { listenerCount } from 'cluster';
 
 /**
  * Pascal 中字符串的转义字符是引号本身。
@@ -60,7 +59,6 @@ export class PascalString implements block.Block {
     }
 
     private isEscape(line: string, next: number): boolean {
-        console.log(line, next)
         if (next > line.length) {
             return false;
         }

@@ -2,6 +2,7 @@
 
 import * as block from './block';
 import * as pascal from './pascal';
+import * as php from './php';
 
 /**
  * 查找指定扩展名对应的 block.Block 实例。
@@ -122,6 +123,7 @@ register([
 
 // php
 register([
+    new php.PHPDoc(), // 保证 <<< 第一个被匹配
     new block.String('"', '"', '\\'),
     new block.String("'", "'", '\\'),
     new block.SignalComment('#'),
