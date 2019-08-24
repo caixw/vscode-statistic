@@ -7,7 +7,7 @@ import * as block from './block';
  *
  * @param ext 扩展名，必须带 . 符号
  */
-export function find(ext: string): undefined|block.Block[]{
+export function find(ext: string): undefined | block.Block[] {
     return langs.get(ext);
 }
 
@@ -30,11 +30,26 @@ const cStyle: Array<block.Block> = [
     new block.MultipleComment("/*", "*/"),
 ];
 
+/*####################### 以下为注册各类语言的注释解析模块的注册############# */
+// 按名称的字符顺序排列
+
+// bash
+register([
+    new block.String('"', '"', '\\'),
+    new block.String("`", "`", '\\'),
+    new block.SignalComment('#'),
+], '.sh');
+
 // c#
 register(cStyle, '.cs');
 
 // c/c++
 register(cStyle, '.c', '.cpp', '.cxx', '.h', '.hpp');
+
+// cmd
+register([
+    new block.SignalComment('rem'),
+], '.cmd');
 
 // d
 register(cStyle, '.d');
@@ -76,6 +91,15 @@ register([
     // 需要放在 // 之后
     new block.String("/", "/"),
 ], '.js');
+
+// json
+// 现在大部分 json 配置中都带了注释
+register([
+    new block.String('"', '"', '\\'),
+    new block.String("'", "'", '\\'),
+    new block.SignalComment('//'),
+    new block.MultipleComment('/*', '*/'),
+], '.json');
 
 // kotlin
 register(cStyle, '.kt');
@@ -147,3 +171,10 @@ register([
     // 需要放在 // 之后
     new block.String("/", "/"),
 ], '.ts');
+
+// yaml
+register([
+    new block.String('"', '"', '\\'),
+    new block.String("'", "'", '\\'),
+    new block.SignalComment('#'),
+], '.yaml', '.yml');
