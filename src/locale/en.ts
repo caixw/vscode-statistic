@@ -11,6 +11,8 @@ export const en = {
     'type': 'type',
     'files': 'files',
     'lines': 'lines',
+    'blanks': 'blanks',
+    'comments': 'comments',
     'avg': 'avg',
     'max': 'max',
     'min': 'min',

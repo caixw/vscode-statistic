@@ -68,6 +68,8 @@ export class Project {
 
             t.files++;
             t.lines += l.lines;
+            t.blanks += l.blanks;
+            t.comments += l.comments;
             if (t.max < l.lines) {
                 t.max = l.lines;
             }
@@ -93,6 +95,8 @@ export class Project {
         for (const t of types) {
             totalType.files += t.files;
             totalType.lines += t.lines;
+            totalType.blanks += t.blanks;
+            totalType.comments += t.comments;
 
             if (totalType.max < t.max) {
                 totalType.max = t.max;

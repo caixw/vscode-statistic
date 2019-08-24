@@ -11,6 +11,8 @@ export const zhCN =  {
     'type': '类型',
     'files': '文件',
     'lines': '行数',
+    'blanks': '空行',
+    'comments': '注释',
     'avg': '平均行数',
     'max': '最大行数',
     'min': '最小行数',

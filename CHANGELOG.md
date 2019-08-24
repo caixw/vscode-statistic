@@ -6,6 +6,9 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+### Added
+- 统计空行和注释行的数量；
+
 ### Changed
 - 改变表格头的鼠标样式；
 - 更换排序列时，不再调整列宽度；

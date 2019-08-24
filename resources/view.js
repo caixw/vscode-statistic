@@ -53,6 +53,8 @@ function appendFileTypeToTr(tr, type) {
     tr.appendChild(document.createElement('th')).append(type.name);
     tr.appendChild(document.createElement('td')).append(type.files);
     tr.appendChild(document.createElement('td')).append(type.lines);
+    tr.appendChild(document.createElement('td')).append(type.comments);
+    tr.appendChild(document.createElement('td')).append(type.blanks);
     tr.appendChild(document.createElement('td')).append(type.avg);
     tr.appendChild(document.createElement('td')).append(type.max);
     tr.appendChild(document.createElement('td')).append(type.min);
