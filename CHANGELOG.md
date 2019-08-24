@@ -13,6 +13,9 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - 改变表格头的鼠标样式；
 - 更换排序列时，不再调整列宽度；
 
+### Fixed
+- 修正 windows 无法正确加载文件的错误；
+
 ## [0.4.0-preview]
 
 ### Added

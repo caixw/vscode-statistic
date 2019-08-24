@@ -45,7 +45,7 @@ export async function create(ctx: vscode.ExtensionContext, uri: vscode.Uri) {
         dark: vscode.Uri.file(darkIcon),
     };
 
-    const p = new project.Project(folder.uri.path);
+    const p = new project.Project(folder.uri.fsPath);
     panel.webview.html = await loadHTML(ctx, p);
     initWebviewMessage(panel, p);
 
