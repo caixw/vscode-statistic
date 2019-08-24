@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 export const zhCN =  {
-    'name': '中文简体',
+    'name': '简体中文',
     'statistic': '项目统计',
     'none-project-selected': '未选择任何项目',
     'none-project-open': '未打开任何项目',

@@ -2,6 +2,7 @@
 
 import { en } from './en';
 import { zhCN } from './zh-cn';
+import { zhTW } from './zh-tw';
 
 // 以下为本地化的内容。
 //
@@ -10,6 +11,7 @@ import { zhCN } from './zh-cn';
 const locales = new Map<string, Locale>([
     ['en', en],
     ['zh-cn', zhCN],
+    ['zh-tw', zhTW],
 ]);
 
 let localeID = 'en';
