@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 import * as block from './block';
+import * as pascal from './pascal';
 
 /**
  * 查找指定扩展名对应的 block.Block 实例。
@@ -38,7 +39,7 @@ register([
     new block.String('"', '"', '\\'),
     new block.String("`", "`", '\\'),
     new block.SignalComment('#'),
-], '.sh');
+], '.sh', '.bash');
 
 // c#
 register(cStyle, '.cs');
@@ -46,10 +47,10 @@ register(cStyle, '.cs');
 // c/c++
 register(cStyle, '.c', '.cpp', '.cxx', '.h', '.hpp');
 
-// cmd
+// cmd/powerShell
 register([
     new block.SignalComment('rem'),
-], '.cmd');
+], '.cmd', '.ps1');
 
 // d
 register(cStyle, '.d');
@@ -106,6 +107,7 @@ register(cStyle, '.kt');
 
 // pascal/delphi
 register([
+    new pascal.PascalString("'"),
     new block.MultipleComment('{*', '*}'),
     new block.MultipleComment('{', '}'),
 ], '.pas', '.pp');

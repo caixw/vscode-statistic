@@ -63,13 +63,13 @@ export class String implements Block {
         switch (pos) {
             case -1:
                 return 0;
-            case 0:
+            case 0: // 在起始位置找到
                 return this.endString.length;
             default:
                 if ((this.escape === undefined) || line[pos - 1] !== this.escape) {
                     pos = next;
                 } else { // 转义字符
-                    let pp = this.end(line.slice(pos + 1));
+                    const pp = this.end(line.slice(pos + 1)); // 1 表示从转义字符之后的位置开始
                     if (pp <= 0) { return pp; }
                     pos = pos + 1 + pp;
                 }
