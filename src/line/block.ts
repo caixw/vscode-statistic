@@ -15,7 +15,10 @@ export interface Block {
      * 检测当前行中是否包含当前代码块的起始内容
      *
      * @param line 用于查找的行
-     * @returns 返回找到的下一字符位置，如果为 0，表示没有。
+     * @returns 返回找到的下一字符位置，可以有以下值：
+     * -1 表示正好在结尾处；
+     * 0 表示未找到；
+     * >0 表示真正的位置；
      */
     begin(line: string): number;
 

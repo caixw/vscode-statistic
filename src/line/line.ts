@@ -98,6 +98,10 @@ function matchLine(line: string, bs: Array<block.Block>): [null | block.Block, b
             continue;
         }
 
+        if (start === -1) {
+            return [bb, bb.isComment];
+        }
+
         let matched = bb.isComment;
         line = line.slice(start);
 
