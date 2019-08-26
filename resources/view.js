@@ -90,7 +90,7 @@ function initSortTable() {
                 sortTable(table, index, asc, cmp);
 
                 // 去掉其它元素的 asc 属性
-                th.parentNode.querySelectorAll('th').forEach((val, i)=>{
+                th.parentNode.querySelectorAll('th').forEach((val, i) => {
                     if (index !== i) {
                         val.setAttribute('data-asc', 'none');
                     }
