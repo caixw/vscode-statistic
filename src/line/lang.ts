@@ -48,6 +48,13 @@ register(cStyle, '.cs');
 // c/c++
 register(cStyle, '.c', '.cpp', '.cxx', '.h', '.hpp');
 
+// css
+register([
+    new block.String('"', '"'),
+    new block.String("'", "'"),
+    new block.MultipleComment('/*', '*/'),
+], '.css');
+
 // cmd/powerShell
 register([
     new block.SignalComment('rem'),
@@ -80,6 +87,13 @@ register([
     new block.MultipleComment('/*', '*/'),
 ], '.groovy');
 
+// html
+register([
+    new block.String('"', '"'),
+    new block.String("'", "'"),
+    new block.MultipleComment('<!--', '-->'),
+], '.html', '.htm');
+
 // java
 register(cStyle, '.java');
 
@@ -105,6 +119,9 @@ register([
 
 // kotlin
 register(cStyle, '.kt');
+
+// less
+register(cStyle, '.less');
 
 // pascal/delphi
 register([
@@ -155,8 +172,14 @@ register([
     new block.MultipleComment('/*', '*/'),
 ], '.rs');
 
+// sass
+register(cStyle, '.sass');
+
 // scala
 register(cStyle, '.scala');
+
+// scss
+register(cStyle, '.scss');
 
 // swift
 register([
