@@ -27,7 +27,6 @@ function register(blocks: block.Block[], ...exts: string[]) {
 
 const cStyle: Array<block.Block> = [
     new block.String('"', '"', '\\'),
-    new block.String("'", "'", '\\'),
     new block.SignalComment("//"),
     new block.MultipleComment("/*", "*/"),
 ];
@@ -81,7 +80,6 @@ register([
 register([
     new block.String('"', '"', '\\'),
     new block.String('`', '`'),
-    new block.String("'", "'"),
     new block.SignalComment('//'),
     new block.MultipleComment('/*', '*/'),
 ], '.go');
@@ -89,7 +87,6 @@ register([
 // groovy
 register([
     new block.String('"', '"', '\\'),
-    new block.String("'", "'", '\\'),
     new block.String("'''", "'''", '\\'),
     new block.SignalComment('//'),
     new block.MultipleComment('/*', '*/'),
@@ -174,16 +171,36 @@ register([
 ], '.rs');
 
 // sass
-register(cStyle, '.sass');
+register([
+    new block.String('"','"','\\'),
+    new block.String("'","'",'\\'),
+    new block.SignalComment('//'),
+    new block.MultipleComment('/*','*/'),
+], '.sass');
 
 // scala
-register(cStyle, '.scala');
+register([
+    new block.String('"','"','\\'),
+    new block.String('"""','"""','\\'),
+    new block.SignalComment('//'),
+    new block.MultipleComment('/*','*/'),
+], '.scala');
 
 // scss
-register(cStyle, '.scss');
+register([
+    new block.String('"','"','\\'),
+    new block.String("'","'",'\\'),
+    new block.SignalComment('//'),
+    new block.MultipleComment('/*','*/'),
+], '.scss');
 
 // sql
-register(cStyle, '.sql');
+register([
+    new block.String('"','"','\\'),
+    new block.String("'","'",'\\'),
+    new block.SignalComment('//'),
+    new block.MultipleComment('/*','*/'),
+], '.sql');
 
 // swift
 register([
