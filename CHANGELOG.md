@@ -4,7 +4,7 @@ All notable changes to the "vscode-statistic" extension will be documented in th
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [Unreleased]
+## [0.5.0-preview]
 
 ### Added
 - 统计空行和注释行的数量；
