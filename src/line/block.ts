@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: MIT
 
 /**
- * 用于查找注释和字符串的接口定义
+ * Block 定义了在文件中查找指定功能代码块的功能
+ *
+ * 我们只需要统计注释行，所以 Block 一般用于定义特定语言的注释块查找功能。
  */
 export interface Block {
     /**
@@ -35,7 +37,9 @@ export interface Block {
 }
 
 /**
- * 定义了查找字符串的 Block 接口实现。
+ * 定义了查找字符串的 Block 接口实现
+ *
+ * 因为字符串中可能包含注释代码的起止符，需要过滤这些内容。
  */
 export class String implements Block {
     readonly isComment = false;

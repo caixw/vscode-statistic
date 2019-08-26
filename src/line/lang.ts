@@ -95,16 +95,16 @@ register([
 // java
 register(cStyle, '.java');
 
-// javascript
+// javascript/typescript
 register([
     new block.String('"', '"', '\\'),
     new block.String("'", "'", '\\'),
     new block.String("`", "`"),
     new block.SignalComment('//'),
     new block.MultipleComment('/*', '*/'),
-    // 需要放在 // 之后
+    // 正则，需要放在 // 之后
     new block.String("/", "/"),
-], '.js');
+], '.js', '.ts');
 
 // json
 // 现在大部分 json 配置中都带了注释
@@ -117,9 +117,6 @@ register([
 
 // kotlin
 register(cStyle, '.kt');
-
-// less
-register(cStyle, '.less');
 
 // pascal/delphi
 register([
@@ -170,13 +167,13 @@ register([
     new block.MultipleComment('/*', '*/'),
 ], '.rs');
 
-// sass
+// sass/less/scss
 register([
     new block.String('"','"','\\'),
     new block.String("'","'",'\\'),
     new block.SignalComment('//'),
     new block.MultipleComment('/*','*/'),
-], '.sass');
+], '.sass', '.less', '.scss');
 
 // scala
 register([
@@ -185,14 +182,6 @@ register([
     new block.SignalComment('//'),
     new block.MultipleComment('/*','*/'),
 ], '.scala');
-
-// scss
-register([
-    new block.String('"','"','\\'),
-    new block.String("'","'",'\\'),
-    new block.SignalComment('//'),
-    new block.MultipleComment('/*','*/'),
-], '.scss');
 
 // sql
 register([
@@ -208,17 +197,6 @@ register([
     new block.String("`", "`", '\\'),
     new block.SignalComment('//'),
 ], '.swift');
-
-// typescript
-register([
-    new block.String('"', '"', '\\'),
-    new block.String("'", "'", '\\'),
-    new block.String("`", "`"),
-    new block.SignalComment('//'),
-    new block.MultipleComment('/*', '*/'),
-    // 需要放在 // 之后
-    new block.String("/", "/"),
-], '.ts');
 
 // xml
 // 将 html 定义为 xml 的一个变种

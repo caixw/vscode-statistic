@@ -2,6 +2,10 @@ import * as path from 'path';
 
 import { runTests } from 'vscode-test';
 
+// 采用 require 可以避免 package.json 文件不在
+// tsconfig.compilerOptions.rootDir 中的编译错误；
+const config = require('../../package.json');
+
 async function main() {
     try {
         // The folder containing the Extension Manifest package.json
@@ -12,8 +16,25 @@ async function main() {
         // Passed to --extensionTestsPath
         const extensionTestsPath = path.resolve(__dirname, './suite/index');
 
-        // Download VS Code, unzip it and run the integration test
-        await runTests({ extensionDevelopmentPath, extensionTestsPath });
+        // 测试当前版本
+        await runTests({
+            extensionDevelopmentPath,
+            extensionTestsPath,
+        });
+
+        // 测试最低需求的版本
+        await runTests({
+            extensionDevelopmentPath,
+            extensionTestsPath,
+            version: config.engines.vscode.slice(1),
+        });
+
+        // 测试 insiders 版本
+        await runTests({
+            extensionDevelopmentPath,
+            extensionTestsPath,
+            version: 'insiders',
+        });
     } catch (err) {
         console.error('Failed to run tests');
         process.exit(1);

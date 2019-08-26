@@ -28,7 +28,7 @@
         "url": "https://github.com/caixw/vscode-statistic.git"
     },
     "engines": {
-        "vscode": "^1.37.0"
+        "vscode": "^1.35.0"
     },
     "galleryBanner": {
         "color": "#5c2d91",
@@ -79,7 +79,7 @@
         "@types/mime-types": "^2.1.0",
         "@types/mocha": "^5.2.6",
         "@types/node": "^10.12.21",
-        "@types/vscode": "^1.37.0",
+        "@types/vscode": "^1.35.0",
         "del": "^5.0.0",
         "glob": "^7.1.4",
         "gulp": "^4.0.2",

@@ -1,13 +1,10 @@
 // SPDX-License-Identifier: MIT
 
 import * as path from 'path';
-import * as filesystem from 'fs';
 import * as locale from './locale/locale';
 import * as vcs from './vcs/vcs';
 import * as message from './message';
 import * as line from './line/line';
-
-const fs = filesystem.promises;
 
 /**
  * 项目的统计信息
