@@ -35,6 +35,14 @@ const cStyle: Array<block.Block> = [
 /*####################### 以下为注册各类语言的注释解析模块的注册############# */
 // 按名称的字符顺序排列
 
+// basic
+register([
+    new block.String('"', '"', '\\'),
+    new block.String("'", "'", '\\'),
+    new block.SignalComment("'"),
+    new block.SignalComment("rem"),
+], '.bas');
+
 // bash
 register([
     new block.String('"', '"', '\\'),
@@ -58,7 +66,7 @@ register([
 // cmd/powerShell
 register([
     new block.SignalComment('rem'),
-], '.cmd', '.ps1');
+], '.cmd', '.ps1', '.bat');
 
 // d
 register(cStyle, '.d');
@@ -86,13 +94,6 @@ register([
     new block.SignalComment('//'),
     new block.MultipleComment('/*', '*/'),
 ], '.groovy');
-
-// html
-register([
-    new block.String('"', '"'),
-    new block.String("'", "'"),
-    new block.MultipleComment('<!--', '-->'),
-], '.html', '.htm');
 
 // java
 register(cStyle, '.java');
@@ -181,6 +182,9 @@ register(cStyle, '.scala');
 // scss
 register(cStyle, '.scss');
 
+// sql
+register(cStyle, '.sql');
+
 // swift
 register([
     new block.String('"', '"', '\\'),
@@ -198,6 +202,14 @@ register([
     // 需要放在 // 之后
     new block.String("/", "/"),
 ], '.ts');
+
+// xml
+// 将 html 定义为 xml 的一个变种
+register([
+    new block.String('"', '"'),
+    new block.String("'", "'"),
+    new block.MultipleComment('<!--', '-->'),
+], '.html', '.htm', '.xml');
 
 // yaml
 register([
