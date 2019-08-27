@@ -11,6 +11,15 @@ const vsce = require('vsce');
 
 const extension = ts.createProject('tsconfig.json');
 
+const rootDir = extension.options.rootDir;
+const outDir = extension.options.outDir;
+
+// 拷贝 testdata 目录下的内容
+function copy() {
+    return gulp.src(rootDir+'/**/testdata/**/*', {base:'src'}).
+        pipe(gulp.dest(outDir))
+}
+
 // 编译当前的扩展
 async function compileExtension() {
     let s = extension.src()
@@ -22,16 +31,16 @@ async function compileExtension() {
             .pipe(await sourcemaps.write('./'))
     }
 
-    s.pipe(gulp.dest(extension.options.outDir));
+    return s.pipe(gulp.dest(outDir));
 }
 
 function clean() {
-    return del(extension.options.outDir);
+    return del(outDir);
 }
 
 function watch() {
-    gulp.watch(
-        extension.options.rootDir,
+    return gulp.watch(
+        rootDir,
         {
             delay: 500,
             queue: true,
@@ -49,8 +58,23 @@ function publish() {
     return vsce.publish();
 }
 
-exports.compile = compileExtension;
+exports.compile = gulp.series(
+    clean,
+    compileExtension,
+    copy,
+);
+
 exports.clean = clean;
+
 exports.watch = watch;
-exports.publish = gulp.series(createVSIX, publish);
-exports.package = gulp.series(compileExtension, createVSIX);
+
+exports.publish = gulp.series(
+    createVSIX,
+    publish,
+);
+
+exports.package = gulp.series(
+    compileExtension,
+    createVSIX,
+);
+
