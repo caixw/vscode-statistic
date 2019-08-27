@@ -169,26 +169,26 @@ register([
 
 // sass/less/scss
 register([
-    new block.String('"','"','\\'),
-    new block.String("'","'",'\\'),
+    new block.String('"', '"', '\\'),
+    new block.String("'", "'", '\\'),
     new block.SignalComment('//'),
-    new block.MultipleComment('/*','*/'),
+    new block.MultipleComment('/*', '*/'),
 ], '.sass', '.less', '.scss');
 
 // scala
 register([
-    new block.String('"','"','\\'),
-    new block.String('"""','"""','\\'),
+    new block.String('"', '"', '\\'),
+    new block.String('"""', '"""', '\\'),
     new block.SignalComment('//'),
-    new block.MultipleComment('/*','*/'),
+    new block.MultipleComment('/*', '*/'),
 ], '.scala');
 
 // sql
 register([
-    new block.String('"','"','\\'),
-    new block.String("'","'",'\\'),
+    new block.String('"', '"', '\\'),
+    new block.String("'", "'", '\\'),
     new block.SignalComment('//'),
-    new block.MultipleComment('/*','*/'),
+    new block.MultipleComment('/*', '*/'),
 ], '.sql');
 
 // swift
@@ -198,13 +198,13 @@ register([
     new block.SignalComment('//'),
 ], '.swift');
 
-// xml
+// xml/html/svg/xsl
 // 将 html 定义为 xml 的一个变种
 register([
     new block.String('"', '"'),
     new block.String("'", "'"),
     new block.MultipleComment('<!--', '-->'),
-], '.html', '.htm', '.xml');
+], '.html', '.htm', '.xml', '.xsl', '.xslt', '.svg');
 
 // yaml
 register([
