@@ -20,6 +20,8 @@ async function main() {
         await runTests({
             extensionDevelopmentPath,
             extensionTestsPath,
+            version: 'stable',
+            launchArgs: [extensionDevelopmentPath],
         });
 
         // 测试最低需求的版本
@@ -27,6 +29,7 @@ async function main() {
             extensionDevelopmentPath,
             extensionTestsPath,
             version: pkg.engines.vscode.slice(1),
+            launchArgs: [extensionDevelopmentPath],
         });
 
         // 测试 insiders 版本
@@ -34,6 +37,7 @@ async function main() {
             extensionDevelopmentPath,
             extensionTestsPath,
             version: 'insiders',
+            launchArgs: [extensionDevelopmentPath],
         });
     } catch (err) {
         console.error('Failed to run tests');
