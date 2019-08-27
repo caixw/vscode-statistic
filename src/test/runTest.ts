@@ -25,10 +25,14 @@ async function main() {
         });
 
         // 测试最低需求的版本
+        let minimum = pkg.engines.vscode.slice(1);
+        if (isNaN(minimum.charAt(0))) {
+            minimum = minimum.slice(1);
+        }
         await runTests({
             extensionDevelopmentPath,
             extensionTestsPath,
-            version: pkg.engines.vscode.slice(1),
+            version: minimum,
             launchArgs: [extensionDevelopmentPath],
         });
 
