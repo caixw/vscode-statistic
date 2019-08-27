@@ -3,10 +3,8 @@
 [![Build Status](https://dev.azure.com/caixw/vscode-statistic/_apis/build/status/caixw.vscode-statistic?branchName=master)](https://dev.azure.com/caixw/vscode-statistic/_build/latest?definitionId=1&branchName=master)
 [![Version](https://vsmarketplacebadge.apphb.com/version-short/caixw.statistic.svg)](https://marketplace.visualstudio.com/items?itemName=caixw.statistic)
 [![Installs](https://vsmarketplacebadge.apphb.com/installs-short/caixw.statistic.svg)](https://marketplace.visualstudio.com/items?itemName=caixw.statistic)
-[![Downloads](https://vsmarketplacebadge.apphb.com/downloads-short/caixw.statistic.svg)](https://marketplace.visualstudio.com/items?itemName=caixw.statistic)
 [![Ratings](https://vsmarketplacebadge.apphb.com/rating-star/caixw.statistic.svg)](https://marketplace.visualstudio.com/items?itemName=caixw.statistic)
 [![dependencies Status](https://david-dm.org/caixw/vscode-statistic/status.svg)](https://david-dm.org/caixw/vscode-statistic)
-[![devDependencies Status](https://david-dm.org/caixw/vscode-statistic/dev-status.svg)](https://david-dm.org/caixw/vscode-statistic?type=dev)
 
 
 代码行数统计工具

@@ -57,6 +57,8 @@ export function countContent(name: string, content: string, blocks: Array<block.
             continue;
         }
 
+        line = line.toLowerCase();
+
         if (b !== null) {
             if (b.isComment) { ret.comments++; }
 
