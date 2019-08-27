@@ -11,7 +11,7 @@ interface CountContentData {
 
 suite('Line test suite', () => {
     test('countContent', () => {
-        const data: Array<CountContentData> = [
+        const data: CountContentData[] = [
             {
                 input: 'c = 1+2',
                 output: {

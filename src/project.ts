@@ -42,69 +42,69 @@ export class Project {
      * 第一个参数为各个类型的行数信息列表，第二个参数合计的单行数据。
      */
     public async types(): Promise<message.FileTypes> {
-        const types = this.buildTypes(await this.countLines());
-        const total = this.buildTotalType(types);
+        const types = buildTypes(await this.countLines());
+        const total = buildTotalType(types);
         return {
             types,
             total,
         };
     }
+}
 
-    /**
-     * 计算 types
-     */
-    private buildTypes(lines: line.Lines[]): message.FileType[] {
-        const types = new Map<string, message.FileType>();
-        for (const l of lines) {
-            let t = types.get(l.name);
-            if (t === undefined) {
-                t = new message.FileType();
-                t.name = l.name;
-                types.set(l.name, t);
-            }
-
-            t.files++;
-            t.lines += l.lines;
-            t.blanks += l.blanks;
-            t.comments += l.comments;
-            if (t.max < l.lines) {
-                t.max = l.lines;
-            }
-            if (t.min > l.lines) {
-                t.min = l.lines;
-            }
+/**
+ * 计算 types
+ */
+function buildTypes(lines: line.Lines[]): message.FileType[] {
+    const types = new Map<string, message.FileType>();
+    for (const l of lines) {
+        let t = types.get(l.name);
+        if (t === undefined) {
+            t = new message.FileType();
+            t.name = l.name;
+            types.set(l.name, t);
         }
 
-        const ts: message.FileType[] = [];
-        for (const t of types.values()) {
-            t.avg = Math.floor(t.lines / t.files);
-            ts.push(t);
+        t.files++;
+        t.lines += l.lines;
+        t.blanks += l.blanks;
+        t.comments += l.comments;
+        if (t.max < l.lines) {
+            t.max = l.lines;
         }
-
-        return ts.sort((v1: message.FileType, v2: message.FileType) => {
-            return v2.lines - v1.lines;
-        });
+        if (t.min > l.lines) {
+            t.min = l.lines;
+        }
     }
 
-    private buildTotalType(types: message.FileType[]): message.FileType {
-        const totalType = new message.FileType();
-        totalType.name = locale.l('total');
-        for (const t of types) {
-            totalType.files += t.files;
-            totalType.lines += t.lines;
-            totalType.blanks += t.blanks;
-            totalType.comments += t.comments;
-
-            if (totalType.max < t.max) {
-                totalType.max = t.max;
-            }
-
-            if (totalType.min > t.min) {
-                totalType.min = t.min;
-            }
-        }
-        totalType.avg = Math.floor(totalType.lines / totalType.files);
-
-        return totalType;
+    const ts: message.FileType[] = [];
+    for (const t of types.values()) {
+        t.avg = Math.floor(t.lines / t.files);
+        ts.push(t);
     }
+
+    return ts.sort((v1: message.FileType, v2: message.FileType) => {
+        return v2.lines - v1.lines;
+    });
+}
+
+function buildTotalType(types: message.FileType[]): message.FileType {
+    const totalType = new message.FileType();
+    totalType.name = locale.l('total');
+    for (const t of types) {
+        totalType.files += t.files;
+        totalType.lines += t.lines;
+        totalType.blanks += t.blanks;
+        totalType.comments += t.comments;
+
+        if (totalType.max < t.max) {
+            totalType.max = t.max;
+        }
+
+        if (totalType.min > t.min) {
+            totalType.min = t.min;
+        }
+    }
+    totalType.avg = Math.floor(totalType.lines / totalType.files);
+
+    return totalType;
 }

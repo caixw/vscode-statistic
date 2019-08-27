@@ -4,7 +4,7 @@ import { runTests } from 'vscode-test';
 
 // 采用 require 可以避免 package.json 文件不在
 // tsconfig.compilerOptions.rootDir 中的编译错误；
-const config = require('../../package.json');
+const pkg = require('../../package.json');
 
 async function main() {
     try {
@@ -26,7 +26,7 @@ async function main() {
         await runTests({
             extensionDevelopmentPath,
             extensionTestsPath,
-            version: config.engines.vscode.slice(1),
+            version: pkg.engines.vscode.slice(1),
         });
 
         // 测试 insiders 版本

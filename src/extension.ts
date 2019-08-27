@@ -49,5 +49,5 @@ async function commandShow(ctx: vscode.ExtensionContext, uri: any) {
     if (undefined === selected) { // 取消操作
         return;
     }
-    webview.create(ctx, selected.uri);
+    await webview.create(ctx, selected.uri);
 }

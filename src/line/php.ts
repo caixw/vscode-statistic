@@ -3,6 +3,7 @@
 import * as block from './block';
 
 // php 的 herodoc 和 nowdoc 支持
+//
 // http://php.net/manual/zh/language.types.string.php#language.types.string.syntax.heredoc
 export class PHPDoc implements block.Block {
     readonly isComment = false;
