@@ -58,9 +58,11 @@ export class String implements Block {
     }
 
     public begin(line: string): number {
-        const pos = line.indexOf(this.beginString);
+        let pos = line.indexOf(this.beginString);
         if (pos === -1) { return 0; }
-        return pos + this.beginString.length;
+
+        pos += this.beginString.length;
+        return (pos >= line.length) ? -1 : pos;
     }
 
     public end(line: string): number {
@@ -98,9 +100,11 @@ export class SignalComment implements Block {
     }
 
     public begin(line: string): number {
-        const pos = line.indexOf(this.beginString);
+        let pos = line.indexOf(this.beginString);
         if (pos === -1) { return 0; }
-        return pos + this.beginString.length;
+
+        pos += this.beginString.length;
+        return (pos >= line.length) ? -1 : pos;
     }
 
     public end(line: string): number {
@@ -124,9 +128,11 @@ export class MultipleComment implements Block {
     }
 
     public begin(line: string): number {
-        const pos = line.indexOf(this.beginString);
+        let pos = line.indexOf(this.beginString);
         if (pos === -1) { return 0; }
-        return pos + this.beginString.length;
+
+        pos += this.beginString.length;
+        return (pos >= line.length) ? -1 : pos;
     }
 
     public end(line: string): number {
