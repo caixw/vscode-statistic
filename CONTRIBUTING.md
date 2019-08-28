@@ -21,6 +21,13 @@
 
 测试用到的文件统一放在 testdata 目录下，该目录下的内容会在编译时被复制到 out 之下，
 同时该目录下的 ts 文件不会被编译。
+测试时，可以指定一个测试用的 vscode 版本：`npm test version`，目前支持以下三种版本形式：
+- insiders insiders 版本；
+- minimum 支持的最小版本，该版本号由 package.json/engines.vscode 指定；
+- stable 最新的稳定版；
+
+如果你使用稳定版编写代码，那么你可使用 `npm test insiders` 指这运行 insiders 用于测试，
+这样可以避免测试时不能同时打开 vscode 的问题。
 
 `locale` 的命名需要参照官方的格式：
 https://code.visualstudio.com/docs/getstarted/locales#_available-locales

@@ -100,7 +100,6 @@ function parseArgs(): Options {
     return o;
 }
 
-
 main().catch((reason) => {
     console.error(reason);
     process.exit(1);
