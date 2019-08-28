@@ -10,11 +10,16 @@
 - package.nls.<`locale`>.json 为每一个语种单独一个文件；
 - src/locale/<`locale`>.ts 也是一个语种的为一个单独文件。
 
+`locale` 的命名需要参照官方的格式：
+https://code.visualstudio.com/docs/getstarted/locales#_available-locales
 
 ## 新语言
 
 系统根据 line/lang.ts 中的相关定义统计相关编程语言的注释行数信息，
 如果有需要添加新的语言类型，也可以在此文件下添加，要求按名称顺序进行注册。
+
+Block 的实现者或是初始化，如果起止符号为字母的，都应该设置为小写。
+比如 basic 的 rem 注释，用 rem 能正常解析，如果采用 REM 则会被当作普通的表达式语句。
 
 
 ## 测试
@@ -29,6 +34,5 @@
 如果你使用稳定版编写代码，那么你可使用 `npm test insiders` 指这运行 insiders 用于测试，
 这样可以避免测试时不能同时打开 vscode 的问题。
 
-`locale` 的命名需要参照官方的格式：
-https://code.visualstudio.com/docs/getstarted/locales#_available-locales
-
+每添加一种新语言，应该同时也在 test/suite/line/testdata 中添加一个对应的测试文件，
+文件名：file.<`ext`>，其中 ext 为该语言的扩展名，多个扩展名的，可自选其中一个。
