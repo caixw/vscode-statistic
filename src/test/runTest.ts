@@ -46,9 +46,11 @@ async function main() {
             launchArgs: [rootDir],
         });
     } catch (err) {
-        console.error('Failed to run tests');
-        process.exit(1);
+        throw err;
     }
 }
 
-main();
+main().catch((reason) => {
+    console.error(reason);
+    process.exit(1);
+});
