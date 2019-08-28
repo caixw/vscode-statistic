@@ -20,9 +20,11 @@ export class PascalString implements block.Block {
     }
 
     public begin(line: string): number {
-        const pos = line.indexOf(this.symbol);
+        let pos = line.indexOf(this.symbol);
         if (pos === -1) { return 0; }
-        return pos + this.symbol.length;
+
+        pos += this.symbol.length;
+        return (pos >= line.length) ? -1 : pos;
     }
 
     public end(line: string): number {
@@ -41,7 +43,7 @@ export class PascalString implements block.Block {
                 // 1 表示从转义字符之后的位置开始
                 const pp = this.end(line.slice(next + 1));
                 if (pp <= 0) { return pp; }
-                pos = pos + 1 + pp;
+                pos = next + 1 + pp;
                 return (pos >= line.length) ? -1 : pos;
             default:
                 if (!this.isEscape(line, next)) {
@@ -51,7 +53,7 @@ export class PascalString implements block.Block {
                     // 1 表示从转义字符之后的位置开始
                     const pp = this.end(line.slice(next + 1));
                     if (pp <= 0) { return pp; }
-                    pos = pos + 1 + pp;
+                    pos = next + 1 + pp;
                 }
 
                 return (pos >= line.length) ? -1 : pos;

@@ -11,11 +11,14 @@ suite('Pascal test suite', () => {
         assert.strictEqual(b.begin("012"), 0);
         assert.strictEqual(b.begin("012'456"), 4);
         assert.strictEqual(b.begin("012''56'89"), 4);
+        assert.strictEqual(b.begin("012'"), -1);
 
         assert.strictEqual(b.end("0123"), 0);
         assert.strictEqual(b.end("0123'"), -1);
         assert.strictEqual(b.end("0123'56"), 5);
-        assert.strictEqual(b.end("0123''67'8"), 8);
+        assert.strictEqual(b.end("0123''67'9"), 9);
         assert.strictEqual(b.end("0123''67'"), -1);
+        assert.strictEqual(b.end("0123'''7"), 7);
+        assert.strictEqual(b.end("'''34"), 3);
     });
 });
