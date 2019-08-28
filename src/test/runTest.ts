@@ -1,27 +1,29 @@
-import * as path from 'path';
+// SPDX-License-Identifier: MIT
 
+import * as path from 'path';
 import { runTests } from 'vscode-test';
+
+
+// 项目的根目录。即 package.json 所在的目录
+//
+// 同时作为 extensionDevelopmentPath 参数使用；
+// 同时还会将该目录的内容加载到启动的 vscode 测试用例中。
+const rootDir = path.resolve(__dirname, '../../');
+
+const extensionTestsPath = path.resolve(__dirname, './suite/index');
 
 // 采用 require 可以避免 package.json 文件不在
 // tsconfig.compilerOptions.rootDir 中的编译错误；
-const pkg = require('../../package.json');
+const pkg = require(path.resolve(rootDir,'package.json'));
 
 async function main() {
     try {
-        // The folder containing the Extension Manifest package.json
-        // Passed to `--extensionDevelopmentPath`
-        const extensionDevelopmentPath = path.resolve(__dirname, '../../');
-
-        // The path to test runner
-        // Passed to --extensionTestsPath
-        const extensionTestsPath = path.resolve(__dirname, './suite/index');
-
         // 测试当前版本
         await runTests({
-            extensionDevelopmentPath,
+            extensionDevelopmentPath:rootDir,
             extensionTestsPath,
             version: 'stable',
-            launchArgs: [extensionDevelopmentPath],
+            launchArgs: [rootDir],
         });
 
         // 测试最低需求的版本
@@ -30,18 +32,18 @@ async function main() {
             minimum = minimum.slice(1);
         }
         await runTests({
-            extensionDevelopmentPath,
+            extensionDevelopmentPath:rootDir,
             extensionTestsPath,
             version: minimum,
-            launchArgs: [extensionDevelopmentPath],
+            launchArgs: [rootDir],
         });
 
         // 测试 insiders 版本
         await runTests({
-            extensionDevelopmentPath,
+            extensionDevelopmentPath:rootDir,
             extensionTestsPath,
             version: 'insiders',
-            launchArgs: [extensionDevelopmentPath],
+            launchArgs: [rootDir],
         });
     } catch (err) {
         console.error('Failed to run tests');

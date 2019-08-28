@@ -16,6 +16,12 @@
 系统根据 line/lang.ts 中的相关定义统计相关编程语言的注释行数信息，
 如果有需要添加新的语言类型，也可以在此文件下添加，要求按名称顺序进行注册。
 
+
+## 测试
+
+测试用到的文件统一放在 testdata 目录下，该目录下的内容会在编译时被复制到 out 之下，
+同时该目录下的 ts 文件不会被编译。
+
 `locale` 的命名需要参照官方的格式：
 https://code.visualstudio.com/docs/getstarted/locales#_available-locales
 
