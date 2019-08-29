@@ -89,7 +89,7 @@ function initWebviewMessage(panel: vscode.WebviewPanel, p: project.Project) {
  */
 async function loadHTML(ctx: vscode.ExtensionContext, p: project.Project): Promise<string> {
     const htmlPath = buildResourceUri(ctx, 'resources', 'view.html').fsPath;
-    const html = await fs.readFile(htmlPath, { encoding: 'utf8' });
+    const html = await fs.readFile(htmlPath, { encoding: 'utf8', flag: 'r' });
     const linkRegexp = /(<img.+?src="|<link.+?href="|<script.+?src=")(.+?)"/g;
 
     return html.replace(/v\((.+?)\)/g, (m, $1) => {

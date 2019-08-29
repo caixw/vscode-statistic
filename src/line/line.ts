@@ -29,7 +29,7 @@ export async function count(p: string): Promise<Lines> {
         name = path.basename(p);
     }
 
-    const content = (await fs.readFile(p, { encoding: 'utf8' }));
+    const content = (await fs.readFile(p, { encoding: 'utf8', flag: 'r' }));
     return countContent(name, content, blocks);
 }
 
@@ -96,9 +96,9 @@ export function countContent(name: string, content: string, blocks: Array<block.
  */
 function matchLine(line: string, bs: Array<block.Block>): [null | block.Block, boolean] {
     if (line.length > lineMaxLength) { // 可能是压缩的 JS 文件
-        return [null,false];
+        return [null, false];
     }
-    
+
     for (const bb of bs) {
         const start = bb.begin(line);
         if (start === 0) {
