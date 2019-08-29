@@ -130,6 +130,6 @@ suite('Line test suite', () => {
 
 async function readResult(dir: string, file: string): Promise<Object> {
     const p = path.join(dir, 'result', file + '.json');
-    const content = await fs.readFile(p, { encoding: 'utf8', flag: 'r' });
+    const content = await fs.readFile(p, { encoding: 'utf8' });
     return JSON.parse(content);
 }
