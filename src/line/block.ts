@@ -1,17 +1,18 @@
 // SPDX-License-Identifier: MIT
 
+export enum BlockType {
+    string, // 字符串
+    signalComment, // 单行注释
+    multipleComment, // 多行注释
+}
+
 /**
  * Block 定义了在文件中查找指定功能代码块的功能
  *
  * 我们只需要统计注释行，所以 Block 一般用于定义特定语言的注释块查找功能。
  */
 export interface Block {
-    /**
-     * 是否为注释块
-     *
-     * 有可能是字符串，则需要返回 false。
-     */
-    readonly isComment: boolean;
+    readonly type: BlockType;
 
     /**
      * 检测当前行中是否包含当前代码块的起始内容
@@ -42,7 +43,7 @@ export interface Block {
  * 因为字符串中可能包含注释代码的起止符，需要过滤这些内容。
  */
 export class String implements Block {
-    readonly isComment = false;
+    readonly type = BlockType.string;
     private readonly escape?: string;
     private readonly beginString: string;
     private readonly endString: string;
@@ -92,7 +93,7 @@ export class String implements Block {
  * 定义了查找单行注释的 Block 接口实现
  */
 export class SignalComment implements Block {
-    readonly isComment = true;
+    readonly type = BlockType.signalComment;
     private readonly beginString: string;
 
     constructor(begin: string) {
@@ -118,7 +119,7 @@ export class SignalComment implements Block {
  * 适用大部分语言，但是不支持像 swift 等支持嵌套注释。
  */
 export class MultipleComment implements Block {
-    readonly isComment = true;
+    readonly type = BlockType.multipleComment;
     private readonly beginString: string;
     private readonly endString: string;
 

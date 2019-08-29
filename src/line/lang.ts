@@ -36,8 +36,7 @@ const cStyle: Array<block.Block> = [
 
 // basic
 register([
-    new block.String('"', '"', '\\'),
-    new block.String("'", "'", '\\'),
+    new pascal.PascalString('"'),
     new block.SignalComment("'"),
     new block.SignalComment("rem"),
 ], '.bas');
@@ -45,7 +44,8 @@ register([
 // bash
 register([
     new block.String('"', '"', '\\'),
-    new block.String("`", "`", '\\'),
+    new block.String('`', '`', '\\'),
+    new block.String("'", "'"),
     new block.SignalComment('#'),
 ], '.sh', '.bash');
 
@@ -53,18 +53,21 @@ register([
 register(cStyle, '.cs');
 
 // c/c++
-register(cStyle, '.c', '.cpp', '.cxx', '.h', '.hpp');
+register(cStyle, '.c', '.cpp', '.cxx', '.h', '.hpp', '.hxx');
 
 // css
 register([
-    new block.String('"', '"'),
-    new block.String("'", "'"),
+    new block.String('"', '"', '\\'),
+    new block.String("'", "'", '\\'),
     new block.MultipleComment('/*', '*/'),
 ], '.css');
 
 // cmd/powerShell
 register([
+    new block.String('"', '"', '^'),
+    new block.String('`', '`', '^'),
     new block.SignalComment('rem'),
+    new block.SignalComment('::'),
 ], '.cmd', '.ps1', '.bat');
 
 // d
@@ -130,7 +133,6 @@ register([
     new block.String('"', '"', '\\'),
     new block.String("'", "'", '\\'),
     new block.SignalComment('#'),
-    new block.MultipleComment('\n=pod\n', '\n=cut\n'),
 ], '.perl', '.prl', '.pl');
 
 // php
@@ -156,7 +158,6 @@ register([
     new block.String('"', '"', '\\'),
     new block.String("'", "'", '\\'),
     new block.SignalComment('#'),
-    new block.MultipleComment('\n=begin\n', '\n=end\n'),
 ], '.rb');
 
 // rust
@@ -187,7 +188,7 @@ register([
 register([
     new block.String('"', '"', '\\'),
     new block.String("'", "'", '\\'),
-    new block.SignalComment('//'),
+    new block.SignalComment('--'),
     new block.MultipleComment('/*', '*/'),
 ], '.sql');
 
@@ -208,7 +209,7 @@ register([
 
 // yaml
 register([
-    new block.String('"', '"', '\\'),
-    new block.String("'", "'", '\\'),
+    new block.String('"', '"'),
+    new block.String("'", "'"),
     new block.SignalComment('#'),
 ], '.yaml', '.yml');

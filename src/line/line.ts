@@ -7,6 +7,11 @@ import * as lang from './lang';
 
 const fs = filesystem.promises;
 
+// 当一行的长度超过此值，不会再分析该行的内容。
+//
+// 主要防止类似于压缩的 js 文件，几 K 的内容集于一行。
+const lineMaxLength = 500;
+
 /**
  * 统计该文件中的行数信息
  *
@@ -51,7 +56,7 @@ export function countContent(name: string, content: string, blocks: Array<block.
         if (line.length === 0) {
             ret.blanks++;
 
-            if (b !== null && b.isComment) {
+            if ((b !== null) && (b.type !== block.BlockType.string)) {
                 ret.comments++;
             }
             continue;
@@ -60,7 +65,7 @@ export function countContent(name: string, content: string, blocks: Array<block.
         line = line.toLowerCase();
 
         if (b !== null) {
-            if (b.isComment) { ret.comments++; }
+            if (b.type !== block.BlockType.string) { ret.comments++; }
 
             const end = b.end(line);
             if (end === 0) { // 当前不存在，需要找下一行
@@ -90,7 +95,7 @@ export function countContent(name: string, content: string, blocks: Array<block.
  * 第二个返回参数表示匹配的 Block 是否为注释代码块。
  */
 function matchLine(line: string, bs: Array<block.Block>): [null | block.Block, boolean] {
-    if (line.length > 500) { // 可能是压缩的 JS 文件
+    if (line.length > lineMaxLength) { // 可能是压缩的 JS 文件
         return [null,false];
     }
     
@@ -101,10 +106,14 @@ function matchLine(line: string, bs: Array<block.Block>): [null | block.Block, b
         }
 
         if (start === -1) {
-            return [bb, bb.isComment];
+            if (bb.type === block.BlockType.signalComment) {
+                return [null, true];
+            }
+
+            return [bb, (bb.type !== block.BlockType.string)];
         }
 
-        let matched = bb.isComment;
+        let matched = bb.type !== block.BlockType.string;
         line = line.slice(start);
 
         const end = bb.end(line);

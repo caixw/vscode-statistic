@@ -6,7 +6,7 @@ import * as block from './block';
 //
 // http://php.net/manual/zh/language.types.string.php#language.types.string.syntax.heredoc
 export class PHPDoc implements block.Block {
-    readonly isComment = false;
+    readonly type = block.BlockType.signalComment;
     private token1?: string;
     private token2?: string;
 

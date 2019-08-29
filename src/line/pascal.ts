@@ -8,7 +8,7 @@ import * as block from './block';
  * 以上字符串中间的 '' 即为转议
  */
 export class PascalString implements block.Block {
-    readonly isComment = false;
+    readonly type = block.BlockType.string;
     private readonly symbol: string;
 
     constructor(symbol: string) {

@@ -1,0 +1,9 @@
+<!-- SPDX-License-Identifier: MIT -->
+
+<!--
+ * 这是一段非 ascii 字符
+ -->
+
+<xml attr="<!-- val -->">
+<!CDATA[[hello world]]
+</xml>

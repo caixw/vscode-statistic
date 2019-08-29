@@ -13,6 +13,7 @@
 `locale` 的命名需要参照官方的格式：
 https://code.visualstudio.com/docs/getstarted/locales#_available-locales
 
+
 ## 新语言
 
 系统根据 line/lang.ts 中的相关定义统计相关编程语言的注释行数信息，
@@ -34,5 +35,7 @@ Block 的实现者或是初始化，如果起止符号为字母的，都应该�
 如果你使用稳定版编写代码，那么你可使用 `npm test insiders` 指这运行 insiders 用于测试，
 这样可以避免测试时不能同时打开 vscode 的问题。
 
-每添加一种新语言，应该同时也在 test/suite/line/testdata 中添加一个对应的测试文件，
-文件名：file.<`ext`>，其中 ext 为该语言的扩展名，多个扩展名的，可自选其中一个。
+每添加一种新语言，应该同时也在 test/suite/line/testdata 和 test/suite/line/testdata/result
+中各添加一个对应的测试文件，文件名分别为：file.<`ext`> 和 file.<`ext`>.json，
+其中 ext 为该语言的扩展名，多个扩展名的，可自选其中一个。
+file.<`ext`> 表示需要测试的语言文件内容，file.<`ext`>.json 表示分析 file.<`ext`> 的结果数据。

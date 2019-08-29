@@ -1,8 +1,13 @@
 // SPDX-License-Identifier: MIT
 
 import * as assert from 'assert';
+import * as filesystem from 'fs';
+import * as path from 'path';
+import * as glob from 'glob';
 import * as line from '../../../line/line';
 import * as lang from '../../../line/lang';
+
+const fs = filesystem.promises;
 
 interface CountContentData {
     input: string;
@@ -108,4 +113,23 @@ suite('Line test suite', () => {
             }
         }
     });
+
+    const dir = path.resolve(__dirname, 'testdata');
+    const files = glob.sync(path.join(dir, 'file.*'));
+    assert.ok(files.length > 0);
+
+    for (const file of files) {
+        const name = path.basename(file);
+        test(`count ${name}`, async () => {
+            const lines = await line.count(file);
+            const result = await readResult(dir, name);
+            assert.deepStrictEqual(lines, result, `${name}`);
+        });
+    }
 });
+
+async function readResult(dir: string, file: string): Promise<Object> {
+    const p = path.join(dir, 'result', file + '.json');
+    const content = await fs.readFile(p, { encoding: 'utf8' });
+    return JSON.parse(content);
+}
