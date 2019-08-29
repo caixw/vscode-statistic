@@ -29,7 +29,7 @@ export async function count(p: string): Promise<Lines> {
         name = path.basename(p);
     }
 
-    const content = (await fs.readFile(p, { encoding: 'utf8' }));
+    const content = (await fs.readFile(p, { encoding: 'utf8', flag: 'r' }));
     return countContent(name, content, blocks);
 }
 
