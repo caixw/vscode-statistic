@@ -38,4 +38,7 @@ Block 的实现者或是初始化，如果起止符号为字母的，都应该�
 每添加一种新语言，应该同时也在 test/suite/line/testdata 和 test/suite/line/testdata/result
 中各添加一个对应的测试文件，文件名分别为：file.<`ext`> 和 file.<`ext`>.json，
 其中 ext 为该语言的扩展名，多个扩展名的，可自选其中一个。
-file.<`ext`> 表示需要测试的语言文件内容，file.<`ext`>.json 表示分析 file.<`ext`> 的结果数据。
+
+file.<`ext`> 表示需要测试的语言文件内容
+一般是一段简短的输出 hello world 的程序代码，配以该语言的各类注释语句和字符串内容。
+file.<`ext`>.json 表示分析 file.<`ext`> 的结果数据。

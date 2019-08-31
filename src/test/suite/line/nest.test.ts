@@ -46,4 +46,15 @@ suite('Nest test suite', () => {
         assert.strictEqual(b.end("01/*/*/78"), 0); // 不存在
         assert.strictEqual(b.depth, 2);
     });
+
+    test('NestComment 6', () => {
+        const b = new nest.MultipleComment("/***", "*/");
+
+        assert.strictEqual(b.begin("01/***67"), 6);
+        assert.strictEqual(b.end("01/***/78"), 0); // 不存在
+        assert.strictEqual(b.depth, 1);
+
+        assert.strictEqual(b.end("01***/67"), 0);
+        assert.strictEqual(b.end("01***/67"), 6);
+    });
 });

@@ -2,6 +2,7 @@
 
 import * as block from './block';
 import * as pascal from './pascal';
+import * as nest from './nest';
 import * as php from './php';
 
 /**
@@ -72,6 +73,16 @@ register([
 
 // d
 register(cStyle, '.d');
+
+// dart
+register([
+    new block.String("'", "'", '\\'),
+    new block.String('"', '"', '\\'),
+    new block.String("'''", "'''", '\\'),
+    new block.String('"""', '"""', '\\'),
+    new block.SignalComment('//'),
+    new block.MultipleComment('/*', '*/'),
+], '.dart');
 
 // erlang
 register([
@@ -197,6 +208,7 @@ register([
     new block.String('"', '"', '\\'),
     new block.String("`", "`", '\\'),
     new block.SignalComment('//'),
+    new nest.MultipleComment('/*', '*/'),
 ], '.swift');
 
 // xml/html/svg/xsl

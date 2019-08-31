@@ -2,6 +2,9 @@
 
 import * as block from './block';
 
+/**
+ * 可嵌套的多行注释
+ */
 export class MultipleComment implements block.Block {
     public readonly type = block.BlockType.multipleComment;
     private readonly beginString: string;
@@ -45,7 +48,7 @@ export class MultipleComment implements block.Block {
                 }
 
                 this.depth--;
-                const nxt =  pos + this.endString.length;
+                const nxt = pos + this.endString.length;
                 let pp = this.end(line.slice(nxt));
                 if (pp <= 0) { return pp; }
 
