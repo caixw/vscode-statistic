@@ -6,8 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.5.1-preview]
+
 ### Added
-- 以当前区域格式显示数值；
+- 以当前区域格式显示数值以及表格的字符串排序；
 
 ## [0.5.0-preview]
 
