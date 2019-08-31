@@ -6,16 +6,25 @@ import { en } from '../../../locale/en';
 import { zhCN } from '../../../locale/zh-cn';
 
 suite('Locale test suite', () => {
-    test('locale', () => {
+    test('locale en', () => {
         setLocale('en');
         init();
         assert.strictEqual('en', id());
         assert.strictEqual(l('name'), en.name);
+    });
 
-
+    test('locale zh-cn', () => {
         setLocale('zh-cn');
         init();
         assert.strictEqual('zh-cn', id());
+        assert.strictEqual(l('name'), zhCN.name);
+        assert.strictEqual(l('__not_exists__'), '__not_exists__');
+    });
+
+    test('locale zh', () => {
+        setLocale('zh');
+        init();
+        assert.strictEqual('zh', id());
         assert.strictEqual(l('name'), zhCN.name);
         assert.strictEqual(l('__not_exists__'), '__not_exists__');
     });

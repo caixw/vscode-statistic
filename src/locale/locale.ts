@@ -10,6 +10,7 @@ import { zhTW } from './zh-tw';
 // https://code.visualstudio.com/docs/getstarted/locales#_available-locales
 const locales = new Map<string, Locale>([
     ['en', en],
+    ['zh', zhCN],
     ['zh-cn', zhCN],
     ['zh-tw', zhTW],
 ]);
@@ -50,10 +51,20 @@ export function init() {
     const config = JSON.parse(cfg);
     const id = (<string>config.locale).toLowerCase();
 
-    const l = locales.get(id);
+    let l = locales.get(id);
     if (l === undefined) {
-        console.warn('无法获取 ' + id + ' 的本地化内容，采用默认值！');
-        return;
+        const index = id.indexOf('-');
+        if (index <= 0) {
+            console.warn(`无法获取 ${id} 的本地化内容，采用默认值！`);
+            return;
+        }
+
+        const parent = id.slice(0, index);
+        l = locales.get(parent);
+        if (l === undefined) {
+            console.warn(`无法获取 ${id} 和 ${parent} 的本地化内容，采用默认值！`);
+            return;
+        }
     }
 
     locale = l;
