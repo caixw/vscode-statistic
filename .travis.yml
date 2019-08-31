@@ -14,6 +14,6 @@ install:
 script:
   - |
     echo ">>> Compile vscode-test"
-    yarn && yarn compile minimum,stable
+    yarn && yarn compile && yarn test minimum,stable
     echo ">>> Compiled vscode-test"
 cache: yarn
