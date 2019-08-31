@@ -32,7 +32,7 @@
 - 单项目中，可以右键点击项目中的任何文件均会出现`显示项目统计`。
 
 
-[![screenshot](./resources/screenshot.png)](./resources/screenshot.png)
+[![screenshot](./resources/screenshot.gif)](./resources/screenshot.gif)
 
 
 ### 版权
