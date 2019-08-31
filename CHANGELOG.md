@@ -6,6 +6,9 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+### Added
+- 以当前区域格式显示数值；
+
 ## [0.5.0-preview]
 
 ### Added

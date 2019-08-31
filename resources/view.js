@@ -2,7 +2,22 @@
 
 'use strict';
 
+let numberFormat = null;
+
+function fmtNumber(num) {
+    if (numberFormat) {
+        return numberFormat.format(num);
+    }
+
+    return num;
+}
+
 window.addEventListener('load', (e) => {
+    const locale = document.querySelector('html').getAttribute('lang');
+    if (locale) {
+        numberFormat = new Intl.NumberFormat(locale);
+    }
+
     // 页面加载完之后，开始请求数据。
     const vscode = acquireVsCodeApi();
 
@@ -51,23 +66,30 @@ function end() {
 
 function appendFileTypeToTr(tr, type) {
     tr.appendChild(document.createElement('th')).append(type.name);
-    tr.appendChild(document.createElement('td')).append(type.files);
-    tr.appendChild(document.createElement('td')).append(type.lines);
-    tr.appendChild(document.createElement('td')).append(type.comments);
-    tr.appendChild(document.createElement('td')).append(type.blanks);
-    tr.appendChild(document.createElement('td')).append(type.avg);
-    tr.appendChild(document.createElement('td')).append(type.max);
-    tr.appendChild(document.createElement('td')).append(type.min);
+    appendValueToTr(tr, type.files);
+    appendValueToTr(tr, type.lines);
+    appendValueToTr(tr, type.comments);
+    appendValueToTr(tr, type.blanks);
+    appendValueToTr(tr, type.avg);
+    appendValueToTr(tr, type.max);
+    appendValueToTr(tr, type.min);
+}
+
+function appendValueToTr(tr, value) {
+    const elem = tr.appendChild(document.createElement('td'));
+    elem.append(fmtNumber(value));
+    elem.setAttribute('data-value', value);
 }
 
 /**
  * 对所有的 table 元素添加排序功能
  * 
- * 目前支持在 thead>th 上使用以下三种自定义功能：
- * - data-asc 表示当前列为升序排列，只允许在一列使用；
+ * 目前支持在 thead>th 上使用以下几种自定义功能：
+ * - data-asc 表示当前列为升序排列，可手动指一列；
  * - data-type 表示该列的值类型，可以是 string 和 number，
  *   默认为 number，该属性会影响排序方式；
  * - data-index 由代码自动生成，无需也不能人工干预；
+ * - data-value 用于排序的值；
  */
 function initSortTable() {
     const tables = document.querySelectorAll('table');
@@ -117,8 +139,8 @@ function sortTable(table, colIndex, asc, cmp) {
 
 
     rows = rows.sort((row1, row2) => {
-        const v1 = row1.cells.item(colIndex).innerHTML.toLowerCase();
-        const v2 = row2.cells.item(colIndex).innerHTML.toLowerCase();
+        const v1 = row1.cells.item(colIndex).getAttribute('data-value').toLowerCase();
+        const v2 = row2.cells.item(colIndex).getAttribute('data-value').toLowerCase();
 
         if (asc) {
             return cmp(v1, v2);
