@@ -77,4 +77,3 @@ exports.package = gulp.series(
     compileExtension,
     createVSIX,
 );
-

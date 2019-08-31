@@ -37,6 +37,7 @@ const ignoreFiles: string[] = [
     // 特定语言下需要过滤的文件
     'package-lock.json',
     'go.sum',
+    '.vscodeignore',
 ];
 
 // 不能忽略的文件或是扩展名，权限低于 ignoreFiles
