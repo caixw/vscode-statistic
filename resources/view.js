@@ -2,21 +2,8 @@
 
 'use strict';
 
-let numberFormat = null;
-
-function fmtNumber(num) {
-    if (numberFormat) {
-        return numberFormat.format(num);
-    }
-
-    return num;
-}
-
 window.addEventListener('load', (e) => {
-    const locale = document.querySelector('html').getAttribute('lang');
-    if (locale) {
-        numberFormat = new Intl.NumberFormat(locale);
-    }
+    initLocale();
 
     // 页面加载完之后，开始请求数据。
     const vscode = acquireVsCodeApi();
@@ -65,7 +52,10 @@ function end() {
 }
 
 function appendFileTypeToTr(tr, type) {
-    tr.appendChild(document.createElement('th')).append(type.name);
+    const th = tr.appendChild(document.createElement('th'))
+    th.append(type.name);
+    th.setAttribute('data-value', type.name);
+
     appendValueToTr(tr, type.files);
     appendValueToTr(tr, type.lines);
     appendValueToTr(tr, type.comments);
@@ -79,6 +69,29 @@ function appendValueToTr(tr, value) {
     const elem = tr.appendChild(document.createElement('td'));
     elem.append(fmtNumber(value));
     elem.setAttribute('data-value', value);
+}
+
+let locale = 'en';
+let collator = null;
+let numberFormat = null;
+
+/**
+ * 根据 html.lang 属性初始化当前的区域信息。
+ */
+function initLocale() {
+    const locale = document.querySelector('html').getAttribute('lang');
+    if (locale) {
+        numberFormat = new Intl.NumberFormat(locale);
+        collator = new Intl.Collator(locale);
+    }
+}
+
+function fmtNumber(num) {
+    if (numberFormat) {
+        return numberFormat.format(num);
+    }
+
+    return num;
 }
 
 /**
@@ -159,5 +172,5 @@ function numberCompare(v1, v2) {
 }
 
 function stringCompare(v1, v2) {
-    return v1.localeCompare(v2);
+    return collator.compare(v1, v2);
 }
