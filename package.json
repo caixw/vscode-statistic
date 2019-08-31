@@ -78,22 +78,22 @@
         "@types/glob": "^7.1.1",
         "@types/mime-types": "^2.1.0",
         "@types/mocha": "^5.2.6",
-        "@types/node": "^10.12.21",
+        "@types/node": "^10.14.17",
         "@types/vscode": "^1.35.0",
-        "del": "^5.0.0",
+        "del": "^5.1.0",
         "glob": "^7.1.4",
         "gulp": "^4.0.2",
         "gulp-cached": "^1.1.1",
         "gulp-sourcemaps": "^2.6.5",
         "gulp-typescript": "^5.0.1",
         "mocha": "^6.1.4",
-        "tslint": "^5.12.1",
-        "typescript": "^3.3.1",
+        "tslint": "^5.19.0",
+        "typescript": "^3.6.2",
         "vsce": "^1.66.0",
         "vscode-test": "^1.0.2"
     },
     "dependencies": {
-        "ignore": "^5.1.2",
+        "ignore": "^5.1.4",
         "mime-types": "^2.1.24"
     }
 }
