@@ -5,12 +5,14 @@ import * as path from 'path';
 
 // 需要被忽略的文件或是扩展名
 const ignoreFiles: string[] = [
+    // 图片
     '.jpg', '.jpeg',
     '.png',
     '.bmp',
     '.gif',
     '.ico', '.icon',
 
+    // 文档
     '.pdf',
     '.doc',
     '.docx',
@@ -20,19 +22,24 @@ const ignoreFiles: string[] = [
     '.wps',
     '.odf',
 
+    // 压缩
     '.zip',
     '.rar',
     '.gzip',
     '.7z',
 
+    // 可执行文件
     '.exe',
     '.so',
     '.a',
     '.lib',
+    '.dll',
 
+    // 特定的平台或软件相关
     '.DS_Store',
     '.swp',
     '.lock',
+    '.vsix',
 
     // 特定语言下需要过滤的文件
     'package-lock.json',
