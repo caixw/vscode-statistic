@@ -51,14 +51,14 @@ const ignoreFiles: string[] = [
 const files: string[] = [
     // 编程语言
     '.coffee',
-    '.cpp', '.cc', '.c', '.h', '.hpp', 'cxx',
+    '.cpp', '.cc', '.c', '.h', '.hpp', '.cxx', '.hxx',
     '.cs',
     '.cmd',
     '.d',
     '.erl', '.hrl',
     '.go',
     '.java', '.scala', '.kt', '.groovy',
-    '.js', '.ts', '.dart',
+    '.js', '.mjs', '.ts', '.dart',
     '.lua',
     '.pas', '.pp',
     '.perl', '.prl', '.pl',

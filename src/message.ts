@@ -25,12 +25,7 @@ export enum MessageType {
 
 export interface Message {
     type: MessageType;
-    data?: FileTypes;
-}
-
-export interface FileTypes {
-    types: Array<FileType>;
-    total: FileType;
+    data?: FileType[];
 }
 
 /**
@@ -44,5 +39,4 @@ export class FileType {
     comments: number = 0;
     max: number = 0;
     min: number = Number.POSITIVE_INFINITY;
-    avg: number = 0;
 }

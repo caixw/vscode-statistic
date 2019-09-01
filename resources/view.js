@@ -15,40 +15,107 @@ window.addEventListener('load', (e) => {
     initSortTable();
 });
 
-window.addEventListener('message', (e) => {
+window.addEventListener('message', async (e) => {
     const msg = e.data;
     switch (msg.type) {
         case 'file':
-            appendFileTypes(msg.data);
+            await appendFileTypes(msg.data);
             break;
         case 'end':
-            end();
+            end(msg.data);
             break;
         default:
             console.error(`无效的消息类型${msg.type}`);
     }
 });
 
-function appendFileTypes(types) {
-    if (types.types.length === 0) {
+async function appendFileTypes(types) {
+    if (types.length === 0) {
         document.querySelector('#file-types>.no-data').style.display = 'block';
         document.querySelector('#file-types>table').style.display = 'none';
         return;
     }
 
     const table = document.querySelector('#file-types>table');
-
     const tbody = table.querySelector('tbody');
-    for (const line of types.types) {
-        const tr = tbody.appendChild(document.createElement('tr'));
-        appendFileTypeToTr(tr, line);
+    for (const type of types) {
+        appendFiletypeToBody(tbody, type);
     }
-
-    appendFileTypeToTr(table.querySelector('tfoot>tr'), types.total);
 }
 
-function end() {
-    // TODO
+function end(total) {
+    const trs = document.querySelectorAll('#file-types>table>tbody>tr');
+    if (trs.length <= 0) {
+        // TODO
+        return;
+    }
+
+    const obj = {
+        files: 0,
+        lines: 0,
+        comments: 0,
+        blanks: 0,
+        max: 0,
+        min: Number.POSITIVE_INFINITY,
+        avg: 0,
+    };
+
+    for(const tr of trs) {
+        const tds = tr.querySelectorAll('td');
+        obj.files += getValue(tds[0]);
+        obj.lines += getValue(tds[1]);
+        obj.comments += getValue(tds[2]);
+        obj.blanks += getValue(tds[3]);
+
+        const max = getValue(tds[5]);
+        if (max > obj.max) {
+            obj.max = max;
+        }
+        const min = getValue(tds[6]);
+        if (min < obj.min) {
+            obj.min = min;
+        }
+    }
+    obj.avg = Math.floor(obj.lines / obj.files);
+
+    document.querySelector('#files').innerHTML = fmtNumber(obj.files);
+    document.querySelector('#lines').innerHTML = fmtNumber(obj.lines);
+    document.querySelector('#comments').innerHTML = fmtNumber(obj.comments);
+    document.querySelector('#blanks').innerHTML = fmtNumber(obj.blanks);
+    document.querySelector('#avg').innerHTML = fmtNumber(obj.avg);
+    document.querySelector('#max').innerHTML = fmtNumber(obj.max);
+    document.querySelector('#min').innerHTML = fmtNumber(obj.min);
+}
+
+function getValue(td) {
+    if (!td) {
+        throw new Error('td === undefined');
+    }
+    return parseInt(td.getAttribute('data-value'));
+}
+
+function appendFiletypeToBody(tbody, type) {
+    const th = tbody.querySelector(`th[data-value="${type.name}`)
+    if (!th) {
+        const tr = tbody.appendChild(document.createElement('tr'));
+        appendFileTypeToTr(tr, type);
+        return;
+    }
+
+    const tds = th.parentNode.querySelectorAll('td');
+    setValueOfTd(tds[0], type.files);
+    setValueOfTd(tds[1], type.lines);
+    setValueOfTd(tds[2], type.comments);
+    setValueOfTd(tds[3], type.blanks);
+    appendValueToTr(tr, Math.floor(type.lines / type.files));
+
+    if (tds[5].getAttribute('data-value') < type.max) {
+        setValueOfTd(tds[5], type.max);
+    }
+
+    if (tds[6].getAttribute('data-value') > type.min) {
+        setValueOfTd(tds[6], type.min);
+    }
 }
 
 function appendFileTypeToTr(tr, type) {
@@ -60,9 +127,17 @@ function appendFileTypeToTr(tr, type) {
     appendValueToTr(tr, type.lines);
     appendValueToTr(tr, type.comments);
     appendValueToTr(tr, type.blanks);
-    appendValueToTr(tr, type.avg);
+    appendValueToTr(tr, Math.floor(type.lines / type.files));
     appendValueToTr(tr, type.max);
     appendValueToTr(tr, type.min);
+}
+
+function setValueOfTd(td, value) {
+    let v = parseInt(td.getAttribute('data-value'));
+    v += value;
+
+    td.setAttribute('data-value', v);
+    td.innerHTML = fmtNumber(v);
 }
 
 function appendValueToTr(tr, value) {
@@ -102,7 +177,6 @@ function fmtNumber(num) {
  * - data-type 表示该列的值类型，可以是 string 和 number，
  *   默认为 number，该属性会影响排序方式；
  * - data-index 由代码自动生成，无需也不能人工干预；
- * - data-value 用于排序的值；
  */
 function initSortTable() {
     const tables = document.querySelectorAll('table');

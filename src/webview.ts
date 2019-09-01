@@ -5,7 +5,6 @@ import * as path from 'path';
 import * as locale from './locale/locale';
 import * as filesystem from 'fs';
 import * as project from './project';
-import * as message from './message';
 
 const fs = filesystem.promises;
 
@@ -45,9 +44,8 @@ export async function create(ctx: vscode.ExtensionContext, uri: vscode.Uri) {
         dark: vscode.Uri.file(darkIcon),
     };
 
-    const p = new project.Project(folder.uri.fsPath);
+    const p = new project.Project(folder.uri.fsPath, panel);
     panel.webview.html = await loadHTML(ctx, p);
-    initWebviewMessage(panel, p);
 
     panel.onDidDispose(() => {
         panel = undefined;
@@ -55,27 +53,6 @@ export async function create(ctx: vscode.ExtensionContext, uri: vscode.Uri) {
     }, null, ctx.subscriptions);
 
     views.set(folder.name, panel);
-}
-
-// 初始化 webview 的消息通讯机制
-function initWebviewMessage(panel: vscode.WebviewPanel, p: project.Project) {
-    panel.webview.onDidReceiveMessage(async (e) => {
-        const msg = e as message.Message;
-
-        switch (msg.type) {
-            case message.MessageType.refresh:
-                message.send(panel.webview, {
-                    type: message.MessageType.file,
-                    data: await p.types(),
-                });
-
-                // 当前仅有一条消息可发送，发送完就结束内容。
-                message.send(panel.webview, { type: message.MessageType.end });
-                break;
-            default:
-                console.error(`无法处理的消息类型：${msg.type}`);
-        }
-    });
 }
 
 /**

@@ -54,7 +54,7 @@ register([
 register(cStyle, '.cs');
 
 // c/c++
-register(cStyle, '.c', '.cpp', '.cxx', '.h', '.hpp', '.hxx');
+register(cStyle, '.c', '.cc', '.cpp', '.cxx', '.h', '.hpp', '.hxx');
 
 // css
 register([

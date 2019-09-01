@@ -5,6 +5,10 @@ import * as locale from './locale/locale';
 import * as vcs from './vcs/vcs';
 import * as message from './message';
 import * as line from './line/line';
+import * as vscode from 'vscode';
+import { totalmem } from 'os';
+
+const size = 1000;
 
 /**
  * 项目的统计信息
@@ -13,47 +17,59 @@ export class Project {
     vcs: vcs.VCS;
     name: string;
     path: string;
+    panel: vscode.WebviewPanel;
 
     /**
      * 构造函数
      * @param p 项目地址
      */
-    constructor(p: string) {
+    constructor(p: string, panel: vscode.WebviewPanel) {
         this.vcs = vcs.New(p);
         this.path = p;
         this.name = path.basename(p);
+        this.panel = panel;
+
+        panel.webview.onDidReceiveMessage(async (e) => {
+            const msg = e as message.Message;
+            switch (msg.type) {
+                case message.MessageType.refresh:
+                    await this.post();
+                    break;
+                default:
+                    throw new Error(`无法处理的消息类型：${msg.type}`);
+            }
+        });
     }
 
     /**
-     * 加载项目下的每一个文件的统计信息
+     * 发送内容到 webview
      */
-    private async countLines(): Promise<line.Lines[]> {
+    public async post() {
         const files = await this.vcs.files();
 
-        return (await Promise.all(files.map((path) => {
-            return line.count(path);
-        })));
-    }
+        for (let i = 0; i < files.length; i += size) {
+            let end = i + size;
+            if (end > files.length) { end = files.length; }
 
-    /**
-     * 获取各类文件的行数信息
-     * 
-     * @returns 返回为一个 Promise，附加一个 tuple，
-     * 第一个参数为各个类型的行数信息列表，第二个参数合计的单行数据。
-     */
-    public async types(): Promise<message.FileTypes> {
-        const types = buildTypes(await this.countLines());
-        const total = buildTotalType(types);
-        return {
-            types,
-            total,
-        };
+            const list = files.slice(i, end);
+            const lines = (await Promise.all(list.map((path) => {
+                return line.count(path);
+            })));
+
+            const types = buildTypes(lines);
+
+            message.send(this.panel.webview, {
+                type: message.MessageType.file,
+                data: types,
+            });
+        } // end for
+
+        message.send(this.panel.webview, {
+            type: message.MessageType.end,
+        });
     }
 }
 
-/**
- * 计算 types
- */
 function buildTypes(lines: line.Lines[]): message.FileType[] {
     const types = new Map<string, message.FileType>();
     for (const l of lines) {
@@ -78,33 +94,7 @@ function buildTypes(lines: line.Lines[]): message.FileType[] {
 
     const ts: message.FileType[] = [];
     for (const t of types.values()) {
-        t.avg = Math.floor(t.lines / t.files);
         ts.push(t);
     }
-
-    return ts.sort((v1: message.FileType, v2: message.FileType) => {
-        return v2.lines - v1.lines;
-    });
-}
-
-function buildTotalType(types: message.FileType[]): message.FileType {
-    const totalType = new message.FileType();
-    totalType.name = locale.l('total');
-    for (const t of types) {
-        totalType.files += t.files;
-        totalType.lines += t.lines;
-        totalType.blanks += t.blanks;
-        totalType.comments += t.comments;
-
-        if (totalType.max < t.max) {
-            totalType.max = t.max;
-        }
-
-        if (totalType.min > t.min) {
-            totalType.min = t.min;
-        }
-    }
-    totalType.avg = Math.floor(totalType.lines / totalType.files);
-
-    return totalType;
+    return ts;
 }
