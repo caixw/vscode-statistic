@@ -1,12 +1,10 @@
 // SPDX-License-Identifier: MIT
 
 import * as path from 'path';
-import * as locale from './locale/locale';
 import * as vcs from './vcs/vcs';
 import * as message from './message';
 import * as line from './line/line';
 import * as vscode from 'vscode';
-import { totalmem } from 'os';
 
 const size = 1000;
 

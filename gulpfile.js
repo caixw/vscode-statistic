@@ -23,6 +23,7 @@ function copy() {
 
 function compileWebview() {
     let s = webview.src()
+        .pipe(cached('webview'))
 
     if (webview.options.sourceMap) {
         s = s.pipe(sourcemaps.init())
@@ -36,7 +37,7 @@ function compileWebview() {
 // 编译当前的扩展
 function compileExtension() {
     let s = extension.src()
-        .pipe(cached('watch'))
+        .pipe(cached('extension'))
 
     if (extension.options.sourceMap) {
         s = s.pipe(sourcemaps.init())
@@ -52,7 +53,7 @@ async function clean() {
     await del(outDir);
 }
 
-function watch() {
+function watchExtension() {
     return gulp.watch(
         rootDir,
         {
@@ -60,6 +61,17 @@ function watch() {
             queue: true,
         },
         compileExtension,
+    );
+}
+
+function watchWebview() {
+    return gulp.watch(
+        webview.options.rootDir,
+        {
+            delay: 500,
+            queue: true,
+        },
+        compileWebview,
     );
 }
 
@@ -81,8 +93,6 @@ exports.compile = gulp.series(
 
 exports.clean = clean;
 
-exports.watch = watch;
-
 exports.publish = gulp.series(
     createVSIX,
     publish,
@@ -93,4 +103,7 @@ exports.package = gulp.series(
     createVSIX,
 );
 
-exports.compileWebview = compileWebview;
+exports.watch = gulp.parallel(
+    watchWebview,
+    watchExtension,
+);
