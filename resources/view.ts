@@ -16,7 +16,7 @@ class View {
     constructor() {
         this.div = $('#file-types') as HTMLElement;
         this.table = this.div.querySelector('table') as HTMLTableElement;
-        this.nodata = this.div.querySelector('no-data') as HTMLElement;
+        this.nodata = this.div.querySelector('.no-data') as HTMLElement;
 
         this.locale = $('html').getAttribute('lang') as string;
         this.numberFormat = new Intl.NumberFormat(this.locale);
@@ -58,6 +58,11 @@ class View {
         };
 
         const trs = this.table.querySelectorAll('tbody>tr');
+        if (trs.length === 0) {
+            this.showMessage();
+            return;
+        }
+
         trs.forEach((tr) => {
             const tds = tr.querySelectorAll('td');
             obj.files += getValue(tds[0]);
@@ -209,12 +214,12 @@ class View {
                 const th = e.target as HTMLTableHeaderCellElement;
                 const asc = !(/true/.test(th.getAttribute('data-asc') as string));
                 const index = parseInt(th.getAttribute('data-index') as string);
-                th.setAttribute('data-asc', asc ? 'true': 'false');
+                th.setAttribute('data-asc', asc ? 'true' : 'false');
 
                 if (th.getAttribute('data-type') === 'string') {
                     this.sortTable(index, asc, 'string');
-                }else{
-                    this.sortTable( index, asc, 'number');
+                } else {
+                    this.sortTable(index, asc, 'number');
                 }
 
                 // 去掉其它元素的 asc 属性
@@ -322,6 +327,9 @@ function numberCompare(v1: string, v2: string) {
 }
 
 window.addEventListener('load', (e: Event) => {
-    // TODO try
-    const v = new View();
+    try {
+        const v = new View();
+    } catch (e) {
+        console.error(e);
+    }
 });
