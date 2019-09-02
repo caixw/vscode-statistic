@@ -85,7 +85,6 @@ class View {
 
         const foot = this.table.querySelector('tfoot>tr') as HTMLTableSectionElement;
         foot.style.display = 'table-row';
-
         const tds = foot.querySelectorAll('td');
         this.addValueOfTd(tds[0] as HTMLTableCellElement, obj.files);
         this.addValueOfTd(tds[1] as HTMLTableCellElement, obj.lines);
@@ -94,6 +93,9 @@ class View {
         this.addValueOfTd(tds[4] as HTMLTableCellElement, obj.avg);
         this.addValueOfTd(tds[5] as HTMLTableCellElement, obj.max);
         this.addValueOfTd(tds[6] as HTMLTableCellElement, obj.min);
+
+        const head = this.table.querySelector('thead>tr>th[data-asc]') as HTMLTableHeaderCellElement;
+        head.click();
     }
 
     /**
