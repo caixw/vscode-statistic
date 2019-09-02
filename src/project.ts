@@ -5,21 +5,21 @@ import * as vcs from './vcs/vcs';
 import * as message from './message';
 import * as line from './line/line';
 import * as vscode from 'vscode';
-
-const size = 1000;
+import config from './config';
 
 /**
  * 项目的统计信息
  */
 export class Project {
-    vcs: vcs.VCS;
-    name: string;
-    path: string;
-    panel: vscode.WebviewPanel;
+    readonly vcs: vcs.VCS;
+    readonly name: string;
+    readonly path: string;
+    readonly panel: vscode.WebviewPanel;
 
     /**
      * 构造函数
      * @param p 项目地址
+     * @param panel 需要通讯的 webviewPanel 实例。
      */
     constructor(p: string, panel: vscode.WebviewPanel) {
         this.vcs = vcs.New(p);
@@ -45,8 +45,8 @@ export class Project {
     public async post() {
         const files = await this.vcs.files();
 
-        for (let i = 0; i < files.length; i += size) {
-            let end = i + size;
+        for (let i = 0; i < files.length; i += config.filesPerParse) {
+            let end = i + config.filesPerParse;
             if (end > files.length) { end = files.length; }
 
             const list = files.slice(i, end);

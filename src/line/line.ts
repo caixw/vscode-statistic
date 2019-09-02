@@ -4,13 +4,9 @@ import * as path from 'path';
 import * as filesystem from 'fs';
 import * as block from './block';
 import * as lang from './lang';
+import config from '../config';
 
 const fs = filesystem.promises;
-
-// 当一行的长度超过此值，不会再分析该行的内容。
-//
-// 主要防止类似于压缩的 js 文件，几 K 的内容集于一行。
-const lineMaxLength = 500;
 
 /**
  * 统计该文件中的行数信息
@@ -95,10 +91,10 @@ export function countContent(name: string, content: string, blocks: Array<block.
  * 第二个返回参数表示匹配的 Block 是否为注释代码块。
  */
 function matchLine(line: string, bs: Array<block.Block>): [null | block.Block, boolean] {
-    if (line.length > lineMaxLength) { // 可能是压缩的 JS 文件
-        return [null,false];
+    if (line.length > config.maxLineLength) { // 可能是压缩的 JS 文件
+        return [null, false];
     }
-    
+
     for (const bb of bs) {
         const start = bb.begin(line);
         if (start === 0) {
