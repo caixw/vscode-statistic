@@ -217,17 +217,12 @@ class View {
                 const index = parseInt(th.getAttribute('data-index') as string);
                 th.setAttribute('data-asc', asc ? 'true' : 'false');
 
-                if (th.getAttribute('data-type') === 'string') {
-                    this.sortTable(index, asc, 'string');
-                } else {
-                    this.sortTable(index, asc, 'number');
-                }
+                let type = th.getAttribute('data-type');
+                type = (type === 'string') ? 'string' : 'number';
+                this.sortTable(index, asc, type);
 
                 // 去掉其它元素的 asc 属性
-                const parent = th.parentNode;
-                if (parent === null) {
-                    throw new Error('th 不存在父元素');
-                }
+                const parent = th.parentNode as HTMLTableRowElement;
                 parent.querySelectorAll('th').forEach((val, i) => {
                     if (index !== i) {
                         val.setAttribute('data-asc', 'none');
