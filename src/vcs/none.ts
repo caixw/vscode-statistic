@@ -40,9 +40,7 @@ export class None implements VCS {
 
             const stat = await fs.stat(p);
             if (stat.isDirectory()) {
-                (await this.readFiles(p)).forEach((val) => {
-                    ret.push(val);
-                });
+                ret.push(...await this.readFiles(p));
             } else if (stat.isFile()) {
                 ret.push(p);
             }

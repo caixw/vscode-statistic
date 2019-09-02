@@ -29,9 +29,7 @@ export async function readFiles(dir: string, meta: string, igFile: string): Prom
         const p = path.join(dir, val);
         const stat = await fs.stat(p);
         if (stat.isDirectory()) {
-            await readFiles(p, meta, igFile).then((val) => {
-                ret.push(...val);
-            });
+            ret.push(... await readFiles(p, meta, igFile));
         } else if (stat.isFile()) {
             if (val === igFile) {
                 ig.add((await fs.readFile(p)).toString());
@@ -40,7 +38,6 @@ export async function readFiles(dir: string, meta: string, igFile: string): Prom
             }
         }
     }
-
 
     try {
         ret = ig.filter(ret.map((v) => {

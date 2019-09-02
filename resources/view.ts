@@ -34,6 +34,7 @@ class View {
         const msg = e.data as Message;
         switch (msg.type) {
             case 'file':
+                // bug: 同时接收两条 message 数据时，可能会数据出错。
                 for (const type of (msg.data as FileType[])) {
                     this.appendFileType(type);
                 }
@@ -157,8 +158,6 @@ class View {
      * 
      * 会同时更新 data-value 属性和 innerHTML 值。
      * 其中 innerHTML 中为根据本地格式化之后的值。
-     * @param tr 
-     * @param value 
      */
     private appendValueToTr(tr: HTMLTableRowElement, value: number) {
         const elem = tr.appendChild(document.createElement('td'));
@@ -171,8 +170,6 @@ class View {
      * 
      * 会同时更新 data-value 属性和 innerHTML 值。
      * 其中 innerHTML 中为根据本地格式化之后的值。
-     *
-     * @param value 新添加的值
      */
     private addValueOfTd(td: HTMLTableCellElement, value: number) {
         let v = getValue(td);
@@ -218,24 +215,26 @@ class View {
         const ths = this.table.querySelectorAll('thead>tr>th');
         ths.forEach((th, index) => {
             th.setAttribute('data-index', index.toString());
-            th.addEventListener('click', (e) => {
-                const th = e.target as HTMLTableHeaderCellElement;
-                const asc = !(/true/.test(th.getAttribute('data-asc') as string));
-                const index = parseInt(th.getAttribute('data-index') as string);
-                th.setAttribute('data-asc', asc ? 'true' : 'false');
+            th.addEventListener('click', this.processTableHeaderCellClick.bind(this));
+        });
+    }
 
-                let type = th.getAttribute('data-type');
-                type = (type === 'string') ? 'string' : 'number';
-                this.sortTable(index, asc, type);
+    private processTableHeaderCellClick(e: Event) {
+        const th = e.target as HTMLTableHeaderCellElement;
+        const asc = !(/true/.test(th.getAttribute('data-asc') as string));
+        const index = parseInt(th.getAttribute('data-index') as string);
+        th.setAttribute('data-asc', asc ? 'true' : 'false');
 
-                // 去掉其它元素的 asc 属性
-                const parent = th.parentNode as HTMLTableRowElement;
-                parent.querySelectorAll('th').forEach((val, i) => {
-                    if (index !== i) {
-                        val.setAttribute('data-asc', 'none');
-                    }
-                });
-            }); // end onclick
+        let type = th.getAttribute('data-type');
+        type = (type === 'string') ? 'string' : 'number';
+        this.sortTable(index, asc, type);
+
+        // 去掉其它元素的 asc 属性
+        const parent = th.parentNode as HTMLTableRowElement;
+        parent.querySelectorAll('th').forEach((val, i) => {
+            if (index !== i) {
+                val.setAttribute('data-asc', 'none');
+            }
         });
     }
 
@@ -281,8 +280,6 @@ class View {
     }
 }
 
-
-
 /**
  * 获取 elem 上的 data-value 的值，并转换成数值。
  */
@@ -318,7 +315,6 @@ interface FileType {
     max: number;
     min: number;
 }
-
 
 function numberCompare(v1: string, v2: string) {
     return parseInt(v1) - parseInt(v2);
