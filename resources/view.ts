@@ -1,5 +1,3 @@
-import { timingSafeEqual } from "crypto";
-
 // SPDX-License-Identifier: MIT
 
 declare var acquireVsCodeApi: any;
