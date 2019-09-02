@@ -48,8 +48,15 @@ class View {
         }
     }
 
+    /**
+     * 处理 end 类型的消息
+     * 
+     * - 计算统计行的数据；
+     * - 显示统计行；
+     * - 触发排序事件；
+     */
     private end() {
-        const obj = {
+        const total = {
             files: 0,
             lines: 0,
             comments: 0,
@@ -67,33 +74,35 @@ class View {
 
         trs.forEach((tr) => {
             const tds = tr.querySelectorAll('td');
-            obj.files += getValue(tds[0]);
-            obj.lines += getValue(tds[1]);
-            obj.comments += getValue(tds[2]);
-            obj.blanks += getValue(tds[3]);
+            total.files += getValue(tds[0]);
+            total.lines += getValue(tds[1]);
+            total.comments += getValue(tds[2]);
+            total.blanks += getValue(tds[3]);
 
             const max = getValue(tds[5]);
-            if (max > obj.max) {
-                obj.max = max;
+            if (max > total.max) {
+                total.max = max;
             }
             const min = getValue(tds[6]);
-            if (min < obj.min) {
-                obj.min = min;
+            if (min < total.min) {
+                total.min = min;
             }
         });
-        obj.avg = Math.floor(obj.lines / obj.files);
+        total.avg = Math.floor(total.lines / total.files);
 
+        // 填充 total
         const foot = this.table.querySelector('tfoot>tr') as HTMLTableSectionElement;
         foot.style.display = 'table-row';
         const tds = foot.querySelectorAll('td');
-        this.addValueOfTd(tds[0] as HTMLTableCellElement, obj.files);
-        this.addValueOfTd(tds[1] as HTMLTableCellElement, obj.lines);
-        this.addValueOfTd(tds[2] as HTMLTableCellElement, obj.comments);
-        this.addValueOfTd(tds[3] as HTMLTableCellElement, obj.blanks);
-        this.addValueOfTd(tds[4] as HTMLTableCellElement, obj.avg);
-        this.addValueOfTd(tds[5] as HTMLTableCellElement, obj.max);
-        this.addValueOfTd(tds[6] as HTMLTableCellElement, obj.min);
+        this.addValueOfTd(tds[0] as HTMLTableCellElement, total.files);
+        this.addValueOfTd(tds[1] as HTMLTableCellElement, total.lines);
+        this.addValueOfTd(tds[2] as HTMLTableCellElement, total.comments);
+        this.addValueOfTd(tds[3] as HTMLTableCellElement, total.blanks);
+        this.addValueOfTd(tds[4] as HTMLTableCellElement, total.avg);
+        this.addValueOfTd(tds[5] as HTMLTableCellElement, total.max);
+        this.addValueOfTd(tds[6] as HTMLTableCellElement, total.min);
 
+        // 触发排序
         const head = this.table.querySelector('thead>tr>th[data-asc]') as HTMLTableHeaderCellElement;
         head.click();
     }
@@ -253,7 +262,6 @@ class View {
 
             let v1 = cell1.getAttribute('data-value') as string;
             let v2 = cell2.getAttribute('data-value') as string;
-
             if (!asc) {
                 [v1, v2] = [v2, v1];
             }
