@@ -6,3 +6,6 @@ node_modules
 .vscode
 .idea
 .DS_Store
+
+resources/*.js
+resources/*.js.map

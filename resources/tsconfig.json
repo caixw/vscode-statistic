@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "outDir": "./",
+        "lib": [
+            "dom",
+            "es6"
+        ],
+        "sourceMap": true,
+        "rootDir": "./",
+        "strict": true
+    },
+    "files": ["view.ts"]
+}

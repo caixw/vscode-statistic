@@ -8,3 +8,6 @@ vsc-extension-quickstart.md
 **/tslint.json
 **/*.map
 **/*.ts
+
+resources/**/*.ts
+resources/tsconfig.json

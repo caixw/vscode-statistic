@@ -10,14 +10,27 @@ const cached = require('gulp-cached');
 const vsce = require('vsce');
 
 const extension = ts.createProject('tsconfig.json');
+const webview = ts.createProject('./resources/tsconfig.json');
 
 const rootDir = extension.options.rootDir;
 const outDir = extension.options.outDir;
 
 // 拷贝 testdata 目录下的内容
 function copy() {
-    return gulp.src(rootDir+'/**/testdata/**/*', {base:'src'}).
+    return gulp.src(rootDir + '/**/testdata/**/*', { base: 'src' }).
         pipe(gulp.dest(outDir))
+}
+
+function compileWebview() {
+    let s = webview.src()
+
+    if (webview.options.sourceMap) {
+        s = s.pipe(sourcemaps.init())
+            .pipe(webview())
+            .pipe(sourcemaps.write('./'))
+    }
+
+    return s.pipe(gulp.dest(webview.options.outDir))
 }
 
 // 编译当前的扩展
@@ -34,8 +47,9 @@ function compileExtension() {
     return s.pipe(gulp.dest(outDir));
 }
 
-function clean() {
-    return del(outDir);
+async function clean() {
+    await del(webview.options.outDir + "/*.(js|js.map)");
+    await del(outDir);
 }
 
 function watch() {
@@ -62,6 +76,7 @@ exports.compile = gulp.series(
     clean,
     compileExtension,
     copy,
+    compileWebview,
 );
 
 exports.clean = clean;
@@ -77,3 +92,5 @@ exports.package = gulp.series(
     compileExtension,
     createVSIX,
 );
+
+exports.compileWebview = compileWebview;
