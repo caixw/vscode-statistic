@@ -21,14 +21,14 @@ function copy() {
 }
 
 // 编译当前的扩展
-async function compileExtension() {
+function compileExtension() {
     let s = extension.src()
         .pipe(cached('watch'))
 
     if (extension.options.sourceMap) {
         s = s.pipe(sourcemaps.init())
             .pipe(extension())
-            .pipe(await sourcemaps.write('./'))
+            .pipe(sourcemaps.write('./'))
     }
 
     return s.pipe(gulp.dest(outDir));

@@ -6,6 +6,12 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+### Change
+- 采用异步的方式传递数据；
+
+### Fixed
+- 再大的项目，也不会出现无法读取的情况；
+
 ## [0.5.1-preview]
 
 ### Added
