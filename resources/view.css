@@ -68,6 +68,10 @@ table tbody tr:hover {
     color: var(--vscode-editor-selectionForeground);
 }
 
+table tfoot tr {
+    display: none;
+}
+
 .no-data {
     display: none;
     text-align: center;

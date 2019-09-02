@@ -1,3 +1,5 @@
+import { timingSafeEqual } from "crypto";
+
 // SPDX-License-Identifier: MIT
 
 declare var acquireVsCodeApi: any;
@@ -14,7 +16,7 @@ class View {
     private vscode = acquireVsCodeApi();
 
     constructor() {
-        this.div = $('#file-types') as HTMLElement;
+        this.div = document.querySelector('#file-types') as HTMLElement;
         this.table = this.div.querySelector('table') as HTMLTableElement;
         this.nodata = this.div.querySelector('.no-data') as HTMLElement;
 
@@ -81,13 +83,17 @@ class View {
         });
         obj.avg = Math.floor(obj.lines / obj.files);
 
-        $('#files').innerHTML = this.fmtNumber(obj.files);
-        $('#lines').innerHTML = this.fmtNumber(obj.lines);
-        $('#comments').innerHTML = this.fmtNumber(obj.comments);
-        $('#blanks').innerHTML = this.fmtNumber(obj.blanks);
-        $('#avg').innerHTML = this.fmtNumber(obj.avg);
-        $('#max').innerHTML = this.fmtNumber(obj.max);
-        $('#min').innerHTML = this.fmtNumber(obj.min);
+        const foot = this.table.querySelector('tfoot>tr') as HTMLTableSectionElement;
+        foot.style.display = 'table-row';
+
+        const tds = foot.querySelectorAll('td');
+        this.addValueOfTd(tds[0] as HTMLTableCellElement, obj.files);
+        this.addValueOfTd(tds[1] as HTMLTableCellElement, obj.lines);
+        this.addValueOfTd(tds[2] as HTMLTableCellElement, obj.comments);
+        this.addValueOfTd(tds[3] as HTMLTableCellElement, obj.blanks);
+        this.addValueOfTd(tds[4] as HTMLTableCellElement, obj.avg);
+        this.addValueOfTd(tds[5] as HTMLTableCellElement, obj.max);
+        this.addValueOfTd(tds[6] as HTMLTableCellElement, obj.min);
     }
 
     /**
@@ -97,10 +103,7 @@ class View {
      * 根据 type.name 和 tbody>tr>th.name 是否相同判断是否为同一元素。
      */
     private appendFileType(type: FileType) {
-        const tbody = this.table.querySelector('tbody');
-        if (tbody === null) {
-            throw new Error(`元素 tbody 不存在`);
-        }
+        const tbody = this.table.querySelector('tbody') as HTMLTableSectionElement;
 
         const th = tbody.querySelector(`th[data-value="${type.name}`);
         if (th === null) { // 不存在
@@ -109,11 +112,7 @@ class View {
             return;
         }
 
-        const tr = th.parentNode;
-        if (tr === null) {
-            throw new Error(`元素 ${type.name} 的父元素不存在`);
-        }
-
+        const tr = th.parentNode as HTMLTableRowElement;
         const tds = tr.querySelectorAll('td');
         this.addValueOfTd(tds[0], type.files);
         this.addValueOfTd(tds[1], type.lines);
@@ -255,8 +254,8 @@ class View {
             const cell1 = row1.cells.item(colIndex) as HTMLTableCellElement;
             const cell2 = row2.cells.item(colIndex) as HTMLTableCellElement;
 
-            let v1 = cell1.getAttribute('data-value');
-            let v2 = cell2.getAttribute('data-value');
+            let v1 = cell1.getAttribute('data-value') as string;
+            let v2 = cell2.getAttribute('data-value') as string;
 
             if (!asc) {
                 [v1, v2] = [v2, v1];
@@ -264,9 +263,9 @@ class View {
 
             switch (type) {
                 case 'string':
-                    return this.collator.compare(v1 as string, v2 as string);
+                    return this.collator.compare(v1, v2);
                 case 'number':
-                    return numberCompare(v1 as string, v2 as string);
+                    return numberCompare(v1, v2);
                 default:
                     throw new Error(`无效的 type 值 ${type}`);
             }
@@ -300,10 +299,6 @@ function $(selector: string): Element {
     }
 
     return elem;
-}
-
-function $$(selector: string): NodeListOf<Element> {
-    return document.querySelectorAll(selector);
 }
 
 interface Message {
