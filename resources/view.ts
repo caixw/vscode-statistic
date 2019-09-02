@@ -3,15 +3,15 @@
 declare var acquireVsCodeApi: any;
 
 class View {
-    private div: HTMLElement;
-    private table: HTMLTableElement;
-    private nodata: HTMLElement;
+    private readonly div: HTMLElement;
+    private readonly table: HTMLTableElement;
+    private readonly nodata: HTMLElement;
 
-    private locale: string;
-    private numberFormat: Intl.NumberFormat;
-    private collator: Intl.Collator;
+    private readonly locale: string;
+    private readonly numberFormat: Intl.NumberFormat;
+    private readonly collator: Intl.Collator;
 
-    private vscode = acquireVsCodeApi();
+    private readonly vscode = acquireVsCodeApi();
 
     constructor() {
         this.div = document.querySelector('#file-types') as HTMLElement;
@@ -244,7 +244,7 @@ class View {
      *
      * @param {number} colIndex 按第几列进行排序
      * @param {boolean} asc 是否倒序
-     * @param {string} string 比较类型，目前支持 string 或是 number
+     * @param {string} type 比较类型，目前支持 string 或是 number
      */
     private sortTable(colIndex: number, asc: boolean, type: string) {
         let rows: HTMLTableRowElement[] = [];
@@ -324,7 +324,7 @@ function numberCompare(v1: string, v2: string) {
     return parseInt(v1) - parseInt(v2);
 }
 
-window.addEventListener('load', (e: Event) => {
+window.addEventListener('load', () => {
     try {
         const v = new View();
     } catch (e) {
