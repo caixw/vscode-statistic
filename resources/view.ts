@@ -38,6 +38,12 @@ class View {
                 for (const type of (msg.data as FileType[])) {
                     this.appendFileType(type);
                 }
+            const th = this.table.querySelector('thead>tr>th[data-asc]') as HTMLTableHeaderCellElement;
+            const index = parseInt(th.getAttribute('data-index') as string);
+            const asc = /true/.test(th.getAttribute('data-asc') as string);
+            let type = th.getAttribute('data-type');
+            type = (type === 'string') ? 'string' : 'number';
+            this.sortTable(index, asc, type);
                 break;
             case 'end':
                 this.end();
@@ -52,7 +58,6 @@ class View {
      * 
      * - 计算统计行的数据；
      * - 显示统计行；
-     * - 触发排序事件；
      */
     private end() {
         const total = {
@@ -100,10 +105,6 @@ class View {
         this.addValueOfTd(tds[4] as HTMLTableCellElement, total.avg);
         this.addValueOfTd(tds[5] as HTMLTableCellElement, total.max);
         this.addValueOfTd(tds[6] as HTMLTableCellElement, total.min);
-
-        // 触发排序
-        const head = this.table.querySelector('thead>tr>th[data-asc]') as HTMLTableHeaderCellElement;
-        head.click();
     }
 
     /**
