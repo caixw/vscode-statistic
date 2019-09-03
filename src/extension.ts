@@ -16,7 +16,7 @@ locale.init();
 export function activate(ctx: vscode.ExtensionContext) {
     const cmdName = 'caixw.statistic.show';
     const show = vscode.commands.registerCommand(cmdName, (uri: any) => {
-        commandShow(ctx, uri).catch((reason)=>{
+        commandShow(ctx, uri).catch((reason) => {
             vscode.window.showErrorMessage(reason);
         });
     });
@@ -40,14 +40,21 @@ async function commandShow(ctx: vscode.ExtensionContext, uri: any) {
 
     // 未选择项目，可能是通过命令面板执行的，执行以下操作。
 
-    if (undefined === ws.workspaceFolders) {
+    if (undefined === ws.workspaceFolders || ws.workspaceFolders.length === 0) {
         vscode.window.showErrorMessage(locale.l('none-project-open'));
         return;
     }
 
-    const selected = await vscode.window.showWorkspaceFolderPick();
+    let selected: vscode.WorkspaceFolder | undefined = undefined;
+    if (ws.workspaceFolders.length === 1) {
+        selected = ws.workspaceFolders[0];
+    } else {
+        selected = await vscode.window.showWorkspaceFolderPick();
+    }
+
     if (undefined === selected) { // 取消操作
         return;
     }
+
     await webview.create(ctx, selected.uri);
 }
