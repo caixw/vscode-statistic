@@ -6,6 +6,9 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+
+## [0.6.0]
+
 ### Change
 - 采用异步的方式传递数据；
 
