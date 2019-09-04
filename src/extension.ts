@@ -24,7 +24,9 @@ export function activate(ctx: vscode.ExtensionContext) {
     ctx.subscriptions.push(show);
 }
 
-export function deactivate() { }
+export function deactivate() {
+    webview.clear();
+}
 
 /**
  * caixw.statistic.show 命令的实际执行函数

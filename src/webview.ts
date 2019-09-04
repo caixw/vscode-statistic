@@ -5,11 +5,20 @@ import * as path from 'path';
 import * as locale from './locale/locale';
 import * as filesystem from 'fs';
 import * as project from './project';
+import config from './config';
 
 const fs = filesystem.promises;
 
 // 保存已打开的视图面板实例，防止得复打开。
 const views = new Map<string, vscode.WebviewPanel>();
+
+export function length(): number {
+    return views.size;
+}
+
+export function clear(): void {
+    views.clear();
+}
 
 /**
  * 创建 webview 页面
@@ -33,7 +42,7 @@ export async function create(ctx: vscode.ExtensionContext, uri: vscode.Uri) {
         vscode.ViewColumn.One,
         {
             enableScripts: true,
-            retainContextWhenHidden: true,
+            retainContextWhenHidden: config.retainContextWhenHidden,
         }
     );
 
