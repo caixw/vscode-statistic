@@ -200,19 +200,19 @@ class View {
         switch (type) {
             case 'error':
                 this.tip.style.color = 'var(--vscode-editorError-foreground)';
-                this.tip.style.background = 'var(--vscode-editorError-border)';
+                this.tip.style.border = '1px solid var(--vscode-editorError-border)';
                 break;
             case 'warn':
                 this.tip.style.color = 'var(--vscode-editorWarning-foreground)';
-                this.tip.style.background = 'var(--vscode-editorWarning-border)';
+                this.tip.style.border = '1px solid var(--vscode-editorWarning-border)';
                 break;
             case 'info':
                 this.tip.style.color = 'var(--vscode-editorInfo-foreground)';
-                this.tip.style.background = 'var(--vscode-editorInfo-border)';
+                this.tip.style.border = '1px solid var(--vscode-editorInfo-border)';
                 break;
             default:
                 this.tip.style.color = 'var(--vscode-editorHint-foreground)';
-                this.tip.style.background = 'var(--vscode-editorHint-border)';
+                this.tip.style.border = '1px solid var(--vscode-editorHint-border)';
         }
     }
 
