@@ -106,6 +106,13 @@ register([
     new block.MultipleComment('/*', '*/'),
 ], '.groovy');
 
+// ini
+register([
+    new block.String('"', '"'),
+    new block.String("'", "'", '\\'),
+    new block.SignalComment(';'),
+], '.ini');
+
 // java
 register(cStyle, '.java');
 

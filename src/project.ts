@@ -39,10 +39,7 @@ export class Project {
         });
     }
 
-    /**
-     * 发送内容到 webview
-     */
-    public async post() {
+    private async post() {
         const files = await this.vcs.files();
 
         for (let i = 0; i < files.length; i += config.filesPerParse) {
