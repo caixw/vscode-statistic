@@ -1,5 +1,9 @@
 @charset "utf-8";
 
+hr {
+    border: 1px solid var(--vscode-editorGroupHeader-tabsBackground);
+}
+
 h2 label {
     display: inline-block;
     min-width: 4rem;
