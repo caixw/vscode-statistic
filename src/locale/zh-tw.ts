@@ -17,4 +17,5 @@ export const zhTW =  {
     'max': '最大行數',
     'min': '最小行數',
     'vcs': 'VCS',
+    'load-files': '加载文件',
 };

@@ -34,7 +34,7 @@ export class Project {
                 case message.MessageType.refresh:
                     message.send(panel.webview, {
                         type: message.MessageType.info,
-                        data: locale.l('loading'),
+                        data: locale.l('load-files'),
                     });
 
                     await this.post();
