@@ -11,13 +11,15 @@ import * as php from './php';
  * @param ext 扩展名，必须带 . 符号
  */
 export function find(ext: string): undefined | block.Block[] {
-    return langs.get(ext);
+    return langs.get(ext.toLowerCase());
 }
 
 const langs = new Map<string, block.Block[]>();
 
 function register(blocks: block.Block[], ...exts: string[]) {
-    for (const ext of exts) {
+    for (let ext of exts) {
+        ext = ext.toLowerCase();
+
         if (langs.has(ext)) {
             throw new Error(`已经存在相同扩展名 ${ext} 的 Block 实现`);
         }
@@ -217,6 +219,12 @@ register([
     new block.SignalComment('//'),
     new nest.MultipleComment('/*', '*/'),
 ], '.swift');
+
+// toml
+register([
+    new block.String('"', '"', '\\'),
+    new block.SignalComment('#'),
+], '.toml');
 
 // xml/html/svg/xsl
 // 将 html 定义为 xml 的一个变种

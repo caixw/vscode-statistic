@@ -44,6 +44,15 @@ suite('Line test suite', () => {
                     comments: 1,
                 }
             },
+            { // 扩展名为大写
+                input: 'c = 1+2//comment\n',
+                output: {
+                    name: '.CXX',
+                    lines: 2,
+                    blanks: 1,
+                    comments: 1,
+                }
+            },
             {
                 input: 'c = 1+2/*comment*/\n',
                 output: {

@@ -45,6 +45,7 @@ suite('Block test suite', () => {
         assert.strictEqual(b.end("012/'56'"), -1);
         assert.strictEqual(b.end("012/''67'9"), 6);
         assert.strictEqual(b.end("012/'56"), 0);
+        assert.strictEqual(b.end("012/t'67"), 6);
     });
 
     test('String with escape 2', () => {
@@ -60,6 +61,7 @@ suite('Block test suite', () => {
         assert.strictEqual(b.end("012/''67''"), -1);
         assert.strictEqual(b.end("012/'''78''1"), 7);
         assert.strictEqual(b.end("012/''67"), 0);
+        assert.strictEqual(b.end("012/t''78"), 7);
     });
 
     test('SignalComment', () => {

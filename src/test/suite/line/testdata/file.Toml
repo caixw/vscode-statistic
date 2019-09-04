@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: MIT
+
+#
+# 这是一段非 ascii 字符
+#
+
+[main]
+    output = "hello, world;\" # 转义，不是注释"
+    output = "hello, world;\t" # hello world
