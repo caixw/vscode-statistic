@@ -5,7 +5,7 @@ declare var acquireVsCodeApi: any;
 class View {
     private readonly div: HTMLElement;
     private readonly table: HTMLTableElement;
-    private readonly nodata: HTMLElement;
+    private readonly tip: HTMLElement;
 
     private readonly locale: string;
     private readonly numberFormat: Intl.NumberFormat;
@@ -16,7 +16,7 @@ class View {
     constructor() {
         this.div = document.querySelector('#file-types') as HTMLElement;
         this.table = this.div.querySelector('table') as HTMLTableElement;
-        this.nodata = this.div.querySelector('.no-data') as HTMLElement;
+        this.tip = this.div.querySelector('.tip') as HTMLElement;
 
         this.locale = $('html').getAttribute('lang') as string;
         this.numberFormat = new Intl.NumberFormat(this.locale);
@@ -34,16 +34,28 @@ class View {
         const msg = e.data as Message;
         switch (msg.type) {
             case 'file':
+                this.table.style.display = 'table';
+                this.tip.style.display = 'none';
+
                 // bug: 同时接收两条 message 数据时，可能会数据出错。
                 for (const type of (msg.data as FileType[])) {
                     this.appendFileType(type);
                 }
-            const th = this.table.querySelector('thead>tr>th[data-asc]') as HTMLTableHeaderCellElement;
-            const index = parseInt(th.getAttribute('data-index') as string);
-            const asc = /true/.test(th.getAttribute('data-asc') as string);
-            let type = th.getAttribute('data-type');
-            type = (type === 'string') ? 'string' : 'number';
-            this.sortTable(index, asc, type);
+                const th = this.table.querySelector('thead>tr>th[data-asc]') as HTMLTableHeaderCellElement;
+                const index = parseInt(th.getAttribute('data-index') as string);
+                const asc = /true/.test(th.getAttribute('data-asc') as string);
+                let type = th.getAttribute('data-type');
+                type = (type === 'string') ? 'string' : 'number';
+                this.sortTable(index, asc, type);
+                break;
+            case 'error':
+                this.showMessage(msg.data as string, 'error');
+                break;
+            case 'warn':
+                this.showMessage(msg.data as string, 'warn');
+                break;
+            case 'info':
+                this.showMessage(msg.data as string, 'info');
                 break;
             case 'end':
                 this.end();
@@ -60,6 +72,11 @@ class View {
      * - 显示统计行；
      */
     private end() {
+        const trs = this.table.querySelectorAll('tbody>tr');
+        if (trs.length === 0) {
+            return;
+        }
+
         const total = {
             files: 0,
             lines: 0,
@@ -69,12 +86,6 @@ class View {
             min: Number.POSITIVE_INFINITY,
             avg: 0,
         };
-
-        const trs = this.table.querySelectorAll('tbody>tr');
-        if (trs.length === 0) {
-            this.showMessage();
-            return;
-        }
 
         trs.forEach((tr) => {
             const tds = tr.querySelectorAll('td');
@@ -95,9 +106,7 @@ class View {
         total.avg = Math.floor(total.lines / total.files);
 
         // 填充 total
-        const foot = this.table.querySelector('tfoot>tr') as HTMLTableSectionElement;
-        foot.style.display = 'table-row';
-        const tds = foot.querySelectorAll('td');
+        const tds = this.table.querySelectorAll('tfoot>tr>td') as NodeListOf<HTMLTableCellElement>;
         this.addValueOfTd(tds[0] as HTMLTableCellElement, total.files);
         this.addValueOfTd(tds[1] as HTMLTableCellElement, total.lines);
         this.addValueOfTd(tds[2] as HTMLTableCellElement, total.comments);
@@ -182,15 +191,28 @@ class View {
 
     /**
      * 是否显示没有数据的提示
-     * 
-     * @param reason 如果提供了此值，则会将其打印到 console.error
      */
-    private showMessage(reason?: string) {
+    private showMessage(reason: string, type: string) {
         this.table.style.display = 'none';
-        this.nodata.style.display = 'block';
+        this.tip.style.display = 'block';
+        this.tip.innerHTML = reason;
 
-        if (reason !== undefined) {
-            console.error(reason);
+        switch (type) {
+            case 'error':
+                this.tip.style.color = 'var(--vscode-editorError-foreground)';
+                this.tip.style.background = 'var(--vscode-editorError-border)';
+                break;
+            case 'warn':
+                this.tip.style.color = 'var(--vscode-editorWarning-foreground)';
+                this.tip.style.background = 'var(--vscode-editorWarning-border)';
+                break;
+            case 'info':
+                this.tip.style.color = 'var(--vscode-editorInfo-foreground)';
+                this.tip.style.background = 'var(--vscode-editorInfo-border)';
+                break;
+            default:
+                this.tip.style.color = 'var(--vscode-editorHint-foreground)';
+                this.tip.style.background = 'var(--vscode-editorHint-border)';
         }
     }
 
@@ -302,9 +324,10 @@ function $(selector: string): Element {
     return elem;
 }
 
+// 需要与 src/message.ts 中的 Message 相同
 interface Message {
     type: string;
-    data: FileType[] | undefined;
+    data?: FileType[] | string;
 }
 
 interface FileType {

@@ -68,12 +68,7 @@ table tbody tr:hover {
     color: var(--vscode-editor-selectionForeground);
 }
 
-table tfoot tr {
-    display: none;
-}
-
-.no-data {
-    display: none;
+.tip {
     text-align: center;
     font-size: larger;
     color: var(--vscode-editorWarning-foreground);

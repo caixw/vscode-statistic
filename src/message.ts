@@ -17,15 +17,18 @@ export function send(view: vscode.Webview, msg: Message) {
 export enum MessageType {
     // 由 webview 发起的消息
     refresh = 'refresh',
-    
+
     // 由扩展端发起的请求
-    file = 'file',
+    file = 'file', // 发送 filetype 内容
+    error = 'error',
+    warn = 'warn',
+    info = 'info',
     end = 'end',
 }
 
 export interface Message {
     type: MessageType;
-    data?: FileType[];
+    data?: FileType[] | string;
 }
 
 /**

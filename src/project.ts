@@ -5,6 +5,7 @@ import * as vcs from './vcs/vcs';
 import * as message from './message';
 import * as line from './line/line';
 import * as vscode from 'vscode';
+import * as locale from './locale/locale';
 import config from './config';
 
 /**
@@ -31,6 +32,11 @@ export class Project {
             const msg = e as message.Message;
             switch (msg.type) {
                 case message.MessageType.refresh:
+                    message.send(panel.webview, {
+                        type: message.MessageType.info,
+                        data: locale.l('loading'),
+                    });
+
                     await this.post();
                     break;
                 default:
@@ -41,6 +47,13 @@ export class Project {
 
     private async post() {
         const files = await this.vcs.files();
+
+        if (files.length === 0) {
+            message.send(this.panel.webview, {
+                type: message.MessageType.warn,
+                data: locale.l('no-data'),
+            });
+        }
 
         for (let i = 0; i < files.length; i += config.filesPerParse) {
             let end = i + config.filesPerParse;
