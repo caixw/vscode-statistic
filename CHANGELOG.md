@@ -8,6 +8,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ### Change
 - 单只有一个打开的文件夹时，执行命令将不再需要选择文件夹；
+- 微调界面；
 
 ### Fixed
 - 修正繁体文件缺失；
