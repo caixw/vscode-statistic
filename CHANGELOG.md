@@ -6,6 +6,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.6.1]
+
 ### Change
 - 单只有一个打开的文件夹时，执行命令将不再需要选择文件夹；
 - 微调界面；
