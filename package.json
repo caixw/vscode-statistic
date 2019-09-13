@@ -14,7 +14,8 @@
         "line",
         "counter",
         "analytics",
-        "project"
+        "project",
+        "sum"
     ],
     "license": "MIT",
     "homepage": "https://github.com/caixw/vscode-statistic",
@@ -35,6 +36,7 @@
     },
     "icon": "resources/icon.png",
     "categories": [
+        "Programming Languages",
         "Other"
     ],
     "activationEvents": [
