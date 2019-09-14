@@ -17,5 +17,5 @@ export const zhCN =  {
     'max': '最大行数',
     'min': '最小行数',
     'vcs': 'VCS',
-    'load-files': '加载文件',
+    'load-files': '加载文件...',
 };

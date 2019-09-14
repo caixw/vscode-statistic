@@ -17,5 +17,5 @@ export const en = {
     'max': 'max',
     'min': 'min',
     'vcs': 'VCS',
-    'load-files': 'load files',
+    'load-files': 'load files...',
 };
