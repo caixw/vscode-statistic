@@ -1,16 +1,16 @@
 @charset "utf-8";
 
-hr {
-    border: 1px solid var(--vscode-editorGroupHeader-tabsBackground);
-}
-
-h2 label {
+h2 .title {
     display: inline-block;
     min-width: 4rem;
 }
 
-h2 label::after {
+h2 .title::after {
     content: ":";
+}
+
+hr {
+    border: 1px solid var(--vscode-editorGroupHeader-tabsBackground);
 }
 
 table {
