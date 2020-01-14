@@ -72,12 +72,12 @@ const files: string[] = [
     '.sh',
 
     // mark language
-    '.xml',
+    '.xml', '.xsl', '.xslt', '.xsd', '.dtd', '.rss', '.rdf', '.wsdl',
     '.svg',
     '.html', '.htm', '.shtml', '.xhtml',
 
     // 样式表
-    '.css', '.less', '.sass', 'scss',
+    '.css', '.less', '.sass', '.scss',
 
     // 文本
     '.md',
