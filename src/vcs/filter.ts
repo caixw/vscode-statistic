@@ -58,7 +58,7 @@ const files: string[] = [
     '.erl', '.hrl',
     '.go',
     '.java', '.scala', '.kt', '.groovy',
-    '.js', '.mjs', '.ts', '.dart',
+    '.js', '.jsx', '.mjs', '.ts', '.tsx', '.dart',
     '.lua',
     '.pas', '.pp',
     '.perl', '.prl', '.pl',
@@ -70,6 +70,7 @@ const files: string[] = [
     '.swift',
     '.sql',
     '.sh',
+    '.vue',
 
     // mark language
     '.xml', '.xsl', '.xslt', '.xsd', '.dtd', '.rss', '.rdf', '.wsdl',
