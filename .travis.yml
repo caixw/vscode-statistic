@@ -3,7 +3,7 @@ os:
   - osx
   - linux
   - windows
-node_js: 10
+node_js: 13
 
 install:
   - |
