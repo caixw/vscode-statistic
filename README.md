@@ -1,6 +1,5 @@
 # vscode-statistic
 
-[![NPM Build Status](https://travis-ci.org/caixw/vscode-statistic.svg?branch=master)](https://travis-ci.org/caixw/vscode-statistic)
 [![Yarn Build Status](https://dev.azure.com/caixw/vscode-statistic/_apis/build/status/caixw.vscode-statistic?branchName=master)](https://dev.azure.com/caixw/vscode-statistic/_build/latest?definitionId=1&branchName=master)
 [![Version](https://vsmarketplacebadge.apphb.com/version-short/caixw.statistic.svg)](https://marketplace.visualstudio.com/items?itemName=caixw.statistic)
 [![Installs](https://vsmarketplacebadge.apphb.com/installs-short/caixw.statistic.svg)](https://marketplace.visualstudio.com/items?itemName=caixw.statistic)
