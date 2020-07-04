@@ -34,7 +34,6 @@ table thead tr,
 table tfoot tr {
     line-height: 2.5;
     background-color: var(--vscode-editorGroupHeader-tabsBackground);
-    color: var(--vscode-tab-activeForeground);
 }
 
 table thead tr th {
@@ -52,15 +51,12 @@ table thead tr th {
  */
 table thead tr th::after {
     content: '\20\25b2';
-    color: var(--vscode-editorGroupHeader-tabsBackground);
 }
 table thead tr th[data-asc=true]::after {
     content: '\20\25b2';
-    color: var(--vscode-tab-activeForeground);
 }
 table thead tr th[data-asc=false]::after {
     content: '\20\25bc';
-    color: var(--vscode-tab-activeForeground);
 }
 
 table tbody tr:nth-child(even) {
