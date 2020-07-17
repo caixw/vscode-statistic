@@ -88,6 +88,7 @@
         "gulp-typescript": "^5.0.1",
         "mocha": "^8.0.1",
         "typescript": "^3.8.3",
+        "tslint": "^6.1.0",
         "vsce": "^1.66.0",
         "vscode-test": "^1.0.2"
     },
