@@ -30,6 +30,7 @@ function register(blocks: block.Block[], ...exts: string[]) {
 
 const cStyle: Array<block.Block> = [
     new block.String('"', '"', '\\'),
+    new block.String('\'', '\''),
     new block.SignalComment("//"),
     new block.MultipleComment("/*", "*/"),
 ];
@@ -137,6 +138,15 @@ register([
     new block.SignalComment('//'),
     new block.MultipleComment('/*', '*/'),
 ], '.json');
+
+// julia
+register([
+    new block.String('"', '"', '\\'),
+    new block.String('\'', '\''),
+    new block.SignalComment('#'),
+    new block.MultipleComment('"""', '"""'),
+    new block.MultipleComment("'''", "'''"),
+], '.jl');
 
 // kotlin
 register(cStyle, '.kt');

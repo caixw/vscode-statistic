@@ -58,6 +58,7 @@ const files: string[] = [
     '.erl', '.hrl',
     '.go',
     '.java', '.scala', '.kt', '.groovy',
+    '.jl',
     '.js', '.jsx', '.mjs', '.ts', '.tsx', '.dart',
     '.lua',
     '.pas', '.pp',
