@@ -50,6 +50,8 @@ const ignoreFiles: string[] = [
 // 不能忽略的文件或是扩展名，权限低于 ignoreFiles
 const files: string[] = [
     // 编程语言
+    '.applescript',
+    '.asp',
     '.coffee',
     '.cpp', '.cc', '.c', '.h', '.hpp', '.cxx', '.hxx',
     '.cs',
@@ -58,6 +60,7 @@ const files: string[] = [
     '.erl', '.hrl',
     '.go',
     '.java', '.scala', '.kt', '.groovy',
+    '.jsp',
     '.jl',
     '.js', '.jsx', '.mjs', '.ts', '.tsx', '.dart',
     '.lua',
